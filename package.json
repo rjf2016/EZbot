@@ -1,0 +1,22 @@
+{
+  "name": "ezbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "start": "node ./dist/index.ts",
+    "dev": "nodemon ./src/index.ts",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "discord.js": "^13.3.1",
+    "dotenv": "^10.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^16.11.7",
+    "nodemon": "^2.0.15"
+  }
+}

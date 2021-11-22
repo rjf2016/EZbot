@@ -1,0 +1,16 @@
+{
+	"New Slash command": {
+		"prefix": "newsc",
+		"body": [
+			"import { Command } from '../../structures/Command'\n",
+			"export default new Command({",
+			"\tname: '${TM_FILENAME_BASE:command name}',",
+			"\tdescription: '${1:description}',",
+			"\trun: async ({ interaction }) => {",
+			"\t\t$0",
+			"\t}",
+			"})",
+		],
+		"description": "Creates a new Slash Command"
+	},
+}

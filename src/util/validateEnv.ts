@@ -10,3 +10,5 @@ export const validateEnv = () => {
 	console.log(green('Found correct environment variables'))
 	return true
 }
+
+export const isProd = () => process.env.ENVIRONMENT === 'prod'

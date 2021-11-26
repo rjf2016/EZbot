@@ -9,7 +9,6 @@ import { cyanBright, gray, green } from 'chalk'
 
 const globPromise = promisify(glob)
 
-
 export class ExtendedClient extends Client {
 		commands: Collection<string, CommandType> = new Collection()
 

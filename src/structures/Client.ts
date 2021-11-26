@@ -4,7 +4,7 @@ import glob from 'glob'
 import { promisify } from 'util'
 import { RegisterCommandOptions } from '../typings/Client'
 import { validateEnv } from '../util/validateEnv'
-import { Event } from './Event';
+import { Event } from './Event'
 import { cyanBright, gray, green } from 'chalk'
 
 const globPromise = promisify(glob)
@@ -34,7 +34,6 @@ export class ExtendedClient extends Client {
 				// Then bots commands will be registered to a Guild; Useful for testing
 				this.guilds.cache.get(guildId)?.commands.set(commands)
 				console.log(gray(`Successfully registered commands to guild id: <${guildId}>`))
-
 			} else {
 				// Then bots commands will be globally registered
 				this.application?.commands.set(commands)
@@ -66,6 +65,5 @@ export class ExtendedClient extends Client {
 				const event: Event<keyof ClientEvents> = await this.importFile(filePath)
 				this.on(event.event, event.run)
 			})
-
 		}
 }

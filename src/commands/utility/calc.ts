@@ -18,7 +18,6 @@ export default new Command({
 				new MessageButton().setCustomId("(").setLabel("(").setStyle("PRIMARY"),
 				new MessageButton().setCustomId(")").setLabel(")").setStyle("PRIMARY"),
 				new MessageButton().setCustomId("^").setLabel("^").setStyle("PRIMARY"),
-
 			);
 			const row2 = new MessageActionRow().addComponents(
 				new MessageButton().setCustomId("7").setLabel("7").setStyle("SECONDARY"),

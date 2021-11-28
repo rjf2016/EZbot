@@ -4,3 +4,7 @@ import { ExtendedClient } from "./structures/Client"
 export const client = new ExtendedClient()
 
 client.start()
+
+process.on('unhandledRejection', error => {
+	console.error('Unhandled promise rejection:', error);
+});

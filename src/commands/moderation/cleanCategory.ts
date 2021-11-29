@@ -52,7 +52,6 @@ export default new Command({
 				.setStyle('DANGER'),
 		);
 
-		const confirmationMessage = (text: string) => ({ content: `${text}`, components: [row], ephemeral: true })
 		let message: string
 		let deletable = []
 		let successfulDelete: boolean = false
@@ -75,32 +74,36 @@ export default new Command({
 			message = `Are you sure you want to delete the following channels from ${CATEGORY} :\n${deletable.map(channel => `${channel}\t`).join('')}`
 		}
 
-		if (!message || !deletable) return interaction.reply({ content: "Uh-oh I've encountered an un-expected error 😞", ephemeral: true })
+		if (!message || !deletable) {
+			await interaction.reply({ content: "Uh-oh I've encountered an un-expected error 😞", ephemeral: true })
+			return
+		}
 
 		const confirm: any = await interaction.reply({ content: message, components: [row], fetchReply: true})
 		const collector = await confirm.createMessageComponentCollector({ componentType: 'BUTTON', time: 15000, max: 1 })
 
-		collector.on('collect', ButtonInteraction => {
+		collector.on('collect', async ButtonInteraction => {
 			if (ButtonInteraction.customId === 'confirm') {
 				try {
-					deletable.forEach( channel => channel.delete())
+					await deletable.forEach( channel => channel.delete())
 				} catch(error) {
 					console.error(error)
-					confirm.edit({ content: 'Uh-oh I encountered an error while trying to clean', components: [] })
+					await confirm.edit({ content: 'Uh-oh I encountered an error while trying to clean', components: [] })
 					collector.stop()
 					return
 				}
 				successfulDelete = true
-				confirm.edit({ content: '🧼 Cleanse is complete 🧼', components: [] })
+				await confirm.edit({ content: '🧼 Cleanse is complete 🧼', components: [] })
 				collector.stop()
 				return
 			} else if (ButtonInteraction.customId === 'cancel') {
-				confirm.edit({ content: 'Cleanse aborted.. Phew that was close 😨', components: [] })
+				await confirm.edit({ content: 'Cleanse aborted.. Phew that was close 😨', components: [] })
 			}
 		})
-		collector.on('end', collected => {
+
+		collector.on('end', async collected => {
 			if (successfulDelete) return
-			confirm.edit({ content: 'Cleanse aborted.. Phew that was close 😨', components: [] })
+			await confirm.edit({ content: 'Cleanse aborted.. Phew that was close 😨', components: [] })
 		})
 	}
 })

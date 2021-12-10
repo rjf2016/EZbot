@@ -2,10 +2,10 @@ import { ApplicationCommandDataResolvable, Client, ClientEvents, Collection } fr
 import { CommandType } from '../typings/Command'
 import glob from 'glob'
 import { promisify } from 'util'
-import { RegisterCommandOptions } from '../typings/Client'
 import { validateEnv } from '../util/validateEnv'
 import { Event } from './Event'
 import { cyanBright, gray, green } from 'chalk'
+import { RegisterCommandOptions } from '../typings/Client'
 
 const globPromise = promisify(glob)
 
@@ -13,6 +13,9 @@ export class ExtendedClient extends Client {
   commands: Collection<string, CommandType> = new Collection()
 
   constructor() {
+    // Note: I'm setting the client.intents to include all available intents
+    //       This is useful for developing/testing, but should be set accurately when the bot is live
+    //       This adds a lot of useless overhead & increased memory footprint
     super({ intents: 32767 })
   }
 

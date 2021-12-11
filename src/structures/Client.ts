@@ -4,8 +4,11 @@ import glob from 'glob'
 import { promisify } from 'util'
 import { validateEnv } from '../util/validateEnv'
 import { Event } from './Event'
-import { cyanBright, gray, green } from 'chalk'
+import { cyanBright, gray, green, dim } from 'chalk'
+import { Table } from 'console-table-printer'
 import { RegisterCommandOptions } from '../typings/Client'
+import mongoose, { ConnectOptions } from 'mongoose'
+import { table } from 'console'
 
 const globPromise = promisify(glob)
 
@@ -23,8 +26,9 @@ export class ExtendedClient extends Client {
     if (!validateEnv()) return
     this.login(process.env.BOT_TOKEN)
     console.log(cyanBright('EZbot has logged in!'))
-    console.log(gray('Loading commands...'))
+    console.log(dim('Loading commands...'))
     this.registerModules()
+    this.connectDB()
   }
 
   async importFile(filePath: string) {
@@ -46,12 +50,19 @@ export class ExtendedClient extends Client {
     // Commands
     const slashCommands: ApplicationCommandDataResolvable[] = []
     const commandFiles = await globPromise(`${__dirname}/../commands/*/*{.ts,.js}`)
-    commandFiles.forEach(async (filePath) => {
+    const table = new Table({
+      columns: [
+        { name: 'status', alignment: 'center' },
+        { name: 'command', alignment: 'center' },
+      ],
+    })
+
+    commandFiles.forEach(async (filePath: string) => {
       const command: CommandType = await this.importFile(filePath)
       if (!command.name) return
       this.commands.set(command.name, command)
       slashCommands.push(command)
-      console.log(green(` > ${command.name}`))
+      table.addRow({ status: '✅', command: `${command.name}` })
     })
 
     this.on('ready', () => {
@@ -67,5 +78,14 @@ export class ExtendedClient extends Client {
       const event: Event<keyof ClientEvents> = await this.importFile(filePath)
       this.on(event.event, event.run)
     })
+  }
+
+  private async connectDB(): Promise<void> {
+    mongoose
+      .connect(process.env.EZDB, {
+        useUnifiedTopology: true,
+        useNewUrlParser: true,
+      } as ConnectOptions)
+      .then(() => console.log(green('Connected to database')))
   }
 }

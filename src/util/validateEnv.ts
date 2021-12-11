@@ -7,6 +7,11 @@ export const validateEnv = () => {
     return false
   }
 
+  if (!process.env.EZDB) {
+    console.error(redBright('MISSING ENV VARIABLE: <DATABASE SRV>'))
+    return false
+  }
+
   console.log(green('Found correct environment variables'))
   return true
 }

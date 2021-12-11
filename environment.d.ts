@@ -4,6 +4,7 @@ declare global {
       BOT_TOKEN: string
       GUILD_ID: string
       ENVIRONMENT: 'dev' | 'prod' | 'debug'
+      EZDB: !string
     }
   }
 }

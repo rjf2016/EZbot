@@ -4,7 +4,7 @@ import glob from 'glob'
 import { promisify } from 'util'
 import { validateEnv } from '../util/validateEnv'
 import { Event } from './Event'
-import { cyanBright, gray, green, dim } from 'chalk'
+import chalk, { cyanBright, gray, green, dim } from 'chalk'
 import { Table } from 'console-table-printer'
 import { RegisterCommandOptions } from '../typings/Client'
 import mongoose, { ConnectOptions } from 'mongoose'
@@ -24,11 +24,11 @@ export class ExtendedClient extends Client {
 
   start() {
     if (!validateEnv()) return
+    console.clear()
     this.login(process.env.BOT_TOKEN)
-    console.log(cyanBright('EZbot has logged in!'))
-    console.log(dim('Loading commands...'))
-    this.registerModules()
+    console.log(cyanBright('EZbot has logged in 🚀'))
     this.connectDB()
+    this.registerModules()
   }
 
   async importFile(filePath: string) {
@@ -39,7 +39,6 @@ export class ExtendedClient extends Client {
     if (guildId) {
       // Then bots commands will be registered to a Guild; Useful for testing
       this.guilds.cache.get(guildId)?.commands.set(commands)
-      console.log(gray(`Successfully registered commands to guild id: <${guildId}>`))
     } else {
       // Then bots commands will be globally registered
       this.application?.commands.set(commands)
@@ -52,8 +51,8 @@ export class ExtendedClient extends Client {
     const commandFiles = await globPromise(`${__dirname}/../commands/*/*{.ts,.js}`)
     const table = new Table({
       columns: [
-        { name: 'status', alignment: 'center' },
-        { name: 'command', alignment: 'center' },
+        { name: 'status', alignment: 'center', color: 'green' },
+        { name: 'command', alignment: 'center', title: 'command name', color: 'cyan' },
       ],
     })
 
@@ -62,7 +61,7 @@ export class ExtendedClient extends Client {
       if (!command.name) return
       this.commands.set(command.name, command)
       slashCommands.push(command)
-      table.addRow({ status: '✅', command: `${command.name}` })
+      table.addRow({ status: 'OK', command: `/${command.name}` })
     })
 
     this.on('ready', () => {
@@ -70,6 +69,8 @@ export class ExtendedClient extends Client {
         commands: slashCommands,
         guildId: process.env.GUILD_ID,
       })
+      table.printTable()
+      console.log(gray(`Successfully registered commands to guild id: <${process.env.GUILD_ID}>`))
     })
 
     // Events

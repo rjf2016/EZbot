@@ -81,7 +81,7 @@ export class ExtendedClient extends Client {
   }
 
   private async connectDB(): Promise<void> {
-    mongoose
+    await mongoose
       .connect(process.env.EZDB, {
         useUnifiedTopology: true,
         useNewUrlParser: true,

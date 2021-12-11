@@ -4,11 +4,10 @@ import glob from 'glob'
 import { promisify } from 'util'
 import { validateEnv } from '../util/validateEnv'
 import { Event } from './Event'
-import chalk, { cyanBright, gray, green, dim } from 'chalk'
+import chalk, { cyanBright, gray, green } from 'chalk'
 import { Table } from 'console-table-printer'
 import { RegisterCommandOptions } from '../typings/Client'
 import mongoose, { ConnectOptions } from 'mongoose'
-import { table } from 'console'
 
 const globPromise = promisify(glob)
 

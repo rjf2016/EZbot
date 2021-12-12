@@ -54,7 +54,7 @@ export default new Command({
 
     if (!track || !track.tracks.length)
       return await interaction.followUp({
-        content: `❌ | No Video/Song/Playlist was found when searching for : ${track}`,
+        content: `❌ | No Video/Song/Playlist was found when searching for : ${track}. Try adding/removing some words.`,
         ephemeral: true,
       })
 

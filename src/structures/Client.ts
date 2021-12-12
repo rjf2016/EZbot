@@ -4,7 +4,7 @@ import glob from 'glob'
 import { promisify } from 'util'
 import { validateEnv } from '../util/validateEnv'
 import { Event } from './Event'
-import chalk, { cyanBright, gray, green } from 'chalk'
+import { cyanBright, gray, green } from 'chalk'
 import { Table } from 'console-table-printer'
 import { RegisterCommandOptions } from '../types/Client'
 import mongoose, { ConnectOptions } from 'mongoose'
@@ -12,7 +12,7 @@ import { Player } from 'discord-player'
 
 const globPromise = promisify(glob)
 
-export class ExtendedClient extends Client {
+export default class ExtendedClient extends Client {
   commands: Collection<string, CommandType> = new Collection()
   player: Player = new Player(this, {
     ytdlOptions: {

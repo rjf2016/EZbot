@@ -1,11 +1,12 @@
 import { Command } from '../../structures/Command'
-import { default as player } from '../../structures/player'
+import { colors } from '../../../config.json'
+import { ColorResolvable } from 'discord.js'
 
 export default new Command({
   name: 'queue',
   description: 'description',
-  run: async ({ interaction }) => {
-    const queue = player.getQueue(interaction.guildId)
+  run: async ({ client, interaction }) => {
+    const queue = client.player.getQueue(interaction.guildId)
     if (!queue?.playing)
       return interaction.followUp({
         content: 'No songs are currently playing',
@@ -29,11 +30,11 @@ export default new Command({
                 }`
               : ''
           }`,
-          color: 'RANDOM',
+          color: `${colors.default}` as ColorResolvable,
           fields: [
             {
               name: 'Now Playing',
-              value: `🎶 | [**${currentTrack.title}**](${currentTrack.url}) - ${currentTrack.requestedBy.tag}`,
+              value: `🎵 | [**${currentTrack.title}**](${currentTrack.url}) - ${currentTrack.requestedBy.tag}`,
             },
           ],
         },

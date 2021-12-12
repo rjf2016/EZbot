@@ -1,7 +1,7 @@
 import { Command } from '../../structures/Command'
 import { QueryType } from 'discord-player'
-import { default as player } from '../../structures/player'
-import { MessageEmbed } from 'discord.js'
+import { ColorResolvable, MessageEmbed } from 'discord.js'
+import { colors } from '../../../config.json'
 
 export default new Command({
   name: 'play',
@@ -15,11 +15,10 @@ export default new Command({
     },
   ],
 
-  run: async ({ interaction }) => {
+  run: async ({ client, interaction }) => {
     const song = interaction.options.getString('song')
 
-    if (!interaction.member.voice.channel)
-      return await interaction.reply('Please join a voice channel first!')
+    if (!interaction.member.voice.channel) return await interaction.reply('Please join a voice channel first!')
 
     if (
       interaction.guild.me.voice.channelId &&
@@ -30,7 +29,7 @@ export default new Command({
         ephemeral: true,
       })
 
-    const queue = await player.createQueue(interaction.guild, {
+    const queue = client.player.createQueue(interaction.guild, {
       metadata: {
         channel: interaction.channel,
       },
@@ -48,7 +47,7 @@ export default new Command({
 
     await interaction.deferReply()
 
-    const track = await player.search(song, {
+    const track = await client.player.search(song, {
       requestedBy: interaction.user,
       searchEngine: QueryType.AUTO,
     })
@@ -60,8 +59,8 @@ export default new Command({
       })
 
     const playEmbed = new MessageEmbed()
-      .setColor(`RANDOM`)
-      .setTitle(`🎶   New ${track.playlist ? 'playlist' : 'song'} Added to queue`)
+      .setColor(`${colors.default}` as ColorResolvable)
+      .setTitle(`🎵 | New ${track.playlist ? 'playlist' : 'song'} added to queue`)
     if (!track.playlist) {
       const tr = track.tracks[0]
       playEmbed.setThumbnail(tr.thumbnail)

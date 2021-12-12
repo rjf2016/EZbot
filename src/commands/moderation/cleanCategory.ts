@@ -6,6 +6,7 @@ import { MessageActionRow, MessageButton } from 'discord.js'
 
 export default new Command({
   name: 'clean',
+  category: 'moderation',
   description: 'Delete a channel or category',
   options: [
     {
@@ -39,7 +40,7 @@ export default new Command({
   ],
 
   run: async ({ interaction }) => {
-    const subCommand: string = interaction.options.getSubcommand()
+    const subCommand = interaction.options.getSubcommand()
     const row = new MessageActionRow().addComponents(
       new MessageButton().setCustomId('confirm').setLabel('Just do it').setStyle('SUCCESS'),
       new MessageButton().setCustomId('cancel').setLabel('Marty Im scared').setStyle('DANGER')
@@ -62,9 +63,7 @@ export default new Command({
       message = `Are you sure you want to delete <#${CHANNEL.id}>?\nThis cannot be un-done`
     } else if (subCommand == 'category') {
       const CATEGORY: any = interaction.options.getChannel('category')
-      deletable = CATEGORY.children.filter(
-        (channel) => !protectedChannels.includes(channel.name || channel.id)
-      )
+      deletable = CATEGORY.children.filter((channel) => !protectedChannels.includes(channel.name || channel.id))
       if (protectedChannels.includes(CATEGORY.name || CATEGORY.id) || deletable.length === 0) {
         await interaction.reply({
           content: `❌ Either the category: <#${CATEGORY.id}> is protected, or I'm unable to delete any channels within it`,
@@ -118,9 +117,9 @@ export default new Command({
       }
     })
 
-    collector.on('end', async (collected) => {
+    collector.on('end', async () => {
       if (successfulDelete) return
-      await confirm.edit({ content: 'Cleanse aborted.. Phew that was close 😨', components: [] })
+      return await confirm.edit({ content: 'Cleanse aborted.. Phew that was close 😨', components: [] })
     })
   },
 })

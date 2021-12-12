@@ -5,6 +5,7 @@ import { colors } from '../../../config.json'
 
 export default new Command({
   name: 'play',
+  category: 'music',
   description: 'Play a song',
   options: [
     {

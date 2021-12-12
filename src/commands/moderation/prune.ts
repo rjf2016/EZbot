@@ -2,6 +2,7 @@ import { Command } from '../../structures/Command'
 
 export default new Command({
   name: 'prune',
+  category: 'moderation',
   description: 'Deletes previous messages in current text channel',
   type: 1,
   options: [
@@ -12,11 +13,11 @@ export default new Command({
       required: true,
     },
   ],
+
   run: async ({ interaction }) => {
     const amount = interaction.options.getNumber('amount')
     if (isNaN(amount)) return interaction.followUp('Thats not a number!')
-    if (amount <= 1 && amount > 500)
-      return interaction.followUp('The number of messages must be between 1 and 500!')
+    if (amount <= 1 && amount > 500) return interaction.followUp('The number of messages must be between 1 and 500!')
     interaction.deferReply({ ephemeral: true }).catch(() => {})
     try {
       await interaction.channel.bulkDelete(amount, true)

@@ -1,12 +1,12 @@
 import { ApplicationCommandDataResolvable, Client, ClientEvents, Collection } from 'discord.js'
-import { CommandType } from '../typings/Command'
+import { CommandType } from '../types/Command'
 import glob from 'glob'
 import { promisify } from 'util'
 import { validateEnv } from '../util/validateEnv'
 import { Event } from './Event'
 import chalk, { cyanBright, gray, green } from 'chalk'
 import { Table } from 'console-table-printer'
-import { RegisterCommandOptions } from '../typings/Client'
+import { RegisterCommandOptions } from '../types/Client'
 import mongoose, { ConnectOptions } from 'mongoose'
 import { Player } from 'discord-player'
 
@@ -56,10 +56,7 @@ export class ExtendedClient extends Client {
     const slashCommands: ApplicationCommandDataResolvable[] = []
     const commandFiles = await globPromise(`${__dirname}/../commands/*/*{.ts,.js}`)
     const table: Table = new Table({
-      columns: [
-        // { name: 'status', alignment: 'center', title: ' ' },
-        { name: 'command', alignment: 'left', title: 'Commands' },
-      ],
+      columns: [{ name: 'command', alignment: 'left', title: 'Commands' }],
     })
 
     commandFiles.forEach(async (filePath: string) => {
@@ -88,11 +85,15 @@ export class ExtendedClient extends Client {
   }
 
   private async connectDB() {
-    await mongoose
-      .connect(process.env.EZDB, {
-        useUnifiedTopology: true,
-        useNewUrlParser: true,
-      } as ConnectOptions)
-      .then(() => console.log(green('Connected to EZDB')))
+    try {
+      await mongoose
+        .connect(process.env.EZDB, {
+          useUnifiedTopology: true,
+          useNewUrlParser: true,
+        } as ConnectOptions)
+        .then(() => console.log(green('Connected to EZDB')))
+    } catch (error) {
+      return console.error('❌ Failed to connect to EZDB')
+    }
   }
 }

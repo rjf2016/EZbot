@@ -1,7 +1,7 @@
 import { CommandInteractionOptionResolver } from 'discord.js'
 import { client } from '..'
 import { Event } from '../structures/Event'
-import { ExtendedInteraction } from '../typings/Command'
+import { ExtendedInteraction } from '../types/Command'
 import { isProd } from '../util/validateEnv'
 
 export default new Event('interactionCreate', async (interaction) => {

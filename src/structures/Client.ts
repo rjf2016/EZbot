@@ -28,7 +28,7 @@ export class ExtendedClient extends Client {
     super({ intents: 32767 })
   }
 
-  start() {
+  async start() {
     if (!validateEnv()) return
     console.clear()
     this.login(process.env.BOT_TOKEN)
@@ -51,14 +51,14 @@ export class ExtendedClient extends Client {
     }
   }
 
-  async registerModules() {
+  async registerModules(): Promise<void> {
     // Commands
     const slashCommands: ApplicationCommandDataResolvable[] = []
     const commandFiles = await globPromise(`${__dirname}/../commands/*/*{.ts,.js}`)
-    const table = new Table({
+    const table: Table = new Table({
       columns: [
-        { name: 'status', alignment: 'center', color: 'green' },
-        { name: 'command', alignment: 'center', title: 'command name', color: 'cyan' },
+        // { name: 'status', alignment: 'center', title: ' ' },
+        { name: 'command', alignment: 'left', title: 'Commands' },
       ],
     })
 
@@ -67,7 +67,7 @@ export class ExtendedClient extends Client {
       if (!command.name) return
       this.commands.set(command.name, command)
       slashCommands.push(command)
-      table.addRow({ status: 'OK', command: `/${command.name}` })
+      table.addRow({ command: `🟢 /${command.name}` })
     })
 
     this.on('ready', () => {
@@ -81,18 +81,18 @@ export class ExtendedClient extends Client {
 
     // Events
     const eventFiles = await globPromise(`${__dirname}/../events/*{.ts,.js}`)
-    eventFiles.forEach(async (filePath) => {
+    eventFiles.forEach(async (filePath: string) => {
       const event: Event<keyof ClientEvents> = await this.importFile(filePath)
       this.on(event.event, event.run)
     })
   }
 
-  private async connectDB(): Promise<void> {
+  private async connectDB() {
     await mongoose
       .connect(process.env.EZDB, {
         useUnifiedTopology: true,
         useNewUrlParser: true,
       } as ConnectOptions)
-      .then(() => console.log(green('Connected to database')))
+      .then(() => console.log(green('Connected to EZDB')))
   }
 }

@@ -1,0 +1,6 @@
+{
+	"protectedChannels": ["General", "Voice Channels", "safe", "general"],
+	"colors": {
+		"default": "#4551f0"
+	}
+}

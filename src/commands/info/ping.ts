@@ -1,9 +1,9 @@
-import { Command } from "../../structures/Command"
+import { Command } from '../../structures/Command'
 
 export default new Command({
-	name: 'ping',
-	description: 'replis with pong',
-	run: async({ interaction }) => {
-		await interaction.reply('Pong')
-	}
+  name: 'ping',
+  description: 'replis with pong',
+  run: async ({ interaction }) => {
+    await interaction.reply('Pong')
+  },
 })

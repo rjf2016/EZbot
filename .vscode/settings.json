@@ -1,0 +1,15 @@
+{
+	"[typescript]": {
+		"editor.formatOnPaste": true,
+		"editor.formatOnSave": true
+	},
+
+	"[json]": {
+		"editor.formatOnSave": false,
+		"editor.formatOnPaste": false
+	},
+	"files.eol": "\n",
+	"gitlens.views.lineHistory.avatars": false,
+	"gitlens.hovers.avatars": false,
+
+}

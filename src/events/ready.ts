@@ -8,7 +8,7 @@ export default new Event('ready', async () => {
   })
 
   client.commands.forEach((command) => {
-    table.addRow({ command: `🟢 ... /${command.name}` })
+    table.addRow({ command: `🟢  /${command.name}` })
   })
 
   table.printTable()

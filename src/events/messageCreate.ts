@@ -1,6 +1,8 @@
 import { Message } from 'discord.js'
 import { Event } from '../structures/Event'
+import { cyan } from 'chalk'
 
 export default new Event('messageCreate', async (message: Message) => {
-  console.log(`${message.author.tag} just sent a message`)
+  if (message.author.bot || !message.guild) return
+  console.log(cyan(message.author.username) + ':', message.content)
 })

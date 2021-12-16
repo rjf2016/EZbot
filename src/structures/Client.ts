@@ -5,10 +5,10 @@ import { promisify } from 'util'
 import { validateEnv } from '../util/validateEnv'
 import { Event } from './Event'
 import { cyanBright, gray, green } from 'chalk'
-import { Table } from 'console-table-printer'
 import { RegisterCommandOptions } from '../types/Client'
 import mongoose, { ConnectOptions } from 'mongoose'
 import { Player } from 'discord-player'
+import { clear } from 'console'
 
 const globPromise = promisify(glob)
 
@@ -31,10 +31,14 @@ export default class ExtendedClient extends Client {
   async start() {
     if (!validateEnv()) return
     console.clear()
-    this.login(process.env.BOT_TOKEN)
     console.log(cyanBright('EZbot has logged in 🚀'))
-    this.connectDB()
-    this.registerModules()
+    await this.connectDB()
+
+    this.login(process.env.BOT_TOKEN)
+    await this.registerCommands({
+      commands: await this.registerModules(),
+      guildId: process.env.GUILD_ID,
+    })
   }
 
   async importFile(filePath: string) {
@@ -51,30 +55,26 @@ export default class ExtendedClient extends Client {
     }
   }
 
-  async registerModules(): Promise<void> {
+  async registerModules(): Promise<ApplicationCommandDataResolvable[]> {
     // Commands
     const slashCommands: ApplicationCommandDataResolvable[] = []
     const commandFiles = await globPromise(`${__dirname}/../commands/*/*{.ts,.js}`)
-    const table: Table = new Table({
-      columns: [{ name: 'command', alignment: 'left', title: 'Commands' }],
-    })
 
     commandFiles.forEach(async (filePath: string) => {
       const command: CommandType = await this.importFile(filePath)
       if (!command.name) return
       this.commands.set(command.name, command)
       slashCommands.push(command)
-      table.addRow({ command: `🟢 /${command.name}` })
     })
 
-    this.on('ready', () => {
-      this.registerCommands({
-        commands: slashCommands,
-        guildId: process.env.GUILD_ID,
-      })
-      table.printTable()
-      console.log(gray(`Successfully registered commands to guild id: <${process.env.GUILD_ID}>`))
-    })
+    // this.on('ready', () => {
+    //   this.registerCommands({
+    //     commands: slashCommands,
+    //     guildId: process.env.GUILD_ID,
+    //   })
+    //   table.printTable()
+    //   console.log(gray(`Successfully registered commands to guild id: <${process.env.GUILD_ID}>`))
+    // })
 
     // Events
     const eventFiles = await globPromise(`${__dirname}/../events/*{.ts,.js}`)
@@ -82,6 +82,7 @@ export default class ExtendedClient extends Client {
       const event: Event<keyof ClientEvents> = await this.importFile(filePath)
       this.on(event.event, event.run)
     })
+    return slashCommands
   }
 
   private async connectDB() {

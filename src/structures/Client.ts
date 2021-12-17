@@ -31,12 +31,12 @@ export default class ExtendedClient extends Client {
     if (!validateEnv()) return
     console.clear()
     console.log(cyanBright('EZbot has logged in 🚀'))
-    this.login(process.env.BOT_TOKEN)
     await this.connectDB()
     await this.registerCommands({
       commands: await this.registerModules(),
       guildId: process.env.GUILD_ID,
     })
+    this.login(process.env.BOT_TOKEN)
   }
 
   async importFile(filePath: string) {

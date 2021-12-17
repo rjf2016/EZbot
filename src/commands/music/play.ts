@@ -50,12 +50,12 @@ export default new Command({
 
     const track = await client.player.search(song, {
       requestedBy: interaction.user,
-      searchEngine: QueryType.YOUTUBE,
+      searchEngine: QueryType.AUTO,
     })
 
     if (!track || !track.tracks.length)
       return await interaction.followUp({
-        content: `❌  No Video/Song/Playlist was found when searching for : ${track}. Try adding/removing some words.`,
+        content: `❌  No Video/Song/Playlist was found when searching for : ${song}. Try adding/removing some words.`,
         ephemeral: true,
       })
 

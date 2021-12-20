@@ -2,6 +2,7 @@ import { Command } from '../../structures/Command'
 
 export default new Command({
   name: 'poll',
+  category: 'utility',
   description: 'A poll/voting system',
   options: [
     {

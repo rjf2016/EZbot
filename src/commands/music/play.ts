@@ -5,6 +5,7 @@ import { colors } from '../../../config.json'
 
 export default new Command({
   name: 'play',
+  category: 'music',
   description: 'Play a song',
   options: [
     {
@@ -54,13 +55,13 @@ export default new Command({
 
     if (!track || !track.tracks.length)
       return await interaction.followUp({
-        content: `❌ | No Video/Song/Playlist was found when searching for : ${track}`,
+        content: `❌  No Video/Song/Playlist was found when searching for : ${song}. Try adding/removing some words.`,
         ephemeral: true,
       })
 
     const playEmbed = new MessageEmbed()
       .setColor(`${colors.default}` as ColorResolvable)
-      .setTitle(`🎵 | New ${track.playlist ? 'playlist' : 'song'} added to queue`)
+      .setTitle(`🎵  New ${track.playlist ? 'playlist' : 'song'} added to queue`)
     if (!track.playlist) {
       const tr = track.tracks[0]
       playEmbed.setThumbnail(tr.thumbnail)

@@ -4,7 +4,9 @@ import { ColorResolvable } from 'discord.js'
 
 export default new Command({
   name: 'queue',
+  category: 'music',
   description: 'description',
+
   run: async ({ client, interaction }) => {
     const queue = client.player.getQueue(interaction.guildId)
     if (!queue?.playing)

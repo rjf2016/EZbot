@@ -2,8 +2,9 @@ import { Command } from '../../structures/Command'
 
 export default new Command({
   name: 'ping',
-  description: 'replis with pong',
-  run: async ({ interaction }) => {
-    await interaction.reply('Pong')
+  category: 'info',
+  description: 'check EZbot latency in ms ',
+  run: async ({ client, interaction }) => {
+    return await interaction.reply({ content: `${client.ws.ping}ms` })
   },
 })

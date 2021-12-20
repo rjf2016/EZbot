@@ -4,6 +4,7 @@ import { evaluate } from 'mathjs'
 
 export default new Command({
   name: 'calc',
+  category: 'utility',
   description: 'open up a calculator',
   run: async ({ interaction }) => {
     const botMessage = (await interaction.deferReply({ fetchReply: true })) as Message
@@ -72,7 +73,8 @@ export default new Command({
             const result = evaluate(data)
             content = formatContent(result ? `${data} = ${result}` : ' ')
             data = result ? result : ''
-          } catch (e) {
+          } catch (error) {
+            console.error(error)
             content = formatContent(
               'Something went wrong while trying to evaluate this expression. Make sure your math expression is valid!'
             )

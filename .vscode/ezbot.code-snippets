@@ -1,11 +1,36 @@
 {
-	"New Slash command": {
+	"New Slash Command": {
 		"prefix": "newsc",
 		"body": [
 			"import { Command } from '../../structures/Command'\n",
 			"export default new Command({",
 			"\tname: '${TM_FILENAME_BASE:command name}',",
-			"\tdescription: '${1:description}',",
+			"\tcategory: '${TM_DIRECTORY/.*[\\\\|\\/]+(.*)/$1/}',",
+			"\tdescription: '${1:< What does this command do? >}',",
+			"\trun: async ({ interaction }) => {",
+			"\t\t$0",
+			"\t}",
+			"})",
+		],
+		"description": "Creates a new Slash Command"
+	},
+
+	"New Slash Command w/ Options": {
+		"prefix": "newsco",
+		"body": [
+			"import { Command } from '../../structures/Command'\n",
+			"export default new Command({",
+			"\tname: '${TM_FILENAME_BASE:command name}',",
+			"\tcategory: '${TM_DIRECTORY/.*[\\\\|\\/]+(.*)/$1/}',",
+			"\tdescription: '${1:< What does this command do? >}',",
+			"\ttype: '${2}'",
+			"\toptions: [",
+			"\t\t{",
+			"\t\t\tname: '${3}'",
+			"\t\t\tdescription: '${4}'",
+			"\t\t\ttype: '${5}'",
+			"\t\t}",
+			"\t]",
 			"\trun: async ({ interaction }) => {",
 			"\t\t$0",
 			"\t}",

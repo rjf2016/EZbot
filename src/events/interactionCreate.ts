@@ -7,6 +7,12 @@ import chalk from 'chalk'
 
 export default new Event('interactionCreate', async (interaction) => {
   if (interaction.isCommand()) {
+    if (process.env.DEV_ONLY === 'true' && interaction.guildId !== process.env.TEST_SERVER)
+      return interaction.reply({
+        content: "🚧 Can't sing right now, under construction 🚧",
+        ephemeral: true,
+      })
+
     if (interaction.user.bot) return
 
     const command = client.commands.get(interaction.commandName)

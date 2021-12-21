@@ -36,6 +36,6 @@ export default new Command({
       })
     }
 
-    return await interaction.reply(`Skipped ~~**${current.title}**~~`)
+    return await interaction.reply(`⏩ Skipped ~~**${current.title}**~~`)
   },
 })

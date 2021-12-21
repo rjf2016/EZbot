@@ -8,6 +8,7 @@ import { cyanBright, green } from 'chalk'
 import { RegisterCommandOptions } from '../types/Client'
 import mongoose, { ConnectOptions } from 'mongoose'
 import { Player } from 'discord-player'
+import { registerPlayerEvents } from '../util/registerPlayerEvents'
 
 const globPromise = promisify(glob)
 
@@ -27,7 +28,7 @@ export default class ExtendedClient extends Client {
     super({ intents: 32767 })
   }
 
-  async start() {
+  protected async start() {
     if (!validateEnv()) return
     console.clear()
     console.log(cyanBright('EZbot has logged in 🚀'))
@@ -37,13 +38,14 @@ export default class ExtendedClient extends Client {
       guildId: process.env.GUILD_ID,
     })
     this.login(process.env.BOT_TOKEN)
+    await registerPlayerEvents(this.player)
   }
 
-  async importFile(filePath: string) {
+  private async importFile(filePath: string) {
     return (await import(filePath))?.default
   }
 
-  async registerCommands({ commands, guildId }: RegisterCommandOptions) {
+  private async registerCommands({ commands, guildId }: RegisterCommandOptions) {
     if (guildId) {
       // Then bots commands will be registered to a Guild; Useful for testing
       this.guilds.cache.get(guildId)?.commands.set(commands)
@@ -53,7 +55,7 @@ export default class ExtendedClient extends Client {
     }
   }
 
-  async registerModules(): Promise<ApplicationCommandDataResolvable[]> {
+  private async registerModules(): Promise<ApplicationCommandDataResolvable[]> {
     // Commands
     const slashCommands: ApplicationCommandDataResolvable[] = []
     const commandFiles = await globPromise(`${__dirname}/../commands/*/*{.ts,.js}`)

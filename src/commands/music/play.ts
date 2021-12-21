@@ -2,6 +2,7 @@ import { Command } from '../../structures/Command'
 import { QueryType } from 'discord-player'
 import { ColorResolvable, MessageEmbed } from 'discord.js'
 import { colors } from '../../../config.json'
+import { isProd } from '../../util/validateEnv'
 
 export default new Command({
   name: 'play',
@@ -48,34 +49,21 @@ export default new Command({
 
     await interaction.deferReply()
 
-    const track = await client.player.search(song, {
-      requestedBy: interaction.user,
-      searchEngine: QueryType.AUTO,
-    })
+    const track = await client.player
+      .search(song, {
+        requestedBy: interaction.user,
+        searchEngine: QueryType.AUTO,
+      })
+      .then((x) => x.tracks[0])
 
-    if (!track || !track.tracks.length)
+    if (!track)
       return await interaction.followUp({
         content: `❌  No Video/Song/Playlist was found when searching for : ${song}. Try adding/removing some words.`,
-        ephemeral: true,
+        ephemeral: isProd(),
       })
 
-    const playEmbed = new MessageEmbed()
-      .setColor(`${colors.default}` as ColorResolvable)
-      .setTitle(`🎵  New ${track.playlist ? 'playlist' : 'song'} added to queue`)
-    if (!track.playlist) {
-      const tr = track.tracks[0]
-      playEmbed.setThumbnail(tr.thumbnail)
-      playEmbed.setDescription(`${tr.title}`)
-    }
+    queue.play(track)
 
-    if (!queue.playing) {
-      track.playlist ? queue.addTracks(track.tracks) : queue.play(track.tracks[0])
-      return await interaction.editReply({ embeds: [playEmbed] })
-    } else if (queue.playing) {
-      track.playlist ? queue.addTracks(track.tracks) : queue.addTrack(track.tracks[0])
-      return await interaction.editReply({
-        embeds: [playEmbed],
-      })
-    }
+    return await interaction.followUp({ content: `⏱️ | Loading **${track.title}**!` })
   },
 })

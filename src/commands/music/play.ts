@@ -1,8 +1,5 @@
 import { Command } from '../../structures/Command'
-import { QueryType } from 'discord-player'
-import { ColorResolvable, MessageEmbed } from 'discord.js'
-import { colors } from '../../../config.json'
-import { isProd } from '../../util/validateEnv'
+import { QueryType, PlayerOptions } from 'discord-player'
 
 export default new Command({
   name: 'play',
@@ -35,7 +32,11 @@ export default new Command({
       metadata: {
         channel: interaction.channel,
       },
-    })
+      disableVolume: true,
+      leaveOnEnd: false,
+      leaveOnStop: false,
+      leaveOnEmpty: true,
+    } as PlayerOptions)
 
     try {
       if (!queue.connection) await queue.connect(interaction.member.voice.channel)
@@ -54,12 +55,11 @@ export default new Command({
         requestedBy: interaction.user,
         searchEngine: QueryType.AUTO,
       })
-      .then((x) => x.tracks[0])
+      .then((x: { tracks: any[] }) => x.tracks[0])
 
     if (!track)
       return await interaction.followUp({
         content: `❌  No Video/Song/Playlist was found when searching for : ${song}. Try adding/removing some words.`,
-        ephemeral: isProd(),
       })
 
     queue.play(track)

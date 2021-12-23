@@ -12,7 +12,7 @@ import { registerPlayerEvents } from '../util/registerPlayerEvents'
 
 const globPromise = promisify(glob)
 
-export default class ExtendedClient extends Client {
+export class ExtendedClient extends Client {
   commands: Collection<string, CommandType> = new Collection()
   player: Player = new Player(this, {
     ytdlOptions: {
@@ -28,17 +28,17 @@ export default class ExtendedClient extends Client {
     super({ intents: 32767 })
   }
 
-  protected async start() {
+  async start() {
     if (!validateEnv()) return
     console.clear()
     console.log(cyanBright('EZbot has logged in 🚀'))
-    await this.connectDB()
-    await this.registerCommands({
+    this.registerCommands({
       commands: await this.registerModules(),
       guildId: process.env.GUILD_ID,
     })
-    this.login(process.env.BOT_TOKEN)
+    await this.connectDB()
     await registerPlayerEvents(this.player)
+    this.login(process.env.BOT_TOKEN)
   }
 
   private async importFile(filePath: string) {
@@ -48,10 +48,10 @@ export default class ExtendedClient extends Client {
   private async registerCommands({ commands, guildId }: RegisterCommandOptions) {
     if (guildId) {
       // Then bots commands will be registered to a Guild; Useful for testing
-      this.guilds.cache.get(guildId)?.commands.set(commands)
+      this.guilds?.cache.get(guildId)?.commands?.set(commands)
     } else {
       // Then bots commands will be globally registered
-      this.application?.commands.set(commands)
+      this.application?.commands?.set(commands)
     }
   }
 

@@ -1,3 +1,6 @@
+import { BaseGuildEmojiManager, Emoji } from 'discord.js'
+import { resolve } from 'path/posix'
+import { client } from '../..'
 import { Command } from '../../structures/Command'
 import { emoji } from '../../util/emojiChar'
 
@@ -59,17 +62,18 @@ export default new Command({
       console.log('QUESTION: ', question)
       console.log('ANSWERS: ', answers)
 
-      // Create dictionary for answers & while checking if they start with emoji
-      const dict = answers.reduce(async (prev, answer, i) => {
-        // Then answer starts with an emoji
-        const answerEmoji = answer.split(' ').shift().toString()
-        const test = await interaction.channel.send(`${answer}`)
+      // const wtf = interaction.guild.emojis.resolve('nope')
+      // console.log(wtf)
 
-        await test.react(answerEmoji).catch(() => {
-          console.log(`${answer} does not start with an emoji`)
-          test.react(emoji[defaultEmoji[i]])
-        })
+      // Create dictionary for answers & while checking if they start with emoji
+      const dict = answers.reduce((acc, answer, i) => {
+        // Then answer starts with an emoji
+        const startsWith = answer.split(' ').shift()
+        console.log(`Starts with: ${startsWith}`)
+        const answerEmoji = interaction.guild.emojis.resolve(startsWith) ? startsWith : emoji[defaultEmoji[i]]
+        return { ...acc, [answer]: answerEmoji }
       }, {})
+      console.log(dict)
     }
   },
 })

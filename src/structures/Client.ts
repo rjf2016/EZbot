@@ -4,11 +4,12 @@ import glob from 'glob'
 import { promisify } from 'util'
 import { validateEnv } from '../util/validateEnv'
 import { Event } from './Event'
-import { cyanBright, green } from 'chalk'
+import { cyanBright, dim, green } from 'chalk'
 import { RegisterCommandOptions } from '../types/Client'
 import mongoose, { ConnectOptions } from 'mongoose'
 import { Player } from 'discord-player'
 import { registerPlayerEvents } from '../util/registerPlayerEvents'
+import { clear } from 'console'
 
 const globPromise = promisify(glob)
 
@@ -28,34 +29,40 @@ export default class ExtendedClient extends Client {
     super({ intents: 32767 })
   }
 
-  protected async start() {
-    if (!validateEnv()) return
+  async start() {
     console.clear()
-    console.log(cyanBright('EZbot has logged in 🚀'))
+    if (!validateEnv()) return
+    await this.registerModules()
+    // console.clear()
+    // console.log(cyanBright('EZbot has logged in 🚀'))
+    // this.registerCommands({
+    //   commands: this.registerModules(),
+    //   guildId: process.env.GUILD_ID,
+    // })
+    // await this.connectDB()
     await this.connectDB()
-    await this.registerCommands({
-      commands: await this.registerModules(),
-      guildId: process.env.GUILD_ID,
-    })
-    this.login(process.env.BOT_TOKEN)
     await registerPlayerEvents(this.player)
+    await this.login(process.env.BOT_TOKEN)
   }
 
-  private async importFile(filePath: string) {
+  async importFile(filePath: string) {
     return (await import(filePath))?.default
   }
 
-  private async registerCommands({ commands, guildId }: RegisterCommandOptions) {
+  async registerCommands({ commands, guildId }: RegisterCommandOptions) {
     if (guildId) {
+      const singleGuild = this.guilds.cache.get(guildId)
       // Then bots commands will be registered to a Guild; Useful for testing
-      this.guilds.cache.get(guildId)?.commands.set(commands)
+      singleGuild?.commands.set(commands)
+      console.log(dim(`Registering commands to guild: ${singleGuild.name}`))
     } else {
       // Then bots commands will be globally registered
       this.application?.commands.set(commands)
+      console.log(dim('Registering commands globally 🌎'))
     }
   }
 
-  private async registerModules(): Promise<ApplicationCommandDataResolvable[]> {
+  async registerModules() {
     // Commands
     const slashCommands: ApplicationCommandDataResolvable[] = []
     const commandFiles = await globPromise(`${__dirname}/../commands/*/*{.ts,.js}`)
@@ -72,7 +79,13 @@ export default class ExtendedClient extends Client {
       const event: Event<keyof ClientEvents> = await this.importFile(filePath)
       this.on(event.event, event.run)
     })
-    return slashCommands
+    // return slashCommands
+    this.on('ready', () => {
+      this.registerCommands({
+        commands: slashCommands,
+        guildId: process.env.GUILD_ID,
+      })
+    })
   }
 
   private async connectDB() {

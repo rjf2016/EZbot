@@ -7,11 +7,11 @@ import chalk from 'chalk'
 
 export default new Event('interactionCreate', async (interaction) => {
   if (interaction.isCommand()) {
-    if (process.env.DEV_ONLY === 'true' && interaction.guildId !== process.env.TEST_SERVER)
-      return interaction.reply({
-        content: "🚧 Can't sing right now, under construction 🚧",
-        ephemeral: true,
-      })
+    // if (process.env.DEV_ONLY === 'true' && interaction.guildId !== process.env.TEST_SERVER)
+    //   return interaction.reply({
+    //     content: "🚧 Can't sing right now, under construction 🚧",
+    //     ephemeral: true,
+    //   })
 
     if (interaction.user.bot) return
 
@@ -19,7 +19,7 @@ export default new Event('interactionCreate', async (interaction) => {
     if (!command)
       return await interaction.reply({
         content: 'That command does not exist',
-        ephemeral: isProd(),
+        ephemeral: false,
       })
 
     console.log(`${chalk.cyan(interaction.user.username)} ran ${chalk.yellow('/' + command.name)}`)
@@ -34,7 +34,7 @@ export default new Event('interactionCreate', async (interaction) => {
       console.error(error)
       return await interaction.reply({
         content: "❌ Uh oh, I've encountered an unexpected error 🤕",
-        ephemeral: isProd(),
+        ephemeral: false,
       })
     }
   }

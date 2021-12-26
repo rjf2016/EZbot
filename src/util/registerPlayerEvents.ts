@@ -7,13 +7,9 @@ export const registerPlayerEvents = async (player: Player) => {
     'trackStart',
     async (queue: Queue<{ channel: TextBasedChannels }>, { title, url, thumbnail, requestedBy, duration }: Track) => {
       const nowPlayingEmbed = new MessageEmbed()
-        .setTitle(`Now Playing`)
+        .setAuthor(`Now Playing`)
         .setThumbnail(`${thumbnail}`)
-        .setDescription(`[${title}](${url})`)
-        .addFields(
-          { name: '\u200b', value: `\`\`${duration}\`\`\t\t`, inline: true },
-          { name: '\u200b', value: `\t\t${requestedBy}`, inline: true }
-        )
+        .setDescription(`[${title}](${url})\n\n \`\` ${duration} \`\` \t\t\u200b${requestedBy}`)
         .setColor(colors.default as ColorResolvable)
       return await queue.metadata.channel.send({ embeds: [nowPlayingEmbed] })
     }
@@ -22,9 +18,9 @@ export const registerPlayerEvents = async (player: Player) => {
     'trackAdd',
     async (queue: Queue<{ channel: TextBasedChannels }>, { title, url, thumbnail, requestedBy, duration }: Track) => {
       const nowPlayingEmbed = new MessageEmbed()
-        .setTitle(`Added to queue`)
+        .setAuthor(`Added to queue`)
         .setThumbnail(`${thumbnail}`)
-        .setDescription(`\`\`${duration}\`\` \u200b - \u200b ${requestedBy}`)
+        .setDescription(`[${title}](${url})\n\n \`\` ${duration} \`\` \t\t\u200b${requestedBy}`)
         .setColor(colors.default as ColorResolvable)
       return await queue.metadata.channel.send({ embeds: [nowPlayingEmbed] })
     }

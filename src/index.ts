@@ -1,9 +1,6 @@
 require('dotenv').config()
-import { ExtendedClient } from './structures/Client'
+import ExtendedClient from './structures/Client'
 
 export const client = new ExtendedClient()
-client.start()
 
-process.on('unhandledRejection', (error) => {
-  console.error('Unhandled promise rejection:', error)
-})
+client.start()

@@ -147,7 +147,7 @@ export default new Command({
           name: '\t New Poll',
           icon_url: interaction.user.displayAvatarURL({ format: 'png' }),
         },
-        color: 'GREYPLE',
+        color: 'PURPLE',
         description: description,
         timestamp: new Date(),
         footer: {

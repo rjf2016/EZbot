@@ -1,6 +1,6 @@
 import { Player, Queue, Track } from 'discord-player'
 import { ColorResolvable, MessageEmbed, TextBasedChannels } from 'discord.js'
-import { colors } from '../../config.json'
+import { colors } from '../config'
 
 export const registerPlayerEvents = async (player: Player) => {
   player.on(
@@ -10,7 +10,7 @@ export const registerPlayerEvents = async (player: Player) => {
         .setAuthor(`Now Playing`)
         .setThumbnail(`${thumbnail}`)
         .setDescription(`[${title}](${url})\n\n \`\` ${duration} \`\` \t\t\u200b${requestedBy}`)
-        .setColor(colors.default as ColorResolvable)
+        .setColor(colors.main as ColorResolvable)
       return await queue.metadata.channel.send({ embeds: [nowPlayingEmbed] })
     }
   )
@@ -21,7 +21,7 @@ export const registerPlayerEvents = async (player: Player) => {
         .setAuthor(`Added to queue`)
         .setThumbnail(`${thumbnail}`)
         .setDescription(`[${title}](${url})\n\n \`\` ${duration} \`\` \t\t\u200b${requestedBy}`)
-        .setColor(colors.default as ColorResolvable)
+        .setColor(colors.main)
       return await queue.metadata.channel.send({ embeds: [nowPlayingEmbed] })
     }
   )

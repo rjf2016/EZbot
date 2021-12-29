@@ -3,7 +3,7 @@ import { QueryType, PlayerOptions } from 'discord-player'
 
 export default new Command({
   name: 'play',
-  category: 'music',
+  category: '🎵 Music',
   description: 'Play a song',
   options: [
     {

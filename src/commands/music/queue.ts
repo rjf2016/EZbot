@@ -1,10 +1,10 @@
 import { Command } from '../../structures/Command'
-import { colors } from '../../../config.json'
+import { colors } from '../../config'
 import { ColorResolvable } from 'discord.js'
 
 export default new Command({
   name: 'queue',
-  category: 'music',
+  category: '🎵 Music',
   description: 'description',
 
   run: async ({ client, interaction }) => {
@@ -32,7 +32,7 @@ export default new Command({
                 }`
               : ''
           }`,
-          color: `${colors.default}` as ColorResolvable,
+          color: `${colors.main}` as ColorResolvable,
           fields: [
             {
               name: 'Now Playing',

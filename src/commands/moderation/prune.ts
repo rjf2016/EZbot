@@ -2,7 +2,7 @@ import { Command } from '../../structures/Command'
 
 export default new Command({
   name: 'prune',
-  category: 'moderation',
+  category: '📛 Moderation',
   description: 'Deletes previous messages in current text channel',
   type: 1,
   options: [

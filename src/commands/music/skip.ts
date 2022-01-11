@@ -2,7 +2,7 @@ import { Command } from '../../structures/Command'
 
 export default new Command({
   name: 'skip',
-  category: 'music',
+  category: '🎵 Music',
   description: 'skip current song',
 
   run: async ({ client, interaction }) => {

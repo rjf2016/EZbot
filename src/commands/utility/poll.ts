@@ -4,12 +4,12 @@ import { emoji } from '../../util/emojiChar'
 
 export default new Command({
   name: 'poll',
-  category: 'utility',
+  category: '🔨 Utility',
   description: 'A poll voting system',
   options: [
     {
       name: 'create',
-      description: 'Start',
+      description: 'Create a new poll',
       type: 'SUB_COMMAND_GROUP',
       options: [
         {

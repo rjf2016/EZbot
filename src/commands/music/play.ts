@@ -3,7 +3,7 @@ import { QueryType, PlayerOptions } from 'discord-player'
 
 export default new Command({
   name: 'play',
-  category: 'music',
+  category: '🎵 Music',
   description: 'Play a song',
   options: [
     {
@@ -33,9 +33,8 @@ export default new Command({
         channel: interaction.channel,
       },
       disableVolume: true,
-      leaveOnEnd: false,
-      leaveOnStop: false,
-      leaveOnEmpty: true,
+      leaveOnEnd: true,
+      leaveOnEmptyCooldown: 60000,
     } as PlayerOptions)
 
     try {

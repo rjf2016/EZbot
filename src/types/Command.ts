@@ -22,10 +22,10 @@ interface RunOptions {
 
 type RunFunction = (options: RunOptions) => any
 
-type CommandCategory = 'info' | 'moderation' | 'music' | 'utility'
+type CommandCategory = '😎 Info' | '📛 Moderation' | '🎵 Music' | '🔨 Utility' | 'Other'
 
 export type CommandType = {
   userPermissions?: PermissionResolvable[]
-  category?: CommandCategory | 'other'
+  category?: CommandCategory
   run: RunFunction
 } & ChatInputApplicationCommandData

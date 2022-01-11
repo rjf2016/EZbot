@@ -33,9 +33,8 @@ export default new Command({
         channel: interaction.channel,
       },
       disableVolume: true,
-      leaveOnEnd: false,
-      leaveOnStop: false,
-      leaveOnEmpty: true,
+      leaveOnEnd: true,
+      leaveOnEmptyCooldown: 60000,
     } as PlayerOptions)
 
     try {

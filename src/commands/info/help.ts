@@ -16,15 +16,14 @@ export default new Command({
   run: async ({ client, interaction }) => {
     const helpCommand = interaction.options.getString('command')
     const embed = new MessageEmbed().setColor('PURPLE').setURL('https://github.com/rjf2016/EZbot#features')
-
+    const isValidCommand = helpCommand !== null && client.commands.get(helpCommand)
     // if: /help <valid command>
-    if (helpCommand !== null && client.commands.get(helpCommand)) {
+    if (isValidCommand) {
       const { name, category, description, options } = client.commands.get(helpCommand)
       const embedOptions = `${
         !options
           ? ''
-          : '\n**Options**\n ' +
-            options.map(({ name, description }) => `\` <${name}> \` *${description}* \n`).join('\n')
+          : '\n**Options**\n ' + options.map(({ name, description }) => `\`<${name}>\` *${description}* \n`).join('\n')
       }`
 
       embed.setTitle(`/${name}`)
@@ -34,17 +33,19 @@ export default new Command({
 					**Category**\n ${category}
 					`
       )
-      embed.setFooter(`Use /help to see all of my commands`)
+      embed.setFooter({ text: 'Use /help to see all of my commands' })
 
       // else: /help or /help <invalid command>
     } else {
-      // const allCategories =
-      // if: /help <invalid command>
-      if (!helpCommand !== null) {
-        interaction.channel.send(`🤔 Hmm.. I don't know that command. Here are the commands I do know`)
-      }
       embed.setTitle('EZbots commands')
     }
-    return await interaction.reply({ embeds: [embed] })
+    return await interaction.reply({
+      embeds: [embed],
+      content: `${
+        !isValidCommand && helpCommand !== null
+          ? "🤔 Hmm.. I don't know that command. Here are all of the commands I do know"
+          : '\t'
+      }`,
+    })
   },
 })

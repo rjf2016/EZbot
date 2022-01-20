@@ -22,7 +22,7 @@ interface RunOptions {
 
 type RunFunction = (options: RunOptions) => any
 
-type CommandCategory = '😎 Info' | '📛 Moderation' | '🎵 Music' | '🔨 Utility' | 'Other'
+type CommandCategory = 'music' | 'info' | 'utility' | 'moderation'
 
 export type CommandType = {
   userPermissions?: PermissionResolvable[]

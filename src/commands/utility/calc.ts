@@ -4,7 +4,7 @@ import { evaluate } from 'mathjs'
 
 export default new Command({
   name: 'calc',
-  category: '🔨 Utility',
+  category: 'utility',
   description: 'open up a calculator',
   run: async ({ interaction }) => {
     const botMessage = (await interaction.deferReply({ fetchReply: true })) as Message

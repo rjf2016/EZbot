@@ -1,19 +1,11 @@
-// Helper to validate environment variables - mostly to give users more info if they are missing env variables
-import { redBright, green } from 'chalk'
+/**
+ *
+ * *true* if running production env
+ */
+export const isProd: boolean = process.env.NODE_ENV === 'production'
 
-export const validateEnv = () => {
-  if (!process.env.BOT_TOKEN) {
-    console.warn(redBright('MISSING ENV VARIABLE: <BOT_TOKEN>'))
-    return false
-  }
-
-  if (!process.env.EZDB) {
-    console.warn(redBright('MISSING ENV VARIABLE: <DATABASE SRV>'))
-    return false
-  }
-
-  console.log(green('Found correct environment variables'))
-  return true
-}
-
-export const isProd = () => process.env.ENVIRONMENT == 'prod'
+/**
+ *
+ * dev_token *or*  prod_token
+ */
+export const botToken: string = process.env.NODE_ENV === 'production' ? process.env.PROD_TOKEN : process.env.DEV_TOKEN

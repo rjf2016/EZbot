@@ -1,10 +1,9 @@
-// @Warning - most of (if not all) will be moved to database soon
-//            they are only in here for developing
+// Warning this file is temporary, will be moved to DB soon
 
 import { ColorResolvable } from 'discord.js'
 
 /**
- * Array of channel names that should not be able to be deleted by `/clean` command
+ * @returns array of channel names that should not be able to be deleted by `/clean` command
  * */
 export const protectedChannels: string[] = ['General', 'Voice Channels', 'safe', 'general']
 

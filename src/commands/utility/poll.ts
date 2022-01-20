@@ -4,7 +4,7 @@ import { emoji } from '../../util/emojiChar'
 
 export default new Command({
   name: 'poll',
-  category: '🔨 Utility',
+  category: 'utility',
   description: 'A poll voting system',
   options: [
     {

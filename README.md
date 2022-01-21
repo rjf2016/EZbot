@@ -52,7 +52,7 @@ To run locally you will need to create a `.env` file in the root directory. I wi
 Head to Discord [Developer Portal](https://discordapp.com/developers/applications/) to create an app - save the client token that you generate. Your .env file should look something like:
 
 ```
-BOT_TOKEN=<client_token>
+PROD_TOKEN=<client_token>
 GUILD_ID=<your_guild_ID>
 NODE_ENV=<production | development>
 ```

@@ -16,6 +16,6 @@
     "importHelpers": false,
     "isolatedModules": true
   },
-  "include": ["src", "images/"],
+  "include": ["src"],
   "exclude": ["node_modules"]
 }

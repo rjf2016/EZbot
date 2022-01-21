@@ -1,11 +1,12 @@
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
-      BOT_TOKEN: string
+      NODE_ENV: 'production' | 'development'
       GUILD_ID: string
-      ENVIRONMENT: 'dev' | 'prod' | 'debug'
       EZDB: string
       TEST_SERVER: string
+      PROD_TOKEN: string
+      DEV_TOKEN: string
     }
   }
 }

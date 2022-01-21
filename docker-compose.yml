@@ -1,0 +1,9 @@
+version: '2'
+
+services:
+  ezbot:
+    build:
+      context: .
+    env_file:
+      - .env
+    command: node dist/index.js

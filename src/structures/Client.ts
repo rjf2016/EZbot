@@ -2,7 +2,7 @@ import { ApplicationCommandDataResolvable, Client, ClientEvents, Collection } fr
 import { CommandType } from '../types/Command'
 import glob from 'glob'
 import { promisify } from 'util'
-import { botToken, isProd } from '../util/validateEnv'
+import { botToken, isProd, serverId } from '../util/validateEnv'
 import { Event } from './Event'
 import { RegisterCommandOptions } from '../types/Client'
 import { Player } from 'discord-player'
@@ -74,7 +74,7 @@ export default class ExtendedClient extends Client {
     this.on('ready', () => {
       this.registerCommands({
         commands: slashCommands,
-        guildId: process.env.GUILD_ID || null
+        guildId: serverId
       })
     })
   }

@@ -42,7 +42,7 @@ git clone https://github.com/rjf2016/EZbot.git
 After cloning, run:
 
 ```
-npm install
+yarn
 ```
 
 ### Setup
@@ -54,7 +54,7 @@ Head to Discord [Developer Portal](https://discordapp.com/developers/application
 ```
 BOT_TOKEN=<client_token>
 GUILD_ID=<your_guild_ID>
-ENV=<debug|dev|prod>
+NODE_ENV=<production | development>
 ```
 
 ### Run
@@ -62,13 +62,15 @@ ENV=<debug|dev|prod>
 For developing (with hot reloading) run:
 
 ```
-npm run start:dev
+yarn dev
 ```
 
-To compile run:
+To compile and run:
 
-```
-npm run build && npm start:prod
+```bash
+yarn build # builds javascript source files
+
+yarn start # starts dist/index.js
 ```
 
 ## Credit

@@ -2,11 +2,9 @@ import { ApplicationCommandDataResolvable, Client, ClientEvents, Collection } fr
 import { CommandType } from '../types/Command'
 import glob from 'glob'
 import { promisify } from 'util'
-import { validateEnv } from '../util/validateEnv'
+import { botToken, isProd, serverId } from '../util/validateEnv'
 import { Event } from './Event'
-import { dim, green } from 'chalk'
 import { RegisterCommandOptions } from '../types/Client'
-import mongoose, { ConnectOptions } from 'mongoose'
 import { Player } from 'discord-player'
 import { registerPlayerEvents } from '../util/registerPlayerEvents'
 
@@ -17,7 +15,8 @@ export default class ExtendedClient extends Client {
   player: Player = new Player(this, {
     ytdlOptions: {
       quality: 'highestaudio',
-      highWaterMark: 1 << 25,
+      highWaterMark: 1 << 30,
+      dlChunkSize: 0,
     },
   })
 
@@ -30,28 +29,28 @@ export default class ExtendedClient extends Client {
 
   async start() {
     console.clear()
-    if (!validateEnv()) return
+    console.log(`Launching ${isProd ? 'Ezbot' : 'Ezbeta'} ...`)
     await this.registerModules()
-    await this.connectDB()
     await registerPlayerEvents(this.player)
-    await this.login(process.env.BOT_TOKEN)
+    await this.login(botToken)
   }
 
-  async importFile(filePath: string) {
+  async importFile (filePath: string) {
     return (await import(filePath))?.default
   }
 
+
   async registerCommands({ commands, guildId }: RegisterCommandOptions) {
-    if (guildId) {
-      const singleGuild = this.guilds.cache.get(guildId)
+    // if (guildId !== null && !isProd) {
       // Then bots commands will be registered to a Guild; Useful for testing
+      const singleGuild = this.guilds.cache.get(guildId)
       singleGuild?.commands.set(commands)
-      console.log(dim(`Registering commands to guild: ${singleGuild.name}`))
-    } else {
-      // Then bots commands will be globally registered
-      this.application?.commands.set(commands)
-      console.log(dim('Registering commands globally 🌎'))
-    }
+      console.log(`Registering commands to guild: ${singleGuild.name}`)
+    // } else {
+    //   // Then bots commands will be globally registered
+    //   this.application?.commands.set(commands)
+    //   console.log('Registering commands globally 🌎')
+    // }
   }
 
   async registerModules() {
@@ -75,21 +74,9 @@ export default class ExtendedClient extends Client {
     this.on('ready', () => {
       this.registerCommands({
         commands: slashCommands,
-        guildId: process.env.GUILD_ID,
+        guildId: serverId
       })
     })
   }
 
-  private async connectDB() {
-    try {
-      await mongoose
-        .connect(process.env.EZDB, {
-          useUnifiedTopology: true,
-          useNewUrlParser: true,
-        } as ConnectOptions)
-        .then(() => console.log(green('Connected to EZDB')))
-    } catch (error) {
-      return console.error('❌ Failed to connect to EZDB')
-    }
-  }
 }

@@ -1,9 +1,10 @@
 import { MessageEmbed } from 'discord.js'
 import { Command } from '../../structures/Command'
+import { prettyCategories } from '../../util/helpers'
 
 export default new Command({
   name: 'help',
-  category: '😎 Info',
+  category: 'info',
   description: 'View all of my commands',
   options: [
     {
@@ -30,7 +31,7 @@ export default new Command({
       embed.setDescription(
         `> *${description}*
 					${embedOptions}
-					**Category**\n ${category}
+					**Category**\n ${prettyCategories[category]}
 					`
       )
       embed.setFooter({ text: 'Use /help to see all of my commands' })
@@ -38,6 +39,19 @@ export default new Command({
       // else: /help or /help <invalid command>
     } else {
       embed.setTitle('EZbots commands')
+      const embedCommands = [...client.commands.values()].reduce((acc, cmd) => {
+        const category = prettyCategories[cmd.category]
+        if (!acc[category]) {
+          acc[category] = []
+        }
+        acc[category].push(cmd.name)
+        return acc
+      }, [])
+
+      const embedDescription = Object.keys(embedCommands).reduce((total, key) => {
+        return `${total}\n**__${key}__**\n\`${embedCommands[key].join('`\n`')}\`\n`
+      }, ``)
+      embed.setDescription(embedDescription)
     }
     return await interaction.reply({
       embeds: [embed],

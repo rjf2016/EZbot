@@ -3,26 +3,19 @@ import { client } from '..'
 import { Event } from '../structures/Event'
 import { ExtendedInteraction } from '../types/Command'
 import { isProd } from '../util/validateEnv'
-import chalk from 'chalk'
 
 export default new Event('interactionCreate', async (interaction) => {
   if (interaction.isCommand()) {
-    // if (process.env.DEV_ONLY === 'true' && interaction.guildId !== process.env.TEST_SERVER)
-    //   return interaction.reply({
-    //     content: "🚧 Can't sing right now, under construction 🚧",
-    //     ephemeral: true,
-    //   })
-
     if (interaction.user.bot) return
+    if (interaction.channel.type === 'DM' && isProd) return await interaction.reply(`Sorry, I don't do DM's 🤷‍♂️`)
 
     const command = client.commands.get(interaction.commandName)
     if (!command)
       return await interaction.reply({
         content: 'That command does not exist',
-        ephemeral: false,
       })
 
-    console.log(`${chalk.cyan(interaction.user.username)} ran ${chalk.yellow('/' + command.name)}`)
+    console.log(`${(interaction.user.username)} ran /${(command.name)}`)
 
     try {
       command.run({
@@ -34,7 +27,6 @@ export default new Event('interactionCreate', async (interaction) => {
       console.error(error)
       return await interaction.reply({
         content: "❌ Uh oh, I've encountered an unexpected error 🤕",
-        ephemeral: false,
       })
     }
   }

@@ -3,7 +3,7 @@ import { QueryType, PlayerOptions } from 'discord-player'
 
 export default new Command({
   name: 'play',
-  category: '🎵 Music',
+  category: 'music',
   description: 'Play a song',
   options: [
     {
@@ -33,9 +33,8 @@ export default new Command({
         channel: interaction.channel,
       },
       disableVolume: true,
-      leaveOnEnd: true,
-      leaveOnEmptyCooldown: 60000,
-    } as PlayerOptions)
+      leaveOnEmptyCooldown: 1000,
+    })
 
     try {
       if (!queue.connection) await queue.connect(interaction.member.voice.channel)

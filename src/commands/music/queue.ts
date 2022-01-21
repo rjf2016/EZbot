@@ -4,7 +4,7 @@ import { ColorResolvable } from 'discord.js'
 
 export default new Command({
   name: 'queue',
-  category: '🎵 Music',
+  category: 'music',
   description: 'description',
 
   run: async ({ client, interaction }) => {

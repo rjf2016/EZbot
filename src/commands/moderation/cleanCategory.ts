@@ -6,7 +6,7 @@ import { MessageActionRow, MessageButton } from 'discord.js'
 
 export default new Command({
   name: 'clean',
-  category: '📛 Moderation',
+  category: 'moderation',
   description: 'Delete a channel or category',
   options: [
     {

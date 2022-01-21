@@ -4,7 +4,7 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "target": "ESNext",
-    "outDir": "dist",
+    "outDir": "./dist",
     "sourceMap": false,
     "esModuleInterop": true,
     "experimentalDecorators": true,
@@ -13,8 +13,9 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "resolveJsonModule": true,
-    "importHelpers": true,
+    "importHelpers": false,
+    "isolatedModules": true
   },
-  "include": ["src", "environment.d.ts", ".env"],
-  "exclude": ["node_modules", "**/*.spec.ts"]
+  "include": ["src"],
+  "exclude": ["node_modules"]
 }

@@ -42,7 +42,7 @@ git clone https://github.com/rjf2016/EZbot.git
 After cloning, run:
 
 ```bash
-yarn # Installs dependencies
+yarn # installs dependencies
 ```
 
 ### Setup
@@ -62,7 +62,7 @@ NODE_ENV=<production | development>
 For developing (with hot reloading) run:
 
 ```bash
-yarn dev # To start typescript server & use dev config
+yarn dev # start typescript server & use dev config
 ```
 
 To compile and run:

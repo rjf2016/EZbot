@@ -31,7 +31,7 @@ EZbot is an open source Discord bot written in TypeScript. This bot requires Dis
   - `/ping` - View the client's latency
   - `/help` - Get info about a command or view all of EZbot's commands
 
-> More coming soon! I'm porting many commands from a previous bot I created. Stay tune 😄
+> More coming soon! I'm porting many commands from a previous bot I created. Stay tuned😄
 
 ## Installation
 

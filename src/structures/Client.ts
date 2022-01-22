@@ -7,6 +7,7 @@ import { Event } from './Event'
 import { RegisterCommandOptions } from '../types/Client'
 import { Player } from 'discord-player'
 import { registerPlayerEvents } from '../util/registerPlayerEvents'
+import { displayProd } from '../util/startLogger'
 
 const globPromise = promisify(glob)
 
@@ -29,23 +30,22 @@ export default class ExtendedClient extends Client {
 
   async start() {
     console.clear()
-    console.log(`Launching ${isProd ? 'Ezbot' : 'Ezbeta'} ...`)
+    console.log(`${isProd ? displayProd : 'EZ-Beta ...'}`)
     await this.registerModules()
     await registerPlayerEvents(this.player)
     await this.login(botToken)
   }
 
-  async importFile (filePath: string) {
+  async importFile(filePath: string) {
     return (await import(filePath))?.default
   }
 
-
   async registerCommands({ commands, guildId }: RegisterCommandOptions) {
     // if (guildId !== null && !isProd) {
-      // Then bots commands will be registered to a Guild; Useful for testing
-      const singleGuild = this.guilds.cache.get(guildId)
-      singleGuild?.commands.set(commands)
-      console.log(`Registering commands to guild: ${singleGuild.name}`)
+    // Then bots commands will be registered to a Guild; Useful for testing
+    const singleGuild = this.guilds.cache.get(guildId)
+    singleGuild?.commands.set(commands)
+    console.log(`Registering commands to guild: ${singleGuild.name}`)
     // } else {
     //   // Then bots commands will be globally registered
     //   this.application?.commands.set(commands)
@@ -74,9 +74,8 @@ export default class ExtendedClient extends Client {
     this.on('ready', () => {
       this.registerCommands({
         commands: slashCommands,
-        guildId: serverId
+        guildId: serverId,
       })
     })
   }
-
 }

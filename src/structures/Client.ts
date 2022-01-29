@@ -22,10 +22,7 @@ export default class ExtendedClient extends Client {
   })
 
   constructor() {
-    // Note: I'm setting the client.intents to include all available intents
-    //       This is useful for developing/testing, but should be set accurately when the bot is live
-    //       This adds a lot of useless overhead & increased memory footprint
-    super({ intents: 32767 })
+    super({ intents: 1677 })
   }
 
   async start() {

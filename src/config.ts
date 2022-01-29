@@ -2,6 +2,7 @@
 
 import { ColorResolvable } from 'discord.js'
 import fs from 'fs'
+import { boolean } from 'mathjs'
 
 /**
  * @returns array of channel names that should not be able to be deleted by `/clean` command
@@ -26,9 +27,5 @@ export const colors: Record<string, ColorResolvable> = {
  *
  * *This will be a user-defined setting that gets stored in DB*
  */
-export const isCompactEnabled = () => {
-  fs.readFile('store.json', (err, data: any) => {
-    if (err) throw err
-    let isCompact = JSON.parse(data)
-  })
-}
+const isCompact = false
+export const isCompactEnabled: boolean = isCompact

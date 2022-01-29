@@ -33,10 +33,6 @@ export default class ExtendedClient extends Client {
     await this.login(botToken)
   }
 
-  async importFile(filePath: string) {
-    return (await import(filePath))?.default
-  }
-
   async registerCommands({ commands, guildId }: RegisterCommandOptions) {
     // if (guildId !== null && !isProd) {
     // Then bots commands will be registered to a Guild; Useful for testing
@@ -55,7 +51,7 @@ export default class ExtendedClient extends Client {
     const slashCommands: ApplicationCommandDataResolvable[] = []
     const commandFiles = await globPromise(`${__dirname}/../commands/*/*{.ts,.js}`)
     commandFiles.forEach(async (filePath: string) => {
-      const command: CommandType = await this.importFile(filePath)
+      const command: CommandType = (await import(filePath))?.default
       if (!command.name) return
       this.commands.set(command.name, command)
       slashCommands.push(command)
@@ -64,7 +60,7 @@ export default class ExtendedClient extends Client {
     // Events
     const eventFiles = await globPromise(`${__dirname}/../events/*{.ts,.js}`)
     eventFiles.forEach(async (filePath: string) => {
-      const event: Event<keyof ClientEvents> = await this.importFile(filePath)
+      const event: Event<keyof ClientEvents> = (await import(filePath))?.default
       this.on(event.event, event.run)
     })
     // return slashCommands

@@ -2,8 +2,6 @@ import { MessageEmbedOptions } from 'discord.js'
 import { Track } from 'discord-player'
 import { colors, isCompactEnabled } from '../config'
 
-import { client } from '..'
-
 interface IMusicMessage {
   trackStart(track: Track): { embeds: [MessageEmbedOptions] } | { content: string }
   trackAdd(track: Track): { embeds: [MessageEmbedOptions] } | { content: string }
@@ -56,9 +54,9 @@ const Compact = (): IMusicMessage => ({
 })
 
 export const musicMessage = (): IMusicMessage => {
-  if (isCompactEnabled === true) {
-    return Compact()
-  } else {
+  if (isCompactEnabled === false) {
     return Cozy()
+  } else {
+    return Compact()
   }
 }

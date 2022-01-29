@@ -10,7 +10,7 @@
     "start": "node dist/index.js",
     "build": "rm -rf dist && tsc",
     "dev": "NODE_ENV=development ts-node-dev --respawn --transpile-only --poll ./src/index.ts",
-    "debug": "NODE_ENV=development node --inspect dist/index.js"
+    "debug": "node --inspect dist/index.js"
   },
   "dependencies": {
     "@discordjs/opus": "^0.7.0",

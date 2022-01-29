@@ -1,0 +1,9 @@
+version: '2'
+
+services:
+  backend:
+    build:
+      context: .
+    env_file:
+      - .env
+    command: node dist/index.js

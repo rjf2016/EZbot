@@ -1,0 +1,12 @@
+node_modules
+.git
+.husky
+.gitignore
+.eslintrc
+README.md
+makefile
+.dockerignore
+.vscode
+.prettierignore
+.prettierrc.*
+.editorconfig

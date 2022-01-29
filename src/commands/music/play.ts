@@ -33,10 +33,8 @@ export default new Command({
         channel: interaction.channel,
       },
       disableVolume: true,
-      leaveOnEnd: false,
-      leaveOnStop: false,
-      leaveOnEmpty: true,
-    } as PlayerOptions)
+      leaveOnEmptyCooldown: 1000,
+    })
 
     try {
       if (!queue.connection) await queue.connect(interaction.member.voice.channel)
@@ -48,7 +46,7 @@ export default new Command({
       })
     }
 
-    await interaction.deferReply()
+    interaction.reply({ content: `**Searching** 🔎 \`${song}\`` })
 
     const track = await client.player
       .search(song, {
@@ -59,11 +57,13 @@ export default new Command({
 
     if (!track)
       return await interaction.followUp({
-        content: `❌  No Video/Song/Playlist was found when searching for : ${song}. Try adding/removing some words.`,
+        content: `❌  No results found for: \`${song}\`. Try adding/removing some words.`,
       })
-
-    queue.play(track)
-
-    return await interaction.followUp({ content: `⏱️ | Loading **${track.title}**!` })
+    try {
+      queue.play(track)
+    } catch (error) {
+      console.log(error)
+    }
+    return
   },
 })

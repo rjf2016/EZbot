@@ -1,17 +1,19 @@
+import { APIMessage } from 'discord-api-types'
 import {
   ChatInputApplicationCommandData,
   CommandInteraction,
   CommandInteractionOptionResolver,
   GuildMember,
+  GuildTextBasedChannel,
+  Message,
   PermissionResolvable,
-  TextChannel,
 } from 'discord.js'
 
 import ExtendedClient from '../structures/Client'
 
 export interface ExtendedInteraction extends CommandInteraction {
   member: GuildMember
-  channel: TextChannel
+  channel: GuildTextBasedChannel
 }
 
 interface RunOptions {
@@ -20,12 +22,12 @@ interface RunOptions {
   args: CommandInteractionOptionResolver
 }
 
-type RunFunction = (options: RunOptions) => any
+type RunFunction = (options: RunOptions) => Promise<void | APIMessage | Message<boolean>>
 
-type CommandCategory = 'info' | 'moderation' | 'music' | 'utility'
+type CommandCategory = 'music' | 'info' | 'utility' | 'moderation'
 
 export type CommandType = {
   userPermissions?: PermissionResolvable[]
-  category?: CommandCategory | 'other'
+  category?: CommandCategory
   run: RunFunction
 } & ChatInputApplicationCommandData

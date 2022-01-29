@@ -8,8 +8,5 @@
 		"editor.formatOnSave": false,
 		"editor.formatOnPaste": false
 	},
-	"files.eol": "\n",
-	"gitlens.views.lineHistory.avatars": false,
-	"gitlens.hovers.avatars": false,
-
+	"typescript.tsdk": "node_modules/typescript/lib",
 }

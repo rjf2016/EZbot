@@ -18,8 +18,9 @@ EZbot is an open source Discord bot written in TypeScript. This bot requires Dis
 
 - **Music**:
   - `/play` - Search multiple sources for a song, then play it or put it in a queue
-  - `/queue` - View currently place & songs that are in queue
+  - `/queue` - View the upcoming songs in queue
   - `/skip` - Skip currently playing song
+  - `/seek` - Seek time (in seconds) to jump to 
 - **Utility**:
   - `/poll` - Create a poll for users to vote on
   - `/calc` - Open up a calculator... *as a discord message*🤔
@@ -28,8 +29,9 @@ EZbot is an open source Discord bot written in TypeScript. This bot requires Dis
   - `/prune` - Bulk delete message from a text channel
 - **Info**:
   - `/ping` - View the client's latency
+  - `/help` - Get info about a command or view all of EZbot's commands
 
-> More coming soon! I'm porting many commands from a previous bot I created. Stay tune 😄
+> More coming soon! I'm porting many commands from a previous bot I created. Stay tuned😄
 
 ## Installation
 
@@ -39,8 +41,8 @@ git clone https://github.com/rjf2016/EZbot.git
 
 After cloning, run:
 
-```
-npm install
+```bash
+yarn # installs dependencies
 ```
 
 ### Setup
@@ -50,23 +52,25 @@ To run locally you will need to create a `.env` file in the root directory. I wi
 Head to Discord [Developer Portal](https://discordapp.com/developers/applications/) to create an app - save the client token that you generate. Your .env file should look something like:
 
 ```
-BOT_TOKEN=<client_token>
+PROD_TOKEN=<client_token>
 GUILD_ID=<your_guild_ID>
-ENV=<debug|dev|prod>
+NODE_ENV=<production | development>
 ```
 
 ### Run
 
 For developing (with hot reloading) run:
 
-```
-npm run start:dev
+```bash
+yarn dev # start typescript server & use dev config
 ```
 
-To compile run:
+To compile and run:
 
-```
-npm run build && npm start:prod
+```bash
+yarn build # builds javascript source files
+
+yarn start # starts dist/index.js
 ```
 
 ## Credit

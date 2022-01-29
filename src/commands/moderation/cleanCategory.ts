@@ -1,5 +1,5 @@
 import { Command } from '../../structures/Command'
-import { protectedChannels } from '../../../config.json'
+import { protectedChannels } from '../../config'
 import { MessageActionRow, MessageButton } from 'discord.js'
 
 //@Todo : This command can & probly should be cleaned up. Too many 'if - else' & !dry

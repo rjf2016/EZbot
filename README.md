@@ -16,23 +16,29 @@ EZbot is an open source Discord bot written in TypeScript. This bot requires Dis
 
 ## Features
 
-- **Music**:
+- **Music** 🎵
   - `/play` - Search multiple sources for a song, then play it or put it in a queue
   - `/queue` - View the upcoming songs in queue
   - `/skip` - Skip currently playing song
-  - `/seek` - Seek time (in seconds) to jump to
+  - `/seek` - Seek timestamp current song to jump to
   - `/nowplaying` - Display info about currently playing song
   - `/pause` - Pause current song
   - `/resume` - Resume current song
-- **Utility**:
+  
+- **Utility** 🔨
   - `/poll` - Create a poll for users to vote on
   - `/calc` - Open up a calculator... *as a discord message*🤔
-- **Moderation**:
+
+
+- **Moderation** 📛
   - `/cleanCategory` - Bulk delete multiple channels from a category
   - `/prune` - Bulk delete message from a text channel
-- **Info**:
+
+
+- **Info** 💡
   - `/ping` - View the client's latency
   - `/help` - Get info about a command or view all of EZbot's commands
+  - 
 
 > More coming soon! I'm porting many commands from a previous bot I created. Stay tuned😄
 
@@ -50,7 +56,7 @@ yarn # installs dependencies
 
 ### Setup
 
-To run locally you will need to create a `.env` file in the root directory. I will create an example.env file as soon as I get the chance, but until then feel you can model it off the `environement.d.ts` file.
+To run locally you will need to create a `.env` file in the root directory. I will create an example.env file as soon as I get the chance, but until then you can model it off the `environement.d.ts` file.
 
 Head to Discord [Developer Portal](https://discordapp.com/developers/applications/) to create an app - save the client token that you generate. Your .env file should look something like:
 

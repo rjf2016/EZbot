@@ -13,7 +13,7 @@ export const protectedChannels: string[] = ['General', 'Voice Channels', 'safe',
 export const commandCategories: string[] = []
 
 export const colors: Record<string, ColorResolvable> = {
-  main: '#4551f0',
+  main: '#0079ea',
 }
 
 /**

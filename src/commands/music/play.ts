@@ -58,12 +58,13 @@ export default new Command({
     if (!track)
       return await interaction.followUp({
         content: `❌  No results found for: \`${song}\`. Try adding/removing some words.`,
+        ephemeral: true,
       })
     try {
       queue.play(track)
     } catch (error) {
       console.log(error)
     }
-    return
+    return interaction.deferReply
   },
 })

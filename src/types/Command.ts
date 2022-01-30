@@ -8,26 +8,25 @@ import {
   Message,
   PermissionResolvable,
 } from 'discord.js'
+import EZclient from '../structures/Client'
 
-import ExtendedClient from '../structures/Client'
-
-export interface ExtendedInteraction extends CommandInteraction {
+export interface EZinteraction extends CommandInteraction {
   member: GuildMember
   channel: GuildTextBasedChannel
 }
 
 interface RunOptions {
-  client: ExtendedClient
-  interaction: ExtendedInteraction
+  client: EZclient
+  interaction: EZinteraction
   args: CommandInteractionOptionResolver
 }
 
-type RunFunction = (options: RunOptions) => Promise<void | APIMessage | Message<boolean>>
+type RunFunction = (options: RunOptions) => any
 
 type CommandCategory = 'music' | 'info' | 'utility' | 'moderation'
 
 export type CommandType = {
   userPermissions?: PermissionResolvable[]
-  category?: CommandCategory
+  category: CommandCategory
   run: RunFunction
 } & ChatInputApplicationCommandData

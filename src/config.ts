@@ -1,8 +1,6 @@
 // Warning this file is temporary, will be moved to DB soon
 
 import { ColorResolvable } from 'discord.js'
-import fs from 'fs'
-import { boolean } from 'mathjs'
 
 /**
  * @returns array of channel names that should not be able to be deleted by `/clean` command

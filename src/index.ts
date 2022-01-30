@@ -2,8 +2,8 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
 
-import ExtendedClient from './structures/Client'
+import EZclient from './structures/Client'
 
-export const client = new ExtendedClient()
+export const client = new EZclient()
 
 client.start()

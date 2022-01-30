@@ -1,9 +1,10 @@
 import { CommandInteractionOptionResolver } from 'discord.js'
-import { client } from '..'
-import { Event } from '../structures/Event'
-import { ExtendedInteraction } from '../types/Command'
+import { client } from '../..'
+import EZclient from '../../structures/Client'
+import { ClientEvent } from '../../structures/ClientEvent'
+import { EZinteraction } from '../../types/Command'
 
-export default new Event('interactionCreate', async (interaction) => {
+export default new ClientEvent('interactionCreate', async (interaction) => {
   if (interaction.user.bot) return
 
   if (interaction.isCommand()) {
@@ -18,8 +19,8 @@ export default new Event('interactionCreate', async (interaction) => {
     try {
       await command.run({
         args: interaction.options as CommandInteractionOptionResolver,
-        client,
-        interaction: interaction as ExtendedInteraction,
+        client: client as EZclient,
+        interaction: interaction as EZinteraction,
       })
     } catch (error) {
       console.error(error)

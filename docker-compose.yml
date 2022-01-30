@@ -1,9 +1,12 @@
 version: '2'
 
 services:
-  backend:
+  ezbot:
     build:
       context: .
+    container_name: EZcontainer
+    image: ricker95/ezbot:latest
     env_file:
       - .env
+    restart: always
     command: node dist/index.js

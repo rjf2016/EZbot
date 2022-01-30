@@ -1,11 +1,10 @@
 import { Command } from '../../structures/Command'
 import { colors } from '../../config'
-import { ColorResolvable } from 'discord.js'
 
 export default new Command({
   name: 'queue',
   category: 'music',
-  description: 'description',
+  description: 'Display the current queue',
 
   run: async ({ client, interaction }) => {
     const queue = client.player.getQueue(interaction.guildId)
@@ -32,7 +31,7 @@ export default new Command({
                 }`
               : ''
           }`,
-          color: `${colors.main}` as ColorResolvable,
+          color: colors.main,
           fields: [
             {
               name: 'Now Playing',

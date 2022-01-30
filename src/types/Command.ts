@@ -1,22 +1,23 @@
+import { APIMessage } from 'discord-api-types'
 import {
   ChatInputApplicationCommandData,
   CommandInteraction,
   CommandInteractionOptionResolver,
   GuildMember,
+  GuildTextBasedChannel,
+  Message,
   PermissionResolvable,
-  TextChannel,
 } from 'discord.js'
+import EZclient from '../structures/Client'
 
-import ExtendedClient from '../structures/Client'
-
-export interface ExtendedInteraction extends CommandInteraction {
+export interface EZinteraction extends CommandInteraction {
   member: GuildMember
-  channel: TextChannel
+  channel: GuildTextBasedChannel
 }
 
 interface RunOptions {
-  client: ExtendedClient
-  interaction: ExtendedInteraction
+  client: EZclient
+  interaction: EZinteraction
   args: CommandInteractionOptionResolver
 }
 
@@ -26,6 +27,6 @@ type CommandCategory = 'music' | 'info' | 'utility' | 'moderation'
 
 export type CommandType = {
   userPermissions?: PermissionResolvable[]
-  category?: CommandCategory
+  category: CommandCategory
   run: RunFunction
 } & ChatInputApplicationCommandData

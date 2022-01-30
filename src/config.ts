@@ -15,3 +15,15 @@ export const commandCategories: string[] = []
 export const colors: Record<string, ColorResolvable> = {
   main: '#4551f0',
 }
+
+/**
+ * Gives ability to change bot's message "style"..
+ *
+ * If compactSetting = **true** => bot's messages will be compact/mostly text
+ *
+ * If compactSetting = **false** => bot will use more embeds/more verbose
+ *
+ * *This will be a user-defined setting that gets stored in DB*
+ */
+const isCompact = false
+export const isCompactEnabled: boolean = isCompact

@@ -9,7 +9,7 @@ export default new Command({
   run: async ({ client, interaction }) => {
     const queue = client.player.getQueue(interaction.guildId)
     if (!queue?.playing)
-      return interaction.followUp({
+      return interaction.reply({
         content: 'No songs are currently playing',
       })
 

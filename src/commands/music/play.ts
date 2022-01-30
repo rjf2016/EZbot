@@ -36,6 +36,20 @@ export default new Command({
       leaveOnEmptyCooldown: 1000,
     })
 
+    await interaction.reply({ content: `**Searching** 🔎 \`${song}\`` })
+
+    const track = await client.player
+      .search(song, {
+        requestedBy: interaction.user,
+      })
+      .then((x: { tracks: any[] }) => x.tracks[0])
+
+    if (!track)
+      return await interaction.followUp({
+        content: `❌  No results found for: \`${song}\`. Try adding/removing some words.`,
+        ephemeral: true,
+      })
+
     try {
       if (!queue.connection) await queue.connect(interaction.member.voice.channel)
     } catch {
@@ -46,20 +60,6 @@ export default new Command({
       })
     }
 
-    interaction.reply({ content: `**Searching** 🔎 \`${song}\`` })
-
-    const track = await client.player
-      .search(song, {
-        requestedBy: interaction.user,
-        searchEngine: QueryType.AUTO,
-      })
-      .then((x: { tracks: any[] }) => x.tracks[0])
-
-    if (!track)
-      return await interaction.followUp({
-        content: `❌  No results found for: \`${song}\`. Try adding/removing some words.`,
-        ephemeral: true,
-      })
     try {
       queue.play(track)
     } catch (error) {

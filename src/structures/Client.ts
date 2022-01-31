@@ -5,9 +5,9 @@ import { promisify } from 'util'
 import { botToken, isProd, serverId } from '../util/validateEnv'
 import { ClientEvent } from './ClientEvent'
 import { RegisterCommandOptions } from '../types/Client'
-import { Player, PlayerEvents } from 'discord-player'
+import { Player } from 'discord-player'
 import { displayProd } from '../util/startLogger'
-import { PlayerEvent } from './PlayerEvent'
+import { registerPlayerEvents } from '../util/registerPlayerEvents'
 
 const globPromise = promisify(glob)
 
@@ -29,6 +29,7 @@ export default class EZclient extends Client {
     console.clear()
     console.log(`${isProd ? displayProd : 'EZ-Beta ...'}`)
     await this.registerModules()
+    await registerPlayerEvents(this.player)
     await this.login(botToken)
   }
 
@@ -61,13 +62,6 @@ export default class EZclient extends Client {
     clientEventFiles.forEach(async (filePath: string) => {
       const event: ClientEvent<keyof ClientEvents> = (await import(filePath))?.default
       this.on(event.event, event.run)
-    })
-
-    // Player Events
-    const playerEventFiles = await globPromise(`${__dirname}/../events/player/*{.ts,.js}`)
-    playerEventFiles.forEach(async (filepath: string) => {
-      const event: PlayerEvent<keyof PlayerEvents> = (await import(filepath))?.default
-      this.player.on(event.event, event.run)
     })
 
     // return slashCommands

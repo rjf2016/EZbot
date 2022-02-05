@@ -15,8 +15,8 @@ export default class EZclient extends Client {
   commands: Collection<string, CommandType> = new Collection()
   player: Player = new Player(this, {
     ytdlOptions: {
-      quality: 'highestaudio',
-      highWaterMark: 1 << 25,
+      filter: 'audioonly',
+      highWaterMark: 1 << 30,
       dlChunkSize: 0,
     },
   })

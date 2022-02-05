@@ -44,11 +44,13 @@ export default new Command({
       })
       .then((x: { tracks: any[] }) => x.tracks[0])
 
-    if (!track)
+    if (!track) {
+      console.log(`❌ Failed to find song: ${song}`)
       return await interaction.followUp({
         content: `❌  No results found for: \`${song}\`. Try adding/removing some words.`,
         ephemeral: true,
       })
+    }
 
     try {
       if (!queue.connection) await queue.connect(interaction.member.voice.channel)

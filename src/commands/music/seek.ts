@@ -15,8 +15,10 @@ export default new Command({
   run: async ({ client, interaction }) => {
     const seconds = interaction.options.getInteger('time')
 
-    const queue = client.player.getQueue(interaction.guildId)
-    if (!queue || !queue.playing) return
+    const queue = client.player.getQueue(interaction.guild.id)
+    if (!queue || !queue.playing) {
+      throw 'Could not find Queue'
+    }
 
     const ms = seconds * 1000
     await queue.seek(ms)

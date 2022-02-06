@@ -1,5 +1,4 @@
 import { Command } from '../../structures/Command'
-import { QueryType, PlayerOptions } from 'discord-player'
 
 export default new Command({
   name: 'play',
@@ -28,7 +27,7 @@ export default new Command({
         ephemeral: true,
       })
 
-    const queue = client.player.createQueue(interaction.guild, {
+    const queue = client.player.createQueue(interaction.guild.id, {
       metadata: {
         channel: interaction.channel,
       },

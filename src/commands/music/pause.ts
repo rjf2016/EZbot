@@ -17,8 +17,10 @@ export default new Command({
         ephemeral: true,
       })
 
-    if (!queue || !queue.playing)
-      return await interaction.reply({ content: `:confused: Nothing is currently playing`, ephemeral: true })
+    if (!queue || !queue.playing) {
+      await interaction.reply({ content: `:confused: Nothing is currently playing`, ephemeral: true })
+      throw 'Attempted to pause while nothing was playing'
+    }
 
     queue.setPaused(true)
 

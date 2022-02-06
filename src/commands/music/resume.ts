@@ -1,3 +1,5 @@
+import { Queue } from 'discord-player'
+import { Guild } from 'discord.js'
 import { Command } from '../../structures/Command'
 
 export default new Command({
@@ -6,7 +8,7 @@ export default new Command({
   description: 'Resume the currently paused song',
 
   run: async ({ client, interaction }) => {
-    const queue = client.player.getQueue(interaction.guildId)
+    const queue: Queue<Guild> = client.player.getQueue(interaction.guild.id)
 
     if (
       interaction.guild.me.voice.channelId &&
@@ -17,8 +19,10 @@ export default new Command({
         ephemeral: true,
       })
 
-    if (!queue || !queue.playing || !queue.setPaused())
-      return await interaction.reply({ content: `:confused: You can't resume what isn't paused`, ephemeral: true })
+    if (!queue || !queue.playing || !queue.setPaused()) {
+      await interaction.reply({ content: `:confused: You can't resume what isn't paused`, ephemeral: true })
+      throw 'Attempted to resume a song that was not paused'
+    }
 
     queue.setPaused(false)
 

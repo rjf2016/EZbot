@@ -1,3 +1,4 @@
+import chalk from 'chalk'
 import { CommandInteractionOptionResolver } from 'discord.js'
 import { client } from '../..'
 import { ClientEvent } from '../../structures/ClientEvent'
@@ -11,11 +12,13 @@ export default new ClientEvent('interactionCreate', async (interaction) => {
       content: 'That command does not exist',
     })
 
-  console.log(`${interaction.user.username} ran /${command.name} .. Full interaction: ${interaction}`)
+  console.log(`${chalk.cyan(interaction.user.username)} ran ${interaction}`)
 
-  command.run({
-    args: interaction.options as CommandInteractionOptionResolver,
-    client,
-    interaction: interaction as EZinteraction,
-  })
+  command
+    .run({
+      args: interaction.options as CommandInteractionOptionResolver,
+      client,
+      interaction: interaction as EZinteraction,
+    })
+    .catch((err) => client.logger.error(err))
 })

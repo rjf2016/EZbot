@@ -6,13 +6,14 @@ import { botToken, isProd, serverId } from '../util/validateEnv'
 import { ClientEvent } from './ClientEvent'
 import { RegisterCommandOptions } from '../types/Client'
 import { Player } from 'discord-player'
-import { displayProd } from '../util/startLogger'
 import { registerPlayerEvents } from '../util/registerPlayerEvents'
+import Logger from './Logger'
 
 const globPromise = promisify(glob)
 
 export default class EZclient extends Client {
   commands: Collection<string, CommandType> = new Collection()
+  logger: Logger = new Logger()
   player: Player = new Player(this, {
     ytdlOptions: {
       filter: 'audioonly',
@@ -26,8 +27,6 @@ export default class EZclient extends Client {
   }
 
   async start() {
-    console.clear()
-    console.log(`${isProd ? displayProd : 'EZ-Beta ...'}`)
     await this.registerModules()
     await registerPlayerEvents(this.player)
     await this.login(botToken)

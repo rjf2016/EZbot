@@ -43,34 +43,34 @@ class Logger {
       format: formatter,
     })
     this.logger = winston.createLogger({
-      level: !isProd ? 'trace' : 'error',
+      level: isProd ? 'error' : 'trace',
       levels: customLevels.levels,
-      transports: [!isProd ? transport : prodTransport],
+      transports: [isProd ? prodTransport : transport],
     })
     winston.addColors(customLevels.colors)
   }
 
-  trace(msg: any, meta?: any) {
+  trace(msg: string, meta?: any) {
     this.logger.log('trace', msg, meta)
   }
 
-  debug(msg: any, meta?: any) {
+  debug(msg: string, meta?: any) {
     this.logger.debug(msg, meta)
   }
 
-  info(msg: any, meta?: any) {
+  info(msg: string, meta?: any) {
     this.logger.info(msg, meta)
   }
 
-  warn(msg: any, meta?: any) {
+  warn(msg: string, meta?: any) {
     this.logger.warn(msg, meta)
   }
 
-  error(msg: any, meta?: any) {
+  error(msg: string, meta?: any) {
     this.logger.error(msg, meta)
   }
 
-  fatal(msg: any, meta?: any) {
+  fatal(msg: string, meta?: any) {
     this.logger.log('fatal', msg, meta)
   }
 }

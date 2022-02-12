@@ -17,7 +17,7 @@ export default new Command({
 
     const queue = client.player.getQueue(interaction.guild.id)
     if (!queue || !queue.playing) {
-      throw 'Could not find Queue'
+      client.logger.error('Unable to find queue', queue)
     }
 
     const ms = seconds * 1000

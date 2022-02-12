@@ -14,6 +14,7 @@ export const commandCategories: string[] = []
 
 export const colors: Record<string, ColorResolvable> = {
   main: '#0079ea',
+  ezRed: '#FF0000',
 }
 
 /**

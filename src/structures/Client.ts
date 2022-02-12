@@ -1,13 +1,13 @@
 import { ApplicationCommandDataResolvable, Client, ClientEvents, Collection } from 'discord.js'
 import { CommandType } from '../types/Command'
+import { Player } from 'discord-player'
 import glob from 'glob'
 import { promisify } from 'util'
-import { botToken, isProd, serverId } from '../util/validateEnv'
+import { botToken } from '../util/validateEnv'
 import { ClientEvent } from './ClientEvent'
 import { RegisterCommandOptions } from '../types/Client'
-import { Player } from 'discord-player'
-import { registerPlayerEvents } from '../util/registerPlayerEvents'
 import Logger from './Logger'
+import { registerPlayerEvents } from '../util/registerPlayerEvents'
 
 const globPromise = promisify(glob)
 
@@ -23,7 +23,7 @@ export default class EZclient extends Client {
   })
 
   constructor() {
-    super({ intents: 1677 })
+    super({ intents: 1665 })
   }
 
   async start() {
@@ -46,7 +46,6 @@ export default class EZclient extends Client {
   }
 
   async registerModules() {
-    // Commands
     const slashCommands: ApplicationCommandDataResolvable[] = []
     const commandFiles = await globPromise(`${__dirname}/../commands/*/*{.ts,.js}`)
     commandFiles.forEach(async (filePath: string) => {
@@ -56,19 +55,10 @@ export default class EZclient extends Client {
       slashCommands.push(command)
     })
 
-    // Events
     const clientEventFiles = await globPromise(`${__dirname}/../events/client/*{.ts,.js}`)
     clientEventFiles.forEach(async (filePath: string) => {
       const event: ClientEvent<keyof ClientEvents> = (await import(filePath))?.default
       this.on(event.event, event.run)
-    })
-
-    // return slashCommands
-    this.on('ready', () => {
-      this.registerCommands({
-        commands: slashCommands,
-        guildId: serverId,
-      })
     })
   }
 }

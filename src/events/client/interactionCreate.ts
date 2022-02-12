@@ -12,13 +12,15 @@ export default new ClientEvent('interactionCreate', async (interaction) => {
       content: 'That command does not exist',
     })
 
-  console.log(`${chalk.cyan(interaction.user.username)} ran ${interaction}`)
+  client.logger.info(`${chalk.cyan(interaction.user.username)} ran ${interaction}`)
 
-  command
+  await command
     .run({
       args: interaction.options as CommandInteractionOptionResolver,
       client,
       interaction: interaction as EZinteraction,
     })
-    .catch((err) => client.logger.error(err))
+    .catch((err) => {
+      client.logger.error(`Unexpected error while running ${interaction}`, err)
+    })
 })

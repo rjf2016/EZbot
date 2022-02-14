@@ -1,13 +1,12 @@
 import { ApplicationCommandDataResolvable, Client, ClientEvents, Collection } from 'discord.js'
 import { CommandType } from '../types/Command'
 import { Player } from 'discord-player'
-import glob from 'glob'
 import { promisify } from 'util'
-import { botToken } from '../util/validateEnv'
+import { botToken, isProd, serverId } from '../util/validateEnv'
 import { ClientEvent } from './ClientEvent'
-import { RegisterCommandOptions } from '../types/Client'
-import Logger from './Logger'
 import { registerPlayerEvents } from '../util/registerPlayerEvents'
+import Logger from './Logger'
+import glob from 'glob'
 
 const globPromise = promisify(glob)
 
@@ -27,25 +26,21 @@ export default class EZclient extends Client {
   }
 
   async start() {
-    await this.registerModules()
+    await this.registerClientEvents()
     await registerPlayerEvents(this.player)
     await this.login(botToken)
+    await this.registerCommands(isProd)
   }
 
-  async registerCommands({ commands, guildId }: RegisterCommandOptions) {
-    // if (guildId !== null && !isProd) {
-    // Then bots commands will be registered to a Guild; Useful for testing
-    const singleGuild = this.guilds.cache.get(guildId)
-    singleGuild?.commands.set(commands)
-    console.log(`Registering commands to guild: ${singleGuild.name}`)
-    // } else {
-    //   // Then bots commands will be globally registered
-    //   this.application?.commands.set(commands)
-    //   console.log('Registering commands globally 🌎')
-    // }
+  async registerClientEvents() {
+    const clientEventFiles = await globPromise(`${__dirname}/../events/client/*{.ts,.js}`)
+    clientEventFiles.forEach(async (filePath: string) => {
+      const event: ClientEvent<keyof ClientEvents> = (await import(filePath))?.default
+      this.on(event.event, event.run)
+    })
   }
 
-  async registerModules() {
+  async registerCommands(global?: boolean) {
     const slashCommands: ApplicationCommandDataResolvable[] = []
     const commandFiles = await globPromise(`${__dirname}/../commands/*/*{.ts,.js}`)
     commandFiles.forEach(async (filePath: string) => {
@@ -55,10 +50,19 @@ export default class EZclient extends Client {
       slashCommands.push(command)
     })
 
-    const clientEventFiles = await globPromise(`${__dirname}/../events/client/*{.ts,.js}`)
-    clientEventFiles.forEach(async (filePath: string) => {
-      const event: ClientEvent<keyof ClientEvents> = (await import(filePath))?.default
-      this.on(event.event, event.run)
-    })
+    if (global) {
+      this.application.commands.set(slashCommands).catch((err) => {
+        this.logger.fatal('Failed to register global commands! ', err)
+        return
+      })
+      this.logger.info('Registered commands globally! 🌎')
+    } else {
+      const guild = this.guilds.cache.get(serverId)
+      guild.commands.set(slashCommands).catch((err) => {
+        this.logger.fatal(`Failed to register commands to guild! `, err)
+        return
+      })
+      this.logger.info(`Registered commands to guild ${guild.name}`)
+    }
   }
 }

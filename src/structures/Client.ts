@@ -42,7 +42,8 @@ export default class EZclient extends Client {
 
   async registerCommands(global?: boolean) {
     const slashCommands: ApplicationCommandDataResolvable[] = []
-    const commandFiles = await globPromise(`${__dirname}/../commands/*/*{.ts,.js}`)
+    const commandFolders = !global ? '*' : '(info|moderation|music|utility)'
+    const commandFiles = await globPromise(`${__dirname}/../commands/${commandFolders}/*{.ts,.js}`)
     commandFiles.forEach(async (filePath: string) => {
       const command: CommandType = (await import(filePath))?.default
       if (!command.name) return
@@ -62,7 +63,8 @@ export default class EZclient extends Client {
         this.logger.fatal(`Failed to register commands to guild! `, err)
         return
       })
-      this.logger.info(`Registered commands to guild ${guild.name}`)
+      const cmd = await guild.commands.fetch()
+      this.logger.info(`Registered `, [...cmd])
     }
   }
 }

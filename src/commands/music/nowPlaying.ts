@@ -9,7 +9,7 @@ export default new Command({
 
   run: async ({ client, interaction }) => {
     const queue = client.player.getQueue(interaction.guildId)
-    if (!queue || !queue.playing) return
+    if (!queue || !queue.playing) return await interaction.reply(':cricket:')
 
     const progress = queue.createProgressBar({ timecodes: true, length: 8 })
 

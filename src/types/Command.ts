@@ -1,11 +1,9 @@
-import { APIMessage } from 'discord-api-types'
 import {
   ChatInputApplicationCommandData,
   CommandInteraction,
   CommandInteractionOptionResolver,
   GuildMember,
   GuildTextBasedChannel,
-  Message,
   PermissionResolvable,
 } from 'discord.js'
 import EZclient from '../structures/Client'
@@ -23,7 +21,7 @@ interface RunOptions {
 
 type RunFunction = (options: RunOptions) => any
 
-type CommandCategory = 'music' | 'info' | 'utility' | 'moderation'
+type CommandCategory = 'music' | 'info' | 'utility' | 'moderation' | 'devel'
 
 export type CommandType = {
   userPermissions?: PermissionResolvable[]

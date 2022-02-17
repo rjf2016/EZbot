@@ -1,4 +1,5 @@
 import { Command } from '../../structures/Command'
+import logger from '../../structures/Logger'
 
 export default new Command({
   name: 'seek',
@@ -17,7 +18,7 @@ export default new Command({
 
     const queue = client.player.getQueue(interaction.guild.id)
     if (!queue || !queue.playing) {
-      throw 'Could not find Queue'
+      logger.error('Unable to find queue', queue)
     }
 
     const ms = seconds * 1000

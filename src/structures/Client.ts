@@ -5,14 +5,13 @@ import { promisify } from 'util'
 import { botToken, isProd, serverId } from '../util/validateEnv'
 import { ClientEvent } from './ClientEvent'
 import { registerPlayerEvents } from '../util/registerPlayerEvents'
-import Logger from './Logger'
 import glob from 'glob'
+import logger from './Logger'
 
 const globPromise = promisify(glob)
 
 export default class EZclient extends Client {
   commands: Collection<string, CommandType> = new Collection()
-  logger: Logger = new Logger()
   player: Player = new Player(this, {
     ytdlOptions: {
       filter: 'audioonly',
@@ -42,29 +41,29 @@ export default class EZclient extends Client {
 
   async registerCommands(global?: boolean) {
     const slashCommands: ApplicationCommandDataResolvable[] = []
-    const commandFolders = !global ? '*' : '(info|moderation|music|utility)'
+    const commandFolders = !global ? '*' : '/!(devel)/'
     const commandFiles = await globPromise(`${__dirname}/../commands/${commandFolders}/*{.ts,.js}`)
     commandFiles.forEach(async (filePath: string) => {
       const command: CommandType = (await import(filePath))?.default
       if (!command.name) return
       this.commands.set(command.name, command)
       slashCommands.push(command)
+      logger.info(command.name)
     })
 
     if (global) {
       this.application.commands.set(slashCommands).catch((err) => {
-        this.logger.fatal('Failed to register global commands! ', err)
+        logger.fatal('Failed to register global commands!', err)
         return
       })
-      this.logger.info('Registered commands globally! 🌎')
+      logger.info('Registered commands globally! 🌎')
     } else {
       const guild = this.guilds.cache.get(serverId)
       guild.commands.set(slashCommands).catch((err) => {
-        this.logger.fatal(`Failed to register commands to guild! `, err)
+        logger.fatal(`Failed to register commands to guild!`, err)
         return
       })
-      const cmd = await guild.commands.fetch()
-      this.logger.info(`Registered `, [...cmd])
+      logger.info(`Registered commands to guild:  ${guild}`)
     }
   }
 }

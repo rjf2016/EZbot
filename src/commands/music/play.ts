@@ -1,6 +1,7 @@
 import { Command } from '../../structures/Command'
 import { QueryType } from 'discord-player'
 import { TextChannel } from 'discord.js'
+import logger from '../../structures/Logger'
 
 export default new Command({
   name: 'play',
@@ -35,6 +36,7 @@ export default new Command({
     const queue = client.player.createQueue(guild, {
       disableVolume: true,
       leaveOnEmptyCooldown: 1000,
+      leaveOnEnd: true,
       metadata: {
         channel: channel,
       },
@@ -48,7 +50,7 @@ export default new Command({
         searchEngine: QueryType.YOUTUBE_SEARCH,
       })
       .catch((err) => {
-        client.logger.error('Failed to get song(s)', err)
+        logger.error('Failed to get song(s)', err)
       })
 
     if (!searchResult || !searchResult.tracks.length) {
@@ -62,7 +64,7 @@ export default new Command({
 
     if (!queue.connection) {
       await queue.connect(member.voice.channel).catch((err) => {
-        client.logger.error('Failed to join voice chat', err)
+        logger.error('Failed to join voice chat', err)
         return interaction.followUp({
           content: 'Could not join your voice channel!',
           ephemeral: true,
@@ -73,7 +75,7 @@ export default new Command({
     searchResult.playlist ? queue.addTracks(searchResult.tracks) : queue.addTrack(searchResult.tracks[0])
     if (!queue.playing) {
       queue.play().catch((err) => {
-        client.logger.error(`Encountered an error trying to play song`, err)
+        logger.error(`Encountered an error trying to play song`, err)
         queue.skip()
         return
       })

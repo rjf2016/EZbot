@@ -11,30 +11,24 @@ export default new Command({
     if (
       interaction.guild.me.voice.channelId &&
       interaction.member.voice.channelId !== interaction.guild.me.voice.channelId
-    )
+    ) {
       return await interaction.reply({
         content: 'You are not even listening to it!😤',
         ephemeral: true,
       })
+    }
 
-    const queue = client.player.getQueue(interaction.guildId)
+    const queue = client.player.getQueue(interaction.guild)
 
-    if (!queue?.playing)
+    if (!queue.playing) {
       return await interaction.reply({
         content: 'No songs are currently playing',
         ephemeral: true,
       })
+    }
 
-    // This line is a little hacky - fixes bug that would occur by skipping a track when the player was paused
-    // by forcing the player to resume just before skip.. Probly a better solution out there
-    queue.setPaused(false)
+    queue.skip()
 
-    const skipped = queue.skip()
-
-    if (!skipped) client.logger.error('Failed to skip track')
-
-    return await interaction.reply({
-      content: skipped ? ` **Skipped** ⏩ ~~\`${queue.current.title}\`~~` : ' ❌ Failed to skip song',
-    })
+    return await interaction.reply({ content: ` **Skipped** ⏩ ~~\`${queue.current.title}\`~~` })
   },
 })

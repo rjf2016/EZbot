@@ -1,4 +1,5 @@
 import { Command } from '../../structures/Command'
+import logger from '../../structures/Logger'
 
 export default new Command({
   name: 'rmcommands',
@@ -18,10 +19,10 @@ export default new Command({
       .fetch(INPUT_GUILD)
       .then((guild) => {
         guild.commands.set([])
-        client.logger.info(`Wiped commands from ${guild.name}`)
+        logger.info(`Wiped commands from ${guild.name}`)
       })
       .catch((err) => {
-        client.logger.fatal('Failed to wipe commands ', err)
+        logger.fatal('Failed to wipe commands ', err)
       })
   },
 })

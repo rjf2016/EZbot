@@ -1,4 +1,5 @@
 import { MessageEmbed } from 'discord.js'
+import { player } from '../..'
 import { colors } from '../../config'
 import { Command } from '../../structures/Command'
 
@@ -7,8 +8,8 @@ export default new Command({
   category: 'music',
   description: 'View the currently playing song',
 
-  run: async ({ client, interaction }) => {
-    const queue = client.player.getQueue(interaction.guildId)
+  run: async ({ interaction }) => {
+    const queue = player.getQueue(interaction.guild)
     if (!queue || !queue.playing) return await interaction.reply(':cricket:')
 
     const progress = queue.createProgressBar({ timecodes: true, length: 8 })

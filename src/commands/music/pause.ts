@@ -1,3 +1,4 @@
+import { player } from '../..'
 import { Command } from '../../structures/Command'
 
 export default new Command({
@@ -5,8 +6,8 @@ export default new Command({
   category: 'music',
   description: 'Pause currently playing song',
 
-  run: async ({ client, interaction }) => {
-    const queue = client.player.getQueue(interaction.guildId)
+  run: async ({ interaction }) => {
+    const queue = player.getQueue(interaction.guild)
 
     if (
       interaction.guild.me.voice.channelId &&

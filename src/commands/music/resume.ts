@@ -1,3 +1,4 @@
+import { player } from '../..'
 import { Command } from '../../structures/Command'
 import logger from '../../structures/Logger'
 
@@ -6,8 +7,8 @@ export default new Command({
   category: 'music',
   description: 'Resume the currently paused song',
 
-  run: async ({ client, interaction }) => {
-    const queue = client.player.getQueue(interaction.guildId)
+  run: async ({ interaction }) => {
+    const queue = player.getQueue(interaction.guild)
 
     if (
       interaction.guild.me.voice.channelId &&

@@ -1,3 +1,4 @@
+import { player } from '../..'
 import { Command } from '../../structures/Command'
 import logger from '../../structures/Logger'
 
@@ -13,10 +14,10 @@ export default new Command({
       required: true,
     },
   ],
-  run: async ({ client, interaction }) => {
+  run: async ({ interaction }) => {
     const seconds = interaction.options.getInteger('time')
 
-    const queue = client.player.getQueue(interaction.guild.id)
+    const queue = player.getQueue(interaction.guild)
     if (!queue || !queue.playing) {
       logger.error('Unable to find queue', queue)
     }

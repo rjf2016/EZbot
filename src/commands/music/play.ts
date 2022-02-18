@@ -17,7 +17,7 @@ export default new Command({
     },
   ],
 
-  run: async ({ client, interaction }) => {
+  run: async ({ interaction }) => {
     const song = interaction.options.getString('song')
     const channel = interaction.channel as TextChannel
 

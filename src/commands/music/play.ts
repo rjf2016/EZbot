@@ -2,6 +2,7 @@ import { Command } from '../../structures/Command'
 import { QueryType } from 'discord-player'
 import { TextChannel } from 'discord.js'
 import logger from '../../structures/Logger'
+import { player } from '../..'
 
 export default new Command({
   name: 'play',
@@ -18,8 +19,7 @@ export default new Command({
 
   run: async ({ client, interaction }) => {
     const song = interaction.options.getString('song')
-    const guild = client.guilds.cache.get(interaction.guildId)
-    const channel = guild.channels.cache.get(interaction.channelId) as TextChannel
+    const channel = interaction.channel as TextChannel
 
     if (!interaction.member.voice.channel) return await interaction.reply('Please join a voice channel first!')
 
@@ -33,10 +33,10 @@ export default new Command({
       })
     }
 
-    const queue = client.player.createQueue(guild, {
+    const queue = player.createQueue(interaction.guild, {
       disableVolume: true,
-      leaveOnEmptyCooldown: 1000,
-      leaveOnEnd: true,
+      leaveOnEnd: false,
+      autoSelfDeaf: false,
       metadata: {
         channel: channel,
       },
@@ -44,7 +44,7 @@ export default new Command({
 
     await interaction.reply({ content: `**Searching** 🔎 \`${song}\`` })
 
-    const searchResult = await client.player
+    const searchResult = await player
       .search(song, {
         requestedBy: interaction.user,
         searchEngine: QueryType.YOUTUBE_SEARCH,
@@ -60,10 +60,8 @@ export default new Command({
       })
     }
 
-    const member = guild.members.cache.get(interaction.user.id) ?? (await guild.members.fetch(interaction.user.id))
-
     if (!queue.connection) {
-      await queue.connect(member.voice.channel).catch((err) => {
+      await queue.connect(interaction.member.voice.channel).catch((err) => {
         logger.error('Failed to join voice chat', err)
         return interaction.followUp({
           content: 'Could not join your voice channel!',
@@ -76,7 +74,6 @@ export default new Command({
     if (!queue.playing) {
       queue.play().catch((err) => {
         logger.error(`Encountered an error trying to play song`, err)
-        queue.skip()
         return
       })
     }

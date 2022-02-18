@@ -6,6 +6,7 @@ import {
   GuildTextBasedChannel,
   PermissionResolvable,
 } from 'discord.js'
+
 import EZclient from '../structures/Client'
 
 export interface EZinteraction extends CommandInteraction {

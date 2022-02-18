@@ -1,10 +1,8 @@
 import { ApplicationCommandDataResolvable, Client, ClientEvents, Collection } from 'discord.js'
 import { CommandType } from '../types/Command'
-import { Player } from 'discord-player'
 import { promisify } from 'util'
 import { botToken, isProd, serverId } from '../util/validateEnv'
 import { ClientEvent } from './ClientEvent'
-import { registerPlayerEvents } from '../util/registerPlayerEvents'
 import glob from 'glob'
 import logger from './Logger'
 
@@ -12,13 +10,6 @@ const globPromise = promisify(glob)
 
 export default class EZclient extends Client {
   commands: Collection<string, CommandType> = new Collection()
-  player: Player = new Player(this, {
-    ytdlOptions: {
-      filter: 'audioonly',
-      highWaterMark: 1 << 30,
-      dlChunkSize: 0,
-    },
-  })
 
   constructor() {
     super({ intents: 1665 })
@@ -26,7 +17,6 @@ export default class EZclient extends Client {
 
   async start() {
     await this.registerClientEvents()
-    await registerPlayerEvents(this.player)
     await this.login(botToken)
     await this.registerCommands(isProd)
   }

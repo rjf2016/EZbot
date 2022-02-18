@@ -1,3 +1,4 @@
+import { player } from '../..'
 import { Command } from '../../structures/Command'
 
 export default new Command({
@@ -5,7 +6,7 @@ export default new Command({
   category: 'music',
   description: 'skip current song',
 
-  run: async ({ client, interaction }) => {
+  run: async ({ interaction }) => {
     // @TODO : Extract this check into a helper, as every music command will require it
     // 	 			 or put it as a requirement of /music/ commands if possible?
     if (
@@ -18,7 +19,7 @@ export default new Command({
       })
     }
 
-    const queue = client.player.getQueue(interaction.guild)
+    const queue = player.getQueue(interaction.guild)
 
     if (!queue.playing) {
       return await interaction.reply({

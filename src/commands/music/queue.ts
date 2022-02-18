@@ -2,14 +2,15 @@ import { Command } from '../../structures/Command'
 import { colors } from '../../config'
 import { Guild } from 'discord.js'
 import { Queue } from 'discord-player'
+import { player } from '../..'
 
 export default new Command({
   name: 'queue',
   category: 'music',
   description: 'Display the current queue',
 
-  run: async ({ client, interaction }) => {
-    const queue: Queue<Guild> = client.player.getQueue(interaction.guild.id)
+  run: async ({ interaction }) => {
+    const queue = player.getQueue(interaction.guild)
     if (!queue?.playing)
       return interaction.reply({
         content: 'No songs are currently playing',

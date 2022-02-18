@@ -1,6 +1,5 @@
 import { Player, Queue, Track } from 'discord-player'
 import { MessageEmbed, TextChannel } from 'discord.js'
-import { client } from '..'
 import { colors } from '../config'
 import logger from '../structures/Logger'
 
@@ -21,7 +20,7 @@ export const registerPlayerEvents = async (player: Player) => {
     }
   )
   player.on('trackAdd', async (queue: Queue<{ channel: TextChannel }>, { title }: Track) => {
-    logger.info('Track added to queue ', { TRACK: title, QUEUE: queue })
+    logger.info('Track added to queue ')
     return await queue?.metadata.channel.send({
       content: `**Added** ⏱️ \`${title}\` - to the **queue**!`,
     })
@@ -42,13 +41,16 @@ export const registerPlayerEvents = async (player: Player) => {
 
   player.on('botDisconnect', async (queue) => {
     logger.info('❌ | I was manually disconnected from the voice channel, clearing queue! ', queue)
+    return
   })
 
   player.on('channelEmpty', () => {
-    logger.info('❌ | Nobody is in the voice channel, leaving... ', client.player)
+    logger.info('❌ | Nobody is in the voice channel, leaving... ')
+    return
   })
 
   player.on('queueEnd', (queue) => {
     logger.info('✅ | Queue finished! ', queue)
+    return
   })
 }

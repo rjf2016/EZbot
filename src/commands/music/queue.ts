@@ -1,7 +1,5 @@
 import { Command } from '../../structures/Command'
 import { colors } from '../../config'
-import { Guild } from 'discord.js'
-import { Queue } from 'discord-player'
 import { player } from '../..'
 
 export default new Command({

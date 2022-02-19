@@ -2,21 +2,22 @@ import { Command } from '../../structures/Command'
 import logger from '../../structures/Logger'
 
 export default new Command({
-  name: 'rmcommands',
+  name: 'wipe',
   category: 'devel',
   description: 'Deletes commands',
   options: [
     {
-      name: 'guild',
+      name: 'server',
       description: 'The guild to wipe commands from',
-      type: 'ROLE',
+      type: 'STRING',
+      required: true,
     },
   ],
   run: async ({ client, interaction }) => {
-    const INPUT_GUILD = interaction.options.getString('guild')
+    const TARGET = interaction.options.getString('server')
 
     client.guilds
-      .fetch(INPUT_GUILD)
+      .fetch(TARGET)
       .then((guild) => {
         guild.commands.set([])
         logger.info(`Wiped commands from ${guild.name}`)
@@ -24,5 +25,8 @@ export default new Command({
       .catch((err) => {
         logger.fatal('Failed to wipe commands ', err)
       })
+    return await interaction.reply({
+      content: `Commands have been wiped`,
+    })
   },
 })

@@ -15,10 +15,10 @@ export default class EZclient extends Client {
     super({ intents: 1665 })
   }
 
-  async start() {
-    await this.registerClientEvents()
-    await this.login(botToken)
-    await this.registerCommands(isProd)
+  start() {
+    this.login(botToken)
+    this.registerModules(isProd)
+    this.registerClientEvents()
   }
 
   async registerClientEvents() {
@@ -29,31 +29,32 @@ export default class EZclient extends Client {
     })
   }
 
-  async registerCommands(global?: boolean) {
+  async registerModules(global: boolean) {
     const slashCommands: ApplicationCommandDataResolvable[] = []
-    const commandFolders = !global ? '*' : '/!(devel)/'
+    const commandFolders = !global ? '*' : '!(devel)'
     const commandFiles = await globPromise(`${__dirname}/../commands/${commandFolders}/*{.ts,.js}`)
     commandFiles.forEach(async (filePath: string) => {
       const command: CommandType = (await import(filePath))?.default
-      if (!command.name) return
+      if (!command.name) {
+        logger.error(`Failed to load command from ${command}`)
+        return
+      }
       this.commands.set(command.name, command)
       slashCommands.push(command)
-      logger.info(command.name)
     })
 
-    if (global) {
-      this.application.commands.set(slashCommands).catch((err) => {
-        logger.fatal('Failed to register global commands!', err)
-        return
-      })
-      logger.info('Registered commands globally! 🌎')
-    } else {
-      const guild = this.guilds.cache.get(serverId)
-      guild.commands.set(slashCommands).catch((err) => {
-        logger.fatal(`Failed to register commands to guild!`, err)
-        return
-      })
-      logger.info(`Registered commands to guild:  ${guild}`)
-    }
+    this.on('ready', async () => {
+      logger.info(`Started ${this.user.username}`)
+      if (global) {
+        await this.application.commands.set(slashCommands).catch((error) => {
+          logger.error(`Failed to register global commands! ${error}`)
+          return
+        })
+        logger.info('Registered commands globally! 🌎')
+      } else {
+        this.guilds.cache.get(serverId).commands.set(slashCommands)
+        logger.info(`Registered ${[...slashCommands].length} commands to guild`)
+      }
+    })
   }
 }

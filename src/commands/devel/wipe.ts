@@ -10,23 +10,43 @@ export default new Command({
       name: 'server',
       description: 'The guild to wipe commands from',
       type: 'STRING',
-      required: true,
+    },
+    {
+      name: 'global',
+      description: 'Deletes application level commands, note this may take an hour to take effect',
+      type: 'BOOLEAN',
     },
   ],
   run: async ({ client, interaction }) => {
     const TARGET = interaction.options.getString('server')
+    const GLOBAL = interaction.options.getBoolean('global')
 
-    client.guilds
-      .fetch(TARGET)
-      .then((guild) => {
-        guild.commands.set([])
-        logger.info(`Wiped commands from ${guild.name}`)
+    if (GLOBAL) {
+      client.application.commands
+        .set([])
+        .then(() => {
+          logger.info(`Wiped application commands`)
+        })
+        .catch((err) => {
+          logger.fatal(`Failed to wipe commands from application ${err}`)
+          return
+        })
+      return await interaction.reply({
+        content: `\`Commands have been wiped from the application\``,
       })
-      .catch((err) => {
-        logger.fatal('Failed to wipe commands ', err)
+    } else {
+      client.guilds
+        .fetch(TARGET)
+        .then((guild) => {
+          guild.commands.set([])
+          logger.info(`Wiped commands from ${guild.name}`)
+        })
+        .catch((err) => {
+          logger.fatal('Failed to wipe commands ', err)
+        })
+      return await interaction.reply({
+        content: `\`Commands have been wiped\``,
       })
-    return await interaction.reply({
-      content: `Commands have been wiped`,
-    })
+    }
   },
 })

@@ -21,29 +21,20 @@ export default new Command({
     const TARGET = interaction.options.getString('server')
     const GLOBAL = interaction.options.getBoolean('global')
 
+    if (!TARGET && !GLOBAL) return interaction.reply('No target selected')
+
     if (GLOBAL) {
-      client.application.commands
-        .set([])
-        .then(() => {
-          logger.info(`Wiped application commands`)
-        })
-        .catch((err) => {
-          logger.fatal(`Failed to wipe commands from application ${err}`)
-          return
-        })
+      await client.application.commands.set([]).catch((error) => {
+        logger.fatal(error, 'Failed to wipe application commands')
+      })
       return await interaction.reply({
         content: `💣 \`Commands have been wiped from the application\` 💣`,
       })
     } else {
-      client.guilds
-        .fetch(TARGET)
-        .then((guild) => {
-          guild.commands.set([])
-          logger.info(`Wiped commands from ${guild.name}`)
-        })
-        .catch((err) => {
-          logger.fatal('Failed to wipe commands ', err)
-        })
+      const targetGuild = await client.guilds.fetch(TARGET)
+      await targetGuild.commands.set([]).catch((error) => {
+        logger.fatal(error, 'Failed to wipe commands from guild')
+      })
       return await interaction.reply({
         content: `💣 \`Commands have been wiped from guild\` 💣`,
       })

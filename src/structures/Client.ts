@@ -52,7 +52,7 @@ export default class EZclient extends Client {
         })
         logger.info('Registered commands globally! 🌎')
       } else {
-        this.guilds.cache.get(serverId).commands.set(slashCommands)
+        await this.guilds.cache.get(serverId).commands.set(slashCommands)
         logger.info(`Registered ${[...slashCommands].length} commands to guild`)
       }
     })

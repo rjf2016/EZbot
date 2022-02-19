@@ -32,7 +32,7 @@ export default new Command({
           return
         })
       return await interaction.reply({
-        content: `\`Commands have been wiped from the application\``,
+        content: `💣 \`Commands have been wiped from the application\` 💣`,
       })
     } else {
       client.guilds
@@ -45,7 +45,7 @@ export default new Command({
           logger.fatal('Failed to wipe commands ', err)
         })
       return await interaction.reply({
-        content: `\`Commands have been wiped\``,
+        content: `💣 \`Commands have been wiped from guild\` 💣`,
       })
     }
   },

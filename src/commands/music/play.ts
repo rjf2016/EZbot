@@ -35,8 +35,7 @@ export default new Command({
 
     const queue = player.createQueue(interaction.guild, {
       disableVolume: true,
-      leaveOnEnd: false,
-      autoSelfDeaf: false,
+      leaveOnEnd: true,
       metadata: {
         channel: channel,
       },

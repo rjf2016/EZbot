@@ -21,7 +21,7 @@ export default new ClientEvent('interactionCreate', async (interaction) => {
       client,
       interaction: interaction as EZinteraction,
     })
-    .catch((err) => {
-      logger.error(`Unexpected error while running ${interaction}`, err)
+    .catch((error: any) => {
+      logger.error(`Unexpected error while running ${interaction}`, error)
     })
 })

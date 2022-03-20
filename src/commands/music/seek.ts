@@ -1,8 +1,6 @@
-import { player } from '../..'
-import { Command } from '../../structures/Command'
-import logger from '../../structures/Logger'
+import { ExtendedCommand } from '../../structures/Command'
 
-export default new Command({
+export default new ExtendedCommand({
   name: 'seek',
   category: 'music',
   description: 'Jump to a time in current song',
@@ -14,18 +12,25 @@ export default new Command({
       required: true,
     },
   ],
-  run: async ({ interaction }) => {
+  run: async ({ client, interaction }) => {
     const seconds = interaction.options.getInteger('time')
 
-    const queue = player.getQueue(interaction.guild)
+    const queue = client.player.getQueue(interaction.guild)
     if (!queue || !queue.playing) {
-      logger.error('Unable to find queue', queue)
+      client.logger.error('Unable to find queue', queue)
     }
 
     const ms = seconds * 1000
-    await queue.seek(ms)
+
+    try {
+      await queue.seek(ms)
+    } catch (error) {
+      client.logger.error('Failed to seek given time', error)
+    }
+
     const date = new Date(ms)
 
-    return await interaction.reply({ content: `**Seek** :fast_forward: \`${date.getMinutes()}:${date.getSeconds()}\`` })
+    await interaction.reply({ content: `**Seek** :fast_forward: \`${date.getMinutes()}:${date.getSeconds()}\`` })
+    return
   },
 })

@@ -1,8 +1,8 @@
 import { MessageEmbed } from 'discord.js'
-import { Command } from '../../structures/Command'
+import { ExtendedCommand } from '../../structures/Command'
 import { prettyCategories } from '../../util/helpers'
 
-export default new Command({
+export default new ExtendedCommand({
   name: 'help',
   category: 'info',
   description: 'View all of my commands',

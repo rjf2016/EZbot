@@ -1,15 +1,14 @@
 import { MessageEmbed } from 'discord.js'
-import { player } from '../..'
 import { colors } from '../../config'
-import { Command } from '../../structures/Command'
+import { ExtendedCommand } from '../../structures/Command'
 
-export default new Command({
+export default new ExtendedCommand({
   name: 'nowplaying',
   category: 'music',
   description: 'View the currently playing song',
 
-  run: async ({ interaction }) => {
-    const queue = player.getQueue(interaction.guild)
+  run: async ({ client, interaction }) => {
+    const queue = client.player.getQueue(interaction.guild)
     if (!queue || !queue.playing) return await interaction.reply(':cricket:')
 
     const progress = queue.createProgressBar({ timecodes: true, length: 8 })
@@ -25,6 +24,7 @@ export default new Command({
       ])
       .setColor(colors.main)
 
-    return await interaction.reply({ embeds: [embed] })
+    await interaction.reply({ embeds: [embed] })
+    return
   },
 })

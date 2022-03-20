@@ -1,8 +1,8 @@
-import { Command } from '../../structures/Command'
+import { ExtendedCommand } from '../../structures/Command'
 import { MessageActionRow, MessageButton, Message, Formatters, ButtonInteraction } from 'discord.js'
 import { evaluate } from 'mathjs'
 
-export default new Command({
+export default new ExtendedCommand({
   name: 'calc',
   category: 'utility',
   description: 'open up a calculator',

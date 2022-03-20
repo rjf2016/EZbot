@@ -1,10 +1,10 @@
-import { Command } from '../../structures/Command'
+import { ExtendedCommand } from '../../structures/Command'
 import { protectedChannels } from '../../config'
 import { MessageActionRow, MessageButton } from 'discord.js'
 
 //@Todo : This command can & probly should be cleaned up. Too many 'if - else' & !dry
 
-export default new Command({
+export default new ExtendedCommand({
   name: 'clean',
   category: 'moderation',
   description: 'Delete a channel or category',
@@ -39,7 +39,7 @@ export default new Command({
     },
   ],
 
-  run: async ({ interaction }) => {
+  run: async ({ client, interaction }) => {
     const subCommand = interaction.options.getSubcommand()
     const row = new MessageActionRow().addComponents(
       new MessageButton().setCustomId('confirm').setLabel('Just do it').setStyle('SUCCESS'),
@@ -95,7 +95,7 @@ export default new Command({
       max: 1,
     })
 
-    collector.on('collect', async (ButtonInteraction) => {
+    collector.on('collect', async (ButtonInteraction: { customId: string }) => {
       if (ButtonInteraction.customId === 'confirm') {
         try {
           await deletable.forEach((channel) => channel.delete())
@@ -119,7 +119,7 @@ export default new Command({
 
     collector.on('end', async () => {
       if (successfulDelete) return
-      return await confirm.edit({ content: 'Cleanse aborted.. Phew that was close 😨', components: [] })
+      await confirm.edit({ content: 'Cleanse aborted.. Phew that was close 😨', components: [] })
     })
   },
 })

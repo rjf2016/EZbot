@@ -3,6 +3,7 @@
  * eg `prettyCategories.music` = '🎵 Music',
  */
 export const prettyCategories = {
+  devel: '👨‍💻 Developer',
   music: '🎵 Music',
   info: '😎 Info',
   moderation: '📛 Moderation',

@@ -1,10 +1,8 @@
-import { Command } from '../../structures/Command'
+import { ExtendedCommand } from '../../structures/Command'
 import { QueryType } from 'discord-player'
 import { TextChannel } from 'discord.js'
-import logger from '../../structures/Logger'
-import { player } from '../..'
 
-export default new Command({
+export default new ExtendedCommand({
   name: 'play',
   category: 'music',
   description: 'Play a song',
@@ -17,7 +15,7 @@ export default new Command({
     },
   ],
 
-  run: async ({ interaction }) => {
+  run: async ({ client, interaction }) => {
     const song = interaction.options.getString('song')
     const channel = interaction.channel as TextChannel
 
@@ -27,13 +25,14 @@ export default new Command({
       interaction.guild.me.voice.channelId &&
       interaction.member.voice.channelId !== interaction.guild.me.voice.channelId
     ) {
-      return await interaction.reply({
+      await interaction.reply({
         content: 'You are not in my voice channel!',
         ephemeral: true,
       })
+      return
     }
 
-    const queue = player.createQueue(interaction.guild, {
+    const queue = client.player.createQueue(interaction.guild, {
       disableVolume: true,
       leaveOnEnd: true,
       metadata: {
@@ -43,38 +42,48 @@ export default new Command({
 
     await interaction.reply({ content: `**Searching** 🔎 \`${song}\`` })
 
-    const searchResult = await player
+    const searchResult = await client.player
       .search(song, {
         requestedBy: interaction.user,
         searchEngine: QueryType.YOUTUBE_SEARCH,
       })
       .catch((err) => {
-        logger.error('Failed to get song(s)', err)
+        client.logger.error('Failed to get song(s)', err)
       })
 
     if (!searchResult || !searchResult.tracks.length) {
-      return await interaction.followUp({
+      await interaction.followUp({
         content: `🤮 No results were found, try changing the search`,
         ephemeral: true,
       })
+      return
     }
 
     if (!queue.connection) {
-      await queue.connect(interaction.member.voice.channel).catch((err) => {
-        logger.error('Failed to join voice chat', err)
-        return interaction.followUp({
+      try {
+        await queue.connect(interaction.member.voice.channel)
+      } catch (error) {
+        client.logger.error('Failed to join voice chat', error)
+        await interaction.followUp({
           content: 'Could not join your voice channel!',
           ephemeral: true,
         })
-      })
+        queue.destroy(true)
+        return
+      }
     }
 
     searchResult.playlist ? queue.addTracks(searchResult.tracks) : queue.addTrack(searchResult.tracks[0])
     if (!queue.playing) {
-      queue.play().catch((err) => {
-        logger.error(`Encountered an error trying to play song`, err)
+      try {
+        await queue.play()
+      } catch (error) {
+        client.logger.error(`Encountered an error trying to play song`, error)
+        await interaction.followUp({
+          content: '🤮 Uh oh, I ran into an error trying to play that song.',
+        })
         return
-      })
+      }
     }
   },
 })

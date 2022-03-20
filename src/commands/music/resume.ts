@@ -1,14 +1,12 @@
-import { player } from '../..'
-import { Command } from '../../structures/Command'
-import logger from '../../structures/Logger'
+import { ExtendedCommand } from '../../structures/Command'
 
-export default new Command({
+export default new ExtendedCommand({
   name: 'resume',
   category: 'music',
   description: 'Resume the currently paused song',
 
-  run: async ({ interaction }) => {
-    const queue = player.getQueue(interaction.guild)
+  run: async ({ client, interaction }) => {
+    const queue = client.player.getQueue(interaction.guild)
 
     if (
       interaction.guild.me.voice.channelId &&
@@ -21,17 +19,17 @@ export default new Command({
 
     if (!queue || !queue.playing || !queue.setPaused) {
       await interaction.reply({ content: `:confused: You can't resume what isn't paused`, ephemeral: true })
-      logger.error('Attempted to resume player that was not paused', queue)
+      client.logger.error('Attempted to resume player that was not paused', queue)
     }
 
     const paused = queue.setPaused(false)
 
     function handleError() {
-      logger.error('Failed to resume song', queue)
+      client.logger.error('Failed to resume song', queue)
       return `❌ Failed to resume song`
     }
 
-    return await interaction.reply({
+    await interaction.reply({
       content: paused ? `**Resume** :arrow_forward: \`${queue.current.title}\`` : handleError(),
     })
   },

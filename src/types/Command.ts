@@ -7,20 +7,20 @@ import {
   PermissionResolvable,
 } from 'discord.js'
 
-import EZclient from '../structures/Client'
+import { ExtendedClient } from '../structures/Client'
 
-export interface EZinteraction extends CommandInteraction {
+export interface ExtendedInteraction extends CommandInteraction {
   member: GuildMember
   channel: GuildTextBasedChannel
 }
 
 interface RunOptions {
-  client: EZclient
-  interaction: EZinteraction
+  client: ExtendedClient
+  interaction: ExtendedInteraction
   args: CommandInteractionOptionResolver
 }
 
-type RunFunction = (options: RunOptions) => any
+type RunFunction = (options: RunOptions) => Promise<void>
 
 type CommandCategory = 'music' | 'info' | 'utility' | 'moderation' | 'devel'
 

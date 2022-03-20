@@ -7,6 +7,8 @@ declare global {
       TEST_SERVER: string
       PROD_TOKEN: string
       DEV_TOKEN: string
+      EZBOT_ID: string
+      EZBETA_ID: string
     }
   }
 }

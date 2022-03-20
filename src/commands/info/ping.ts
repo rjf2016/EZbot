@@ -1,6 +1,6 @@
-import { Command } from '../../structures/Command'
+import { ExtendedCommand } from '../../structures/Command'
 
-export default new Command({
+export default new ExtendedCommand({
   name: 'ping',
   category: 'info',
   description: 'check EZbot latency in ms',

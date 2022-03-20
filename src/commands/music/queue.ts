@@ -1,18 +1,19 @@
-import { Command } from '../../structures/Command'
+import { ExtendedCommand } from '../../structures/Command'
 import { colors } from '../../config'
-import { player } from '../..'
 
-export default new Command({
+export default new ExtendedCommand({
   name: 'queue',
   category: 'music',
   description: 'Display the current queue',
 
-  run: async ({ interaction }) => {
-    const queue = player.getQueue(interaction.guild)
-    if (!queue?.playing)
-      return interaction.reply({
+  run: async ({ client, interaction }) => {
+    const queue = client.player.getQueue(interaction.guild)
+    if (!queue?.playing) {
+      await interaction.reply({
         content: 'No songs are currently playing',
       })
+      return
+    }
 
     const currentTrack = queue.current
     const tracks = queue.tracks.slice(0, 10).map((m, i) => {

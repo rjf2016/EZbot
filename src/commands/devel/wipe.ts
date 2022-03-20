@@ -1,7 +1,6 @@
-import { Command } from '../../structures/Command'
-import logger from '../../structures/Logger'
+import { ExtendedCommand } from '../../structures/Command'
 
-export default new Command({
+export default new ExtendedCommand({
   name: 'wipe',
   category: 'devel',
   description: 'Deletes commands',
@@ -25,7 +24,7 @@ export default new Command({
 
     if (GLOBAL) {
       await client.application.commands.set([]).catch((error) => {
-        logger.fatal(error, 'Failed to wipe application commands')
+        client.logger.fatal(error, 'Failed to wipe application commands')
       })
       return await interaction.reply({
         content: `💣 \`Commands have been wiped from the application\` 💣`,
@@ -33,7 +32,7 @@ export default new Command({
     } else {
       const targetGuild = await client.guilds.fetch(TARGET)
       await targetGuild.commands.set([]).catch((error) => {
-        logger.fatal(error, 'Failed to wipe commands from guild')
+        client.logger.fatal(error, 'Failed to wipe commands from guild')
       })
       return await interaction.reply({
         content: `💣 \`Commands have been wiped from guild\` 💣`,

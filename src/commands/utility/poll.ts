@@ -1,8 +1,8 @@
 import { MessageEmbedOptions } from 'discord.js'
-import { Command } from '../../structures/Command'
+import { ExtendedCommand } from '../../structures/Command'
 import { emoji } from '../../util/emojiChar'
 
-export default new Command({
+export default new ExtendedCommand({
   name: 'poll',
   category: 'utility',
   description: 'A poll voting system',

@@ -45,7 +45,7 @@ export default new ExtendedCommand({
     const searchResult = await client.player
       .search(song, {
         requestedBy: interaction.user,
-        searchEngine: QueryType.YOUTUBE_SEARCH,
+        searchEngine: QueryType.AUTO,
       })
       .catch((err) => {
         client.logger.error('Failed to get song(s)', err)

@@ -12,7 +12,7 @@ export const registerPlayerEvents = (player: Player) => {
         .setThumbnail(thumbnail)
         .setDescription(
           `**[${
-            title.length > 25 ? title.substring(0, 25) + '...' : title
+            title.length > 50 ? title.substring(0, 50) + '...' : title
           }](${url})**\n\n \`\` ${duration} \`\`\t\u200b\t\u200b\t${requestedBy}`
         )
         .setColor(colors.ezRed)

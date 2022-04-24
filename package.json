@@ -47,7 +47,7 @@
     "ts-node-dev": "^1.1.8"
   },
   "engines": {
-    "node": "17.3.1"
+    "node": "17.*"
   },
   "husky": {
     "hooks": {

@@ -8,11 +8,12 @@ export default new ExtendedCommand({
   category: 'info',
   description: 'check EZbot latency in ms',
   run: async ({ client, interaction }) => {
-    const embed = new MessageEmbed()
-      .setTitle(`${client.user.username}`)
-      .setThumbnail('https://imgur.com/Lwshqf5.png')
-      .setDescription(
-        `
+    const buildEmbed = async () =>
+      new MessageEmbed()
+        .setTitle(`${client.user.username}`)
+        .setThumbnail('https://imgur.com/Lwshqf5.png')
+        .setDescription(
+          `
         🤖\u200B Version: \u200B\u200B\u200B ** v${PKG_VERSION} **
 
         ⏳\u200B Ping: \u200B\u200B\u200B\u200B\u200B ** ${client.ws.ping}ms **
@@ -23,7 +24,8 @@ export default new ExtendedCommand({
 
         💻\u200B Memory: \u200B\u200B\u200B ** ${(process.memoryUsage().heapUsed / (1024 * 1024)).toFixed()}MB   **
         `
-      )
+        )
+    const embed = await buildEmbed()
     await interaction.reply({ embeds: [embed] })
     return
   },

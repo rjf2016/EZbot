@@ -12,7 +12,7 @@
     "dev": "NODE_ENV=development ts-node-dev --require dotenv/config --respawn --transpile-only --poll ./src/index.ts dotenv_config_path=.env",
     "debug": "node --inspect dist/index.js",
     "postinstall": "tsc",
-    "deploy": "git add . && git commit -m Heroku && git push heroku master"
+    "deploy": "git push heroku master"
   },
   "dependencies": {
     "@discordjs/opus": "^0.7.0",

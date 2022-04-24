@@ -4,7 +4,7 @@
   "description": "ezbot",
   "main": "dist/src/index.js",
   "keywords": [],
-  "author": "",
+  "author": "ezbot",
   "license": "ISC",
   "scripts": {
     "start": "node dist/src/index.js",

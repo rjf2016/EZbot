@@ -1,5 +1,4 @@
 import pino, { LoggerOptions } from 'pino'
-import { isProd } from '../util/validateEnv'
 
 const devTransport: LoggerOptions = pino.transport({
   target: 'pino-pretty',
@@ -10,10 +9,5 @@ const devTransport: LoggerOptions = pino.transport({
   },
 })
 
-const prodTransport: LoggerOptions = pino.transport({
-  target: 'pino/file',
-  options: { destination: '../logs.json' },
-})
-
-const logger = pino(isProd ? prodTransport : devTransport)
+const logger = pino(devTransport)
 export { logger }

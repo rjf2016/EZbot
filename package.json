@@ -9,18 +9,17 @@
   "scripts": {
     "start": "node dist/src/index.js",
     "build": "rm -rf dist && tsc",
-    "dev": "NODE_ENV=development ts-node-dev --require dotenv/config --respawn --transpile-only --poll ./src/index.ts dotenv_config_path=.env",
+    "dev": "NODE_ENV=development ts-node-dev --require dotenv/config --respawn --transpile-only --poll ./src/index.ts dotenv_config_path=.env | pino-pretty -i hostname -t SYS:h:MM:ss TT",
     "debug": "node --inspect dist/index.js",
-    "postinstall": "tsc",
-    "deploy": "git add . && git commit -m Heroku && git push heroku master"
+    "postinstall": "tsc"
   },
   "dependencies": {
     "@discordjs/opus": "^0.7.0",
     "@discordjs/voice": "^0.8.0",
-    "chalk": "^4.1.2",
     "discord-player": "^5.2.2",
     "discord.js": "^13.6.0",
     "mathjs": "^10.4.0",
+    "mongoose": "^6.3.3",
     "pino": "^7.8.0",
     "pino-pretty": "^7.5.1",
     "pretty-ms": "^7.0.1",
@@ -35,7 +34,7 @@
     "@types/node": "^16.11.7",
     "@typescript-eslint/eslint-plugin": "4.29.0",
     "@typescript-eslint/parser": "4.29.0",
-    "console-table-printer": "^2.10.0",
+    "depcheck": "1.4.3",
     "dotenv": "14.2.0",
     "eslint": "7.32.0",
     "eslint-config-prettier": "^8.3.0",

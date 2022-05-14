@@ -11,8 +11,7 @@
     "build": "rm -rf dist && tsc",
     "dev": "NODE_ENV=development ts-node-dev --require dotenv/config --respawn --transpile-only --poll ./src/index.ts dotenv_config_path=.env | pino-pretty -i hostname -t SYS:h:MM:ss TT",
     "debug": "node --inspect dist/index.js",
-    "postinstall": "tsc",
-    "deploy": "git push heroku master"
+    "postinstall": "tsc"
   },
   "dependencies": {
     "@discordjs/opus": "^0.7.0",

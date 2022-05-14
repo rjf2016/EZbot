@@ -1,7 +1,6 @@
-import chalk from 'chalk'
 import { CommandInteractionOptionResolver } from 'discord.js'
 import { client } from '../..'
-import { Event } from '../../structures'
+import { Event, logger } from '../../structures'
 import { ExtendedInteraction } from '../../types/Command'
 
 export default new Event('interactionCreate', async (interaction) => {
@@ -14,7 +13,7 @@ export default new Event('interactionCreate', async (interaction) => {
     return
   }
 
-  client.logger.info(`${interaction.user.username} ran /${command.name}`)
+  logger.info(`${interaction.user.username} ran [${command.name}]`)
 
   command.run({
     args: interaction.options as CommandInteractionOptionResolver,

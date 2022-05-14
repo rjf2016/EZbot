@@ -1,4 +1,4 @@
-import { ExtendedClient } from '../structures'
+import { ExtendedClient, logger } from '../structures'
 import { promisify } from 'util'
 import { CommandType } from '../types/Command'
 import glob from 'glob'
@@ -12,11 +12,11 @@ export const loadCommands = async (client: ExtendedClient, dir: string) => {
   commandFiles.forEach(async (filePath: string) => {
     const command: CommandType = (await import(filePath))?.default
     if (!command.name) {
-      client.logger.error(`Failed to load command from ${command}`)
+      logger.error(`Failed to load command from ${command}`)
       return
     }
     client.commands.set(command.name, command)
     client.slashCommands.push(command)
   })
-  client.logger.info(`Loaded ${commandFiles.length} commands`)
+  logger.info(`Loaded ${commandFiles.length} commands`)
 }

@@ -1,4 +1,5 @@
 import { ExtendedCommand } from '../../structures/Command'
+import { logger } from '../../structures'
 
 export default new ExtendedCommand({
   name: 'prune',
@@ -14,7 +15,7 @@ export default new ExtendedCommand({
     },
   ],
 
-  run: async ({ client, interaction }) => {
+  run: async ({ interaction }) => {
     const amount = interaction.options.getNumber('amount')
     await interaction.deferReply()
     if (isNaN(amount)) return await interaction.reply('Thats not a number!')
@@ -27,7 +28,7 @@ export default new ExtendedCommand({
     try {
       await interaction.channel.bulkDelete(amount)
     } catch (err) {
-      client.logger.error(err)
+      logger.error(err)
     }
   },
 })

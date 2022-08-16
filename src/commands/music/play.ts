@@ -1,7 +1,6 @@
 import { ExtendedCommand } from '../../structures/Command'
 import { QueryType } from 'discord-player'
 import { TextChannel } from 'discord.js'
-import { logger } from '../../structures'
 
 export default new ExtendedCommand({
   name: 'play',
@@ -48,8 +47,8 @@ export default new ExtendedCommand({
         requestedBy: interaction.user,
         searchEngine: QueryType.AUTO,
       })
-      .catch((error) => {
-        logger.error('Failed to get song(s)', error)
+      .catch((err) => {
+        client.logger.error('Failed to get song(s)', err)
       })
 
     if (!searchResult || !searchResult.tracks.length) {
@@ -64,7 +63,7 @@ export default new ExtendedCommand({
       try {
         await queue.connect(interaction.member.voice.channel)
       } catch (error) {
-        logger.error('Failed to join voice chat', error)
+        client.logger.error('Failed to join voice chat', error)
         await interaction.followUp({
           content: 'Could not join your voice channel!',
           ephemeral: true,
@@ -79,7 +78,7 @@ export default new ExtendedCommand({
       try {
         await queue.play()
       } catch (error) {
-        logger.error(`Encountered an error trying to play song`, error)
+        client.logger.error(`Encountered an error trying to play song`, error)
         await interaction.followUp({
           content: '🤮 Uh oh, I ran into an error trying to play that song.',
         })

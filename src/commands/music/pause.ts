@@ -1,5 +1,4 @@
 import { ExtendedCommand } from '../../structures/Command'
-import { logger } from '../../structures'
 
 export default new ExtendedCommand({
   name: 'pause',
@@ -22,7 +21,7 @@ export default new ExtendedCommand({
 
     if (!queue || !queue.playing) {
       await interaction.reply({ content: `:confused: Nothing is currently playing`, ephemeral: true })
-      logger.warn('Attempted to pause a song that was not playing')
+      client.logger.warn('Attempted to pause a song that was not playing')
     }
 
     queue.setPaused(true)

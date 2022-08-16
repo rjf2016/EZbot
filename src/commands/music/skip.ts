@@ -1,4 +1,3 @@
-import { logger } from '../../structures'
 import { ExtendedCommand } from '../../structures/Command'
 
 export default new ExtendedCommand({
@@ -35,7 +34,7 @@ export default new ExtendedCommand({
     try {
       queue.skip()
     } catch (error) {
-      logger.error(error)
+      client.logger.error(error)
     }
 
     await interaction.reply({ content: ` **Skipped** ⏩ ~~\`${current}\`~~` })

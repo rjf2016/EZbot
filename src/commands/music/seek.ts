@@ -1,4 +1,3 @@
-import { logger } from '../../structures'
 import { ExtendedCommand } from '../../structures/Command'
 
 export default new ExtendedCommand({
@@ -18,7 +17,7 @@ export default new ExtendedCommand({
 
     const queue = client.player.getQueue(interaction.guild)
     if (!queue || !queue.playing) {
-      logger.error('Unable to find queue', queue)
+      client.logger.error('Unable to find queue', queue)
     }
 
     const ms = seconds * 1000
@@ -26,7 +25,7 @@ export default new ExtendedCommand({
     try {
       await queue.seek(ms)
     } catch (error) {
-      logger.error('Failed to seek given time', error)
+      client.logger.error('Failed to seek given time', error)
     }
 
     const date = new Date(ms)

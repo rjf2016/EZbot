@@ -1,4 +1,3 @@
-import { logger } from '../../structures'
 import { ExtendedCommand } from '../../structures/Command'
 
 export default new ExtendedCommand({
@@ -20,13 +19,13 @@ export default new ExtendedCommand({
 
     if (!queue || !queue.playing || !queue.setPaused) {
       await interaction.reply({ content: `:confused: You can't resume what isn't paused`, ephemeral: true })
-      logger.error('Attempted to resume player that was not paused', queue)
+      client.logger.error('Attempted to resume player that was not paused', queue)
     }
 
     const paused = queue.setPaused(false)
 
     function handleError() {
-      logger.error('Failed to resume song', queue)
+      client.logger.error('Failed to resume song', queue)
       return `❌ Failed to resume song`
     }
 

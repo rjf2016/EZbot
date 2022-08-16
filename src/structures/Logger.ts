@@ -1,5 +1,13 @@
-import pino from 'pino'
+import pino, { LoggerOptions } from 'pino'
 
-const logger = pino()
+const devTransport: LoggerOptions = pino.transport({
+  target: 'pino-pretty',
+  options: {
+    colorize: true,
+    translateTime: 'SYS:h:MM:ss TT',
+    ignore: 'pid,hostname',
+  },
+})
 
+const logger = pino(devTransport)
 export { logger }

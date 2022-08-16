@@ -1,7 +1,7 @@
 import { Player, Queue, Track } from 'discord-player'
 import { MessageEmbed, TextChannel } from 'discord.js'
 import { colors } from '../config'
-import { logger } from '../structures'
+import { client } from '..'
 
 export const registerPlayerEvents = (player: Player) => {
   player.on(
@@ -22,7 +22,7 @@ export const registerPlayerEvents = (player: Player) => {
   player.on('trackAdd', (queue: Queue<{ channel: TextChannel }>, track: Track) => {
     const current = queue.nowPlaying()
     if (current !== track) {
-      logger.info('Track added to queue ')
+      client.logger.info('Track added to queue ')
       queue?.metadata.channel.send({
         content: `**Added** ⏱️ \`${track.title}\` - to the **queue**!`,
       })
@@ -30,7 +30,7 @@ export const registerPlayerEvents = (player: Player) => {
   })
 
   player.on('error', (queue: Queue<{ channel: TextChannel }>, error: Error) => {
-    logger.error(`PLAYER ERROR emitted from: ${queue.guild.name} `, error)
+    client.logger.error(`PLAYER ERROR emitted from: ${queue.guild.name} `, error)
     const message = queue.tracks.length > 1 ? 'skip it' : 'end the concert'
     queue.metadata.channel.send({
       content: `🤮 I ran into an error trying to play that song, so I had to ${message}.
@@ -39,18 +39,18 @@ export const registerPlayerEvents = (player: Player) => {
   })
 
   player.on('connectionError', (queue, error) => {
-    logger.error(`PLAYER CONNECTION ERROR emitted from: ${queue.guild.name} `, error)
+    client.logger.error(`PLAYER CONNECTION ERROR emitted from: ${queue.guild.name} `, error)
   })
 
-  player.on('botDisconnect', (queue) => {
-    logger.info('❌ | I was manually disconnected from the voice channel, clearing queue! ')
+  player.on('botDisconnect', async (queue) => {
+    client.logger.info('❌ | I was manually disconnected from the voice channel, clearing queue! ')
   })
 
   player.on('channelEmpty', () => {
-    logger.info('❌ | Nobody is in the voice channel, leaving... ')
+    client.logger.info('❌ | Nobody is in the voice channel, leaving... ')
   })
 
   player.on('queueEnd', (queue) => {
-    logger.info('✅ | Queue finished! ')
+    client.logger.info('✅ | Queue finished! ')
   })
 }

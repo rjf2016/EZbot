@@ -15,7 +15,7 @@
     "deploy": "git add . && git commit -m Heroku && git push heroku master"
   },
   "dependencies": {
-    "@discordjs/opus": "^0.7.0",
+    "@discordjs/opus": "^0.8.0",
     "@discordjs/voice": "^0.8.0",
     "chalk": "^4.1.2",
     "discord-player": "^5.2.2",

@@ -1,9 +1,11 @@
 import {
   ChatInputApplicationCommandData,
+  ChatInputCommandInteraction,
   CommandInteraction,
   CommandInteractionOptionResolver,
   GuildMember,
   GuildTextBasedChannel,
+  InteractionResponse,
   PermissionResolvable,
 } from 'discord.js'
 
@@ -20,7 +22,7 @@ interface RunOptions {
   args: CommandInteractionOptionResolver
 }
 
-type RunFunction = (options: RunOptions) => Promise<void>
+type RunFunction = (options: RunOptions) => Promise<InteractionResponse<boolean> | void>
 
 type CommandCategory = 'music' | 'info' | 'utility' | 'moderation' | 'devel'
 

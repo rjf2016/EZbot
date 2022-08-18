@@ -1,4 +1,4 @@
-import { MessageEmbed } from 'discord.js'
+import { EmbedBuilder } from 'discord.js'
 import { ExtendedCommand } from '../../structures/Command'
 import { prettyCategories } from '../../util/helpers'
 
@@ -16,7 +16,7 @@ export default new ExtendedCommand({
   ],
   run: async ({ client, interaction }) => {
     const helpCommand = interaction.options.getString('command')
-    const embed = new MessageEmbed().setColor('PURPLE').setURL('https://github.com/rjf2016/EZbot#features')
+    const embed = new EmbedBuilder().setColor('PURPLE').setURL('https://github.com/rjf2016/EZbot#features')
     const isValidCommand = helpCommand !== null && client.commands.get(helpCommand)
     // if: /help <valid command>
     if (isValidCommand) {

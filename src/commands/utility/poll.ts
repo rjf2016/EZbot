@@ -1,4 +1,4 @@
-import { MessageEmbedOptions } from 'discord.js'
+import { EmbedBuilderOptions } from 'discord.js'
 import { ExtendedCommand } from '../../structures/Command'
 import { emoji } from '../../util/emojiChar'
 
@@ -112,7 +112,7 @@ export default new ExtendedCommand({
     if (subCommandGroup === 'create') {
       const [question, ...answers] = interaction.options.data[0].options[0].options.map(({ value }) => value as string)
       const answerEmojis: string[] = []
-      let pollEmbed: MessageEmbedOptions
+      let pollEmbed: EmbedBuilderOptions
 
       if (subCommand === 'yes-no') {
         // const footer = 'YES | NO = 👍 | 👎'
@@ -140,7 +140,7 @@ export default new ExtendedCommand({
       question: string
       description?: string
       // footer?: string
-    }): MessageEmbedOptions {
+    }): EmbedBuilderOptions {
       return {
         title: question,
         author: {

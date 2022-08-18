@@ -22,7 +22,7 @@ export default new ExtendedCommand({
     if (!interaction.member.voice.channel) return await interaction.reply('Please join a voice channel first!')
 
     if (
-      interaction.guild.me.voice.channelId &&
+      interaction.guild.available.voice.channelId &&
       interaction.member.voice.channelId !== interaction.guild.me.voice.channelId
     ) {
       await interaction.reply({

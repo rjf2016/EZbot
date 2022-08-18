@@ -1,11 +1,10 @@
-import chalk from 'chalk'
-import { CommandInteractionOptionResolver } from 'discord.js'
+import { CommandInteractionOptionResolver, InteractionType } from 'discord.js'
 import { client } from '../..'
 import { Event } from '../../structures'
 import { ExtendedInteraction } from '../../types/Command'
 
 export default new Event('interactionCreate', async (interaction) => {
-  if (interaction.user.bot || !interaction.isCommand()) return
+  if (interaction.user.bot || interaction.type !== InteractionType.ApplicationCommand) return
   const command = client.commands.get(interaction.commandName)
   if (!command) {
     interaction.reply({

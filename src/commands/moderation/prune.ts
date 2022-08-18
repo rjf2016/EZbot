@@ -1,3 +1,4 @@
+import { ApplicationCommandOptionType, ApplicationCommandType } from 'discord.js'
 import { ExtendedCommand } from '../../structures/Command'
 
 export default new ExtendedCommand({
@@ -9,7 +10,7 @@ export default new ExtendedCommand({
     {
       name: 'amount',
       description: 'Amount of messages to delete',
-      type: 'NUMBER',
+      type: ApplicationCommandOptionType.Number,
       required: true,
     },
   ],

@@ -1,5 +1,5 @@
 import { Player, Queue, Track } from 'discord-player'
-import { MessageEmbed, TextChannel } from 'discord.js'
+import { EmbedBuilder, TextChannel } from 'discord.js'
 import { colors } from '../config'
 import { client } from '..'
 
@@ -7,7 +7,7 @@ export const registerPlayerEvents = (player: Player) => {
   player.on(
     'trackStart',
     (queue: Queue<{ channel: TextChannel }>, { title, url, thumbnail, requestedBy, duration }: Track) => {
-      const nowPlayingEmbed = new MessageEmbed()
+      const nowPlayingEmbed = new EmbedBuilder()
         .setAuthor({ name: 'Now Playing' })
         .setThumbnail(thumbnail)
         .setDescription(
@@ -29,17 +29,15 @@ export const registerPlayerEvents = (player: Player) => {
     }
   })
 
-  player.on('error', (queue: Queue<{ channel: TextChannel }>, error: Error) => {
-    client.logger.error(`PLAYER ERROR emitted from: ${queue.guild.name} `, error)
-    const message = queue.tracks.length > 1 ? 'skip it' : 'end the concert'
+  player.on('error', (queue: Queue<{ channel: TextChannel }>, error) => {
+    client.logger.error(`PLAYER ERROR emitted from: ${queue.guild.name} `, error.message)
     queue.metadata.channel.send({
-      content: `🤮 I ran into an error trying to play that song, so I had to ${message}.
-    Feel free to try playing that song again, but if it fails again - I may just be incapable of playing it`,
+      content: `🤮 I ran into an error trying to play that song`,
     })
   })
 
   player.on('connectionError', (queue, error) => {
-    client.logger.error(`PLAYER CONNECTION ERROR emitted from: ${queue.guild.name} `, error)
+    client.logger.error(`PLAYER CONNECTION ERROR emitted from: ${queue.guild.name} `, error.message)
   })
 
   player.on('botDisconnect', async (queue) => {

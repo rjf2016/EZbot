@@ -1,6 +1,6 @@
 import { ExtendedCommand } from '../../structures/Command'
 import { protectedChannels } from '../../config'
-import { MessageActionRow, MessageButton } from 'discord.js'
+import { ApplicationCommandOptionType, ChannelType, MessageActionRow, MessageButton } from 'discord.js'
 
 //@Todo : This command can & probly should be cleaned up. Too many 'if - else' & !dry
 
@@ -12,28 +12,28 @@ export default new ExtendedCommand({
     {
       name: 'channel',
       description: 'Delete a channel',
-      type: 'SUB_COMMAND',
+      type: ApplicationCommandOptionType.Subcommand,
       options: [
         {
           name: 'channel',
           description: 'The channel to delete',
-          type: 'CHANNEL',
+          type: ApplicationCommandOptionType.Channel,
           required: true,
-          channelTypes: ['GUILD_TEXT', 'GUILD_VOICE'],
+          channelTypes: [ChannelType.GuildText, ChannelType.GuildVoice],
         },
       ],
     },
     {
       name: 'category',
       description: 'Delete all channels within a category',
-      type: 'SUB_COMMAND',
+      type: ApplicationCommandOptionType.Subcommand,
       options: [
         {
           name: 'category',
           description: 'The category to clear',
-          type: 'CHANNEL',
+          type: ApplicationCommandOptionType.Channel,
           required: true,
-          channelTypes: ['GUILD_CATEGORY'],
+          channelTypes: [ChannelType.GuildCategory],
         },
       ],
     },

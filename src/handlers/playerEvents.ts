@@ -30,17 +30,17 @@ export const registerPlayerEvents = (player: Player) => {
   })
 
   player.on('error', (queue: Queue<{ channel: TextChannel }>, error) => {
-    client.logger.error(`PLAYER ERROR emitted from: ${queue.guild.name} `, error.message)
+    client.logger.error(error, `PLAYER ERROR emitted from: ${queue.guild.name} `)
     queue.metadata.channel.send({
       content: `🤮 I ran into an error trying to play that song`,
     })
   })
 
   player.on('connectionError', (queue, error) => {
-    client.logger.error(`PLAYER CONNECTION ERROR emitted from: ${queue.guild.name} `, error.message)
+    client.logger.error(error, `PLAYER CONNECTION ERROR emitted from: ${queue.guild.name} `)
   })
 
-  player.on('botDisconnect', async (queue) => {
+  player.on('botDisconnect', async () => {
     client.logger.info('❌ | I was manually disconnected from the voice channel, clearing queue! ')
   })
 
@@ -48,7 +48,7 @@ export const registerPlayerEvents = (player: Player) => {
     client.logger.info('❌ | Nobody is in the voice channel, leaving... ')
   })
 
-  player.on('queueEnd', (queue) => {
+  player.on('queueEnd', () => {
     client.logger.info('✅ | Queue finished! ')
   })
 }

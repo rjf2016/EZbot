@@ -5,7 +5,7 @@ export default new ExtendedCommand({
   name: 'prune',
   category: 'moderation',
   description: 'Deletes previous messages in current text channel',
-  type: 1,
+  type: ApplicationCommandType.ChatInput,
   options: [
     {
       name: 'amount',

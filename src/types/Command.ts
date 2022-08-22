@@ -1,17 +1,15 @@
 import {
   ChatInputApplicationCommandData,
   ChatInputCommandInteraction,
-  CommandInteraction,
   CommandInteractionOptionResolver,
   GuildMember,
   GuildTextBasedChannel,
-  InteractionResponse,
   PermissionResolvable,
 } from 'discord.js'
 
 import { ExtendedClient } from '../structures/Client'
 
-export interface ExtendedInteraction extends CommandInteraction {
+export interface ExtendedInteraction extends ChatInputCommandInteraction {
   member: GuildMember
   channel: GuildTextBasedChannel
 }
@@ -22,7 +20,7 @@ interface RunOptions {
   args: CommandInteractionOptionResolver
 }
 
-type RunFunction = (options: RunOptions) => Promise<InteractionResponse<boolean> | void>
+type RunFunction = (options: RunOptions) => any
 
 type CommandCategory = 'music' | 'info' | 'utility' | 'moderation' | 'devel'
 

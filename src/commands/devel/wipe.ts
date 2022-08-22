@@ -1,3 +1,4 @@
+import { ApplicationCommandOptionType } from 'discord.js'
 import { ExtendedCommand } from '../../structures/Command'
 
 export default new ExtendedCommand({
@@ -8,12 +9,12 @@ export default new ExtendedCommand({
     {
       name: 'server',
       description: 'The guild to wipe commands from',
-      type: 'STRING',
+      type: ApplicationCommandOptionType.String,
     },
     {
       name: 'global',
       description: 'Deletes application level commands, note this may take an hour to take effect',
-      type: 'BOOLEAN',
+      type: ApplicationCommandOptionType.Boolean,
     },
   ],
   run: async ({ client, interaction }) => {

@@ -826,10 +826,10 @@ discord-api-types@^0.36.2, discord-api-types@^0.36.3:
   resolved "https://registry.yarnpkg.com/discord-api-types/-/discord-api-types-0.36.3.tgz#a931b7e57473a5c971d6937fa5f392eb30047579"
   integrity sha512-bz/NDyG0KBo/tY14vSkrwQ/n3HKPf87a0WFW/1M9+tXYK+vp5Z5EksawfCWo2zkAc6o7CClc0eff1Pjrqznlwg==
 
-discord-player@5.3.1:
-  version "5.3.1"
-  resolved "https://registry.yarnpkg.com/discord-player/-/discord-player-5.3.1.tgz#9bf5fac948ac2ae511701ec20ec156be3bf13e89"
-  integrity sha512-ADiq5H3NWm2kLq03qJ54Kfb5X+YwZzZkAB1uj+Y46SVnKjC9iOYXvO/R2GkdGfTvry8AtkyhdDHa+Gltl8epuw==
+discord-player@5.3.0:
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/discord-player/-/discord-player-5.3.0.tgz#26447d6d4d3d816650c787fcd533b9fe9c4c988c"
+  integrity sha512-OskERYrsVqNvyq8tKkp3aV3NMY9dP5BhNeyn5NTTDohVd9eEE8P6rZGvxqORJl1OxXCTBLbiojNgLiFNsAIaow==
   dependencies:
     "@discordjs/voice" "^0.11.0"
     libsodium-wrappers "^0.7.10"
@@ -1770,7 +1770,7 @@ mimic-fn@^2.1.0:
   resolved "https://registry.yarnpkg.com/mimic-fn/-/mimic-fn-2.1.0.tgz#7ed2c2ccccaf84d3ffcb7a69b57711fc2083401b"
   integrity sha512-OqbOk5oEQeAZ8WXWydlu9HJjz9WVdEIvamMCcXmuqUYjTknH/sqsWvhQ3vgwKFRR1HpjvNBKQ37nbJgYzGqGcg==
 
-miniget@^4.2.2:
+miniget@^4.0.0, miniget@^4.2.2:
   version "4.2.2"
   resolved "https://registry.yarnpkg.com/miniget/-/miniget-4.2.2.tgz#db20320f265efdc4c1826a0be431d56753074475"
   integrity sha512-a7voNL1N5lDMxvTMExOkg+Fq89jM2vY8pAi9ZEWzZtfNmdfP6RXkvUtFnCAXoCv2T9k1v/fUJVaAEuepGcvLYA==
@@ -2853,6 +2853,15 @@ yt-search@^2.10.3:
     jsonpath-plus "~5.0.2"
     minimist "~1.2.5"
     node-fzf "~0.5.1"
+
+ytdl-core@4.9.2:
+  version "4.9.2"
+  resolved "https://registry.yarnpkg.com/ytdl-core/-/ytdl-core-4.9.2.tgz#c2d1ec44ee3cabff35e5843c6831755e69ffacf0"
+  integrity sha512-aTlsvsN++03MuOtyVD4DRF9Z/9UAeeuiNbjs+LjQBAiw4Hrdp48T3U9vAmRPyvREzupraY8pqRoBfKGqpq+eHA==
+  dependencies:
+    m3u8stream "^0.8.4"
+    miniget "^4.0.0"
+    sax "^1.1.3"
 
 ytdl-core@^4.11.0:
   version "4.11.0"

@@ -1,5 +1,13 @@
 import { ExtendedCommand } from '../../structures/Command'
-import { MessageActionRow, MessageButton, Message, Formatters, ButtonInteraction } from 'discord.js'
+import {
+  ButtonBuilder,
+  Message,
+  Formatters,
+  ButtonInteraction,
+  ActionRowBuilder,
+  ButtonStyle,
+  ComponentType,
+} from 'discord.js'
 import { evaluate } from 'mathjs'
 
 export default new ExtendedCommand({
@@ -13,35 +21,35 @@ export default new ExtendedCommand({
     let content: string = Formatters.codeBlock('fix', ' ')
 
     const generateComponents = () => {
-      const row1 = new MessageActionRow().addComponents(
-        new MessageButton().setCustomId('clear').setLabel('C').setStyle('DANGER'),
-        new MessageButton().setCustomId('(').setLabel('(').setStyle('PRIMARY'),
-        new MessageButton().setCustomId(')').setLabel(')').setStyle('PRIMARY'),
-        new MessageButton().setCustomId('^').setLabel('^').setStyle('PRIMARY')
+      const row1 = new ActionRowBuilder<ButtonBuilder>().addComponents(
+        new ButtonBuilder().setCustomId('clear').setLabel('C').setStyle(ButtonStyle.Danger),
+        new ButtonBuilder().setCustomId('(').setLabel('(').setStyle(ButtonStyle.Primary),
+        new ButtonBuilder().setCustomId(')').setLabel(')').setStyle(ButtonStyle.Primary),
+        new ButtonBuilder().setCustomId('^').setLabel('^').setStyle(ButtonStyle.Primary)
       )
-      const row2 = new MessageActionRow().addComponents(
-        new MessageButton().setCustomId('7').setLabel('7').setStyle('SECONDARY'),
-        new MessageButton().setCustomId('8').setLabel('8').setStyle('SECONDARY'),
-        new MessageButton().setCustomId('9').setLabel('9').setStyle('SECONDARY'),
-        new MessageButton().setCustomId('/').setLabel('/').setStyle('PRIMARY')
+      const row2 = new ActionRowBuilder<ButtonBuilder>().addComponents(
+        new ButtonBuilder().setCustomId('7').setLabel('7').setStyle(ButtonStyle.Secondary),
+        new ButtonBuilder().setCustomId('8').setLabel('8').setStyle(ButtonStyle.Secondary),
+        new ButtonBuilder().setCustomId('9').setLabel('9').setStyle(ButtonStyle.Secondary),
+        new ButtonBuilder().setCustomId('/').setLabel('/').setStyle(ButtonStyle.Primary)
       )
-      const row3 = new MessageActionRow().addComponents(
-        new MessageButton().setCustomId('4').setLabel('4').setStyle('SECONDARY'),
-        new MessageButton().setCustomId('5').setLabel('5').setStyle('SECONDARY'),
-        new MessageButton().setCustomId('6').setLabel('6').setStyle('SECONDARY'),
-        new MessageButton().setCustomId('*').setLabel('*').setStyle('PRIMARY')
+      const row3 = new ActionRowBuilder<ButtonBuilder>().addComponents(
+        new ButtonBuilder().setCustomId('4').setLabel('4').setStyle(ButtonStyle.Secondary),
+        new ButtonBuilder().setCustomId('5').setLabel('5').setStyle(ButtonStyle.Secondary),
+        new ButtonBuilder().setCustomId('6').setLabel('6').setStyle(ButtonStyle.Secondary),
+        new ButtonBuilder().setCustomId('*').setLabel('*').setStyle(ButtonStyle.Primary)
       )
-      const row4 = new MessageActionRow().addComponents(
-        new MessageButton().setCustomId('1').setLabel('1').setStyle('SECONDARY'),
-        new MessageButton().setCustomId('2').setLabel('2').setStyle('SECONDARY'),
-        new MessageButton().setCustomId('3').setLabel('3').setStyle('SECONDARY'),
-        new MessageButton().setCustomId('-').setLabel('-').setStyle('PRIMARY')
+      const row4 = new ActionRowBuilder<ButtonBuilder>().addComponents(
+        new ButtonBuilder().setCustomId('1').setLabel('1').setStyle(ButtonStyle.Secondary),
+        new ButtonBuilder().setCustomId('2').setLabel('2').setStyle(ButtonStyle.Secondary),
+        new ButtonBuilder().setCustomId('3').setLabel('3').setStyle(ButtonStyle.Secondary),
+        new ButtonBuilder().setCustomId('-').setLabel('-').setStyle(ButtonStyle.Primary)
       )
-      const row5 = new MessageActionRow().addComponents(
-        new MessageButton().setCustomId('0').setLabel('0').setStyle('SECONDARY'),
-        new MessageButton().setCustomId('.').setLabel('.').setStyle('SECONDARY'),
-        new MessageButton().setCustomId('=').setLabel('=').setStyle('SUCCESS'),
-        new MessageButton().setCustomId('+').setLabel('+').setStyle('PRIMARY')
+      const row5 = new ActionRowBuilder<ButtonBuilder>().addComponents(
+        new ButtonBuilder().setCustomId('0').setLabel('0').setStyle(ButtonStyle.Secondary),
+        new ButtonBuilder().setCustomId('.').setLabel('.').setStyle(ButtonStyle.Secondary),
+        new ButtonBuilder().setCustomId('=').setLabel('=').setStyle(ButtonStyle.Success),
+        new ButtonBuilder().setCustomId('+').setLabel('+').setStyle(ButtonStyle.Primary)
       )
       return [row1, row2, row3, row4, row5]
     }
@@ -56,7 +64,7 @@ export default new ExtendedCommand({
     const collector = botMessage.createMessageComponentCollector({
       filter,
       time: 20e3,
-      componentType: 'BUTTON',
+      componentType: ComponentType.Button,
     })
 
     collector.on('collect', (btn) => {

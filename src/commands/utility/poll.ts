@@ -1,4 +1,4 @@
-import { EmbedBuilderOptions } from 'discord.js'
+import { APIEmbed, ApplicationCommandOptionType, EmbedBuilder, JSONEncodable } from 'discord.js'
 import { ExtendedCommand } from '../../structures/Command'
 import { emoji } from '../../util/emojiChar'
 
@@ -10,61 +10,61 @@ export default new ExtendedCommand({
     {
       name: 'create',
       description: 'Create a new poll',
-      type: 'SUB_COMMAND_GROUP',
+      type: ApplicationCommandOptionType.SubcommandGroup,
       options: [
         {
           name: 'yes-no',
           description: 'Create a simple yes or no poll',
-          type: 'SUB_COMMAND',
+          type: ApplicationCommandOptionType.Subcommand,
           options: [
             {
               name: 'question',
               description: 'The question on the poll',
               required: true,
-              type: 'STRING',
+              type: ApplicationCommandOptionType.String,
             },
           ],
         },
         {
           name: 'multiplechoice',
           description: 'Create a multiple choice poll',
-          type: 'SUB_COMMAND',
+          type: ApplicationCommandOptionType.Subcommand,
           options: [
             {
               name: 'question',
               description: 'The question people will vote on',
               required: true,
-              type: 'STRING',
+              type: ApplicationCommandOptionType.String,
             },
             {
               name: 'choice-a',
               description: 'The first choice a user can pick.',
               required: true,
-              type: 'STRING',
+              type: ApplicationCommandOptionType.String,
             },
             {
               name: 'choice-b',
               description: 'The second choice a user can pick',
               required: true,
-              type: 'STRING',
+              type: ApplicationCommandOptionType.String,
             },
             {
               name: 'choice-c',
               description: 'The third choice a user can pick',
               required: false,
-              type: 'STRING',
+              type: ApplicationCommandOptionType.String,
             },
             {
               name: 'choice-d',
               description: 'The fourth choice a user can pick',
               required: false,
-              type: 'STRING',
+              type: ApplicationCommandOptionType.String,
             },
             {
               name: 'choice-e',
               description: 'The fifth choice a user can pick',
               required: false,
-              type: 'STRING',
+              type: ApplicationCommandOptionType.String,
             },
           ],
         },
@@ -112,7 +112,7 @@ export default new ExtendedCommand({
     if (subCommandGroup === 'create') {
       const [question, ...answers] = interaction.options.data[0].options[0].options.map(({ value }) => value as string)
       const answerEmojis: string[] = []
-      let pollEmbed: EmbedBuilderOptions
+      let pollEmbed
 
       if (subCommand === 'yes-no') {
         // const footer = 'YES | NO = 👍 | 👎'
@@ -140,12 +140,12 @@ export default new ExtendedCommand({
       question: string
       description?: string
       // footer?: string
-    }): EmbedBuilderOptions {
+    }) {
       return {
         title: question,
         author: {
           name: '\t New Poll',
-          icon_url: interaction.user.displayAvatarURL({ format: 'png' }),
+          icon_url: interaction.user.displayAvatarURL({ extension: 'png' }),
         },
         color: 'PURPLE',
         description: description,

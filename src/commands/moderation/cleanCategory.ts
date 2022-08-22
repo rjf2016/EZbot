@@ -1,8 +1,6 @@
 import { ExtendedCommand } from '../../structures/Command'
 import { protectedChannels } from '../../config'
-import { ApplicationCommandOptionType, ChannelType, MessageActionRow, MessageButton } from 'discord.js'
-
-//@Todo : This command can & probly should be cleaned up. Too many 'if - else' & !dry
+import { ActionRowBuilder, ApplicationCommandOptionType, ButtonBuilder, ButtonStyle, ChannelType } from 'discord.js'
 
 export default new ExtendedCommand({
   name: 'clean',
@@ -41,9 +39,9 @@ export default new ExtendedCommand({
 
   run: async ({ client, interaction }) => {
     const subCommand = interaction.options.getSubcommand()
-    const row = new MessageActionRow().addComponents(
-      new MessageButton().setCustomId('confirm').setLabel('Just do it').setStyle('SUCCESS'),
-      new MessageButton().setCustomId('cancel').setLabel('Marty Im scared').setStyle('DANGER')
+    const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
+      new ButtonBuilder().setCustomId('confirm').setLabel('Just do it').setStyle(ButtonStyle.Success),
+      new ButtonBuilder().setCustomId('cancel').setLabel('Marty Im scared').setStyle(ButtonStyle.Danger)
     )
 
     let message: string

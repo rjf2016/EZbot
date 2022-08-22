@@ -1,4 +1,4 @@
-import { EmbedBuilder } from 'discord.js'
+import { ApplicationCommandOptionType, EmbedBuilder } from 'discord.js'
 import { ExtendedCommand } from '../../structures/Command'
 import { prettyCategories } from '../../util/helpers'
 
@@ -10,13 +10,13 @@ export default new ExtendedCommand({
     {
       name: 'command',
       description: 'Get info about a specific command',
-      type: 'STRING',
+      type: 3,
       required: false,
     },
   ],
   run: async ({ client, interaction }) => {
     const helpCommand = interaction.options.getString('command')
-    const embed = new EmbedBuilder().setColor('PURPLE').setURL('https://github.com/rjf2016/EZbot#features')
+    const embed = new EmbedBuilder().setColor('Purple').setURL('https://github.com/rjf2016/EZbot#features')
     const isValidCommand = helpCommand !== null && client.commands.get(helpCommand)
     // if: /help <valid command>
     if (isValidCommand) {

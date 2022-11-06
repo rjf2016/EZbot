@@ -1,4 +1,4 @@
-import { ApplicationCommandDataResolvable, Client, Collection } from 'discord.js'
+import { ApplicationCommandDataResolvable, Client, Collection, GatewayIntentBits, IntentsBitField } from 'discord.js'
 import { loadCommands, registerClientEvents, registerPlayerEvents } from '../handlers'
 import { CommandType } from '../types/Command'
 import { botToken } from '../util/validateEnv'
@@ -12,14 +12,23 @@ export class ExtendedClient extends Client {
   player: Player = new Player(this, {
     ytdlOptions: {
       quality: 'highestaudio',
-      highWaterMark: 1 << 30,
-      dlChunkSize: 0,
+      highWaterMark: 1 << 25,
     },
   })
   logger: Logger<LoggerOptions> = logger
 
   constructor() {
-    super({ intents: 1665 })
+    super({
+      intents: [
+        'Guilds',
+        'GuildBans',
+        'GuildVoiceStates',
+        'GuildMessageReactions',
+        'MessageContent',
+        'GuildMembers',
+        'GuildPresences',
+      ],
+    })
   }
 
   async start() {

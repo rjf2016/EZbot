@@ -1,15 +1,16 @@
+import { ApplicationCommandOptionType, ApplicationCommandType } from 'discord.js'
 import { ExtendedCommand } from '../../structures/Command'
 
 export default new ExtendedCommand({
   name: 'prune',
   category: 'moderation',
   description: 'Deletes previous messages in current text channel',
-  type: 1,
+  type: ApplicationCommandType.ChatInput,
   options: [
     {
       name: 'amount',
       description: 'Amount of messages to delete',
-      type: 'NUMBER',
+      type: ApplicationCommandOptionType.Number,
       required: true,
     },
   ],

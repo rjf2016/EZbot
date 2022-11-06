@@ -1,3 +1,4 @@
+import { ApplicationCommandOptionType } from 'discord.js'
 import { ExtendedCommand } from '../../structures/Command'
 
 export default new ExtendedCommand({
@@ -8,7 +9,7 @@ export default new ExtendedCommand({
     {
       name: 'time',
       description: 'The time to jump to (in seconds)',
-      type: 'INTEGER',
+      type: ApplicationCommandOptionType.String,
       required: true,
     },
   ],

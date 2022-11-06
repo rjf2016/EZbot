@@ -10,7 +10,7 @@ export default new ExtendedCommand({
     {
       name: 'song',
       description: 'Title of the song',
-      type: 'STRING',
+      type: 3,
       required: true,
     },
   ],
@@ -19,12 +19,7 @@ export default new ExtendedCommand({
     const song = interaction.options.getString('song')
     const channel = interaction.channel as TextChannel
 
-    if (!interaction.member.voice.channel) return await interaction.reply('Please join a voice channel first!')
-
-    if (
-      interaction.guild.me.voice.channelId &&
-      interaction.member.voice.channelId !== interaction.guild.me.voice.channelId
-    ) {
+    if (!interaction.member.voice.channelId) {
       await interaction.reply({
         content: 'You are not in my voice channel!',
         ephemeral: true,

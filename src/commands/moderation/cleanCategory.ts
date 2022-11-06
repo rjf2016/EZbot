@@ -1,8 +1,6 @@
 import { ExtendedCommand } from '../../structures/Command'
 import { protectedChannels } from '../../config'
-import { MessageActionRow, MessageButton } from 'discord.js'
-
-//@Todo : This command can & probly should be cleaned up. Too many 'if - else' & !dry
+import { ActionRowBuilder, ApplicationCommandOptionType, ButtonBuilder, ButtonStyle, ChannelType } from 'discord.js'
 
 export default new ExtendedCommand({
   name: 'clean',
@@ -12,28 +10,28 @@ export default new ExtendedCommand({
     {
       name: 'channel',
       description: 'Delete a channel',
-      type: 'SUB_COMMAND',
+      type: ApplicationCommandOptionType.Subcommand,
       options: [
         {
           name: 'channel',
           description: 'The channel to delete',
-          type: 'CHANNEL',
+          type: ApplicationCommandOptionType.Channel,
           required: true,
-          channelTypes: ['GUILD_TEXT', 'GUILD_VOICE'],
+          channelTypes: [ChannelType.GuildText, ChannelType.GuildVoice],
         },
       ],
     },
     {
       name: 'category',
       description: 'Delete all channels within a category',
-      type: 'SUB_COMMAND',
+      type: ApplicationCommandOptionType.Subcommand,
       options: [
         {
           name: 'category',
           description: 'The category to clear',
-          type: 'CHANNEL',
+          type: ApplicationCommandOptionType.Channel,
           required: true,
-          channelTypes: ['GUILD_CATEGORY'],
+          channelTypes: [ChannelType.GuildCategory],
         },
       ],
     },
@@ -41,9 +39,9 @@ export default new ExtendedCommand({
 
   run: async ({ client, interaction }) => {
     const subCommand = interaction.options.getSubcommand()
-    const row = new MessageActionRow().addComponents(
-      new MessageButton().setCustomId('confirm').setLabel('Just do it').setStyle('SUCCESS'),
-      new MessageButton().setCustomId('cancel').setLabel('Marty Im scared').setStyle('DANGER')
+    const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
+      new ButtonBuilder().setCustomId('confirm').setLabel('Just do it').setStyle(ButtonStyle.Success),
+      new ButtonBuilder().setCustomId('cancel').setLabel('Marty Im scared').setStyle(ButtonStyle.Danger)
     )
 
     let message: string

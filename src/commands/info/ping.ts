@@ -1,4 +1,4 @@
-import { MessageEmbed } from 'discord.js'
+import { EmbedBuilder } from 'discord.js'
 import { ExtendedCommand } from '../../structures/Command'
 import { version as PKG_VERSION } from '../../../package.json'
 import { prettifyMS } from '../../util/helpers'
@@ -8,7 +8,7 @@ export default new ExtendedCommand({
   category: 'info',
   description: 'check EZbot latency in ms',
   run: async ({ client, interaction }) => {
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setTitle(`${client.user.username}`)
       .setThumbnail('https://imgur.com/Lwshqf5.png')
       .setDescription(

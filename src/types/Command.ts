@@ -1,6 +1,6 @@
 import {
   ChatInputApplicationCommandData,
-  CommandInteraction,
+  ChatInputCommandInteraction,
   CommandInteractionOptionResolver,
   GuildMember,
   GuildTextBasedChannel,
@@ -9,7 +9,7 @@ import {
 
 import { ExtendedClient } from '../structures/Client'
 
-export interface ExtendedInteraction extends CommandInteraction {
+export interface ExtendedInteraction extends ChatInputCommandInteraction {
   member: GuildMember
   channel: GuildTextBasedChannel
 }
@@ -20,7 +20,7 @@ interface RunOptions {
   args: CommandInteractionOptionResolver
 }
 
-type RunFunction = (options: RunOptions) => Promise<void>
+type RunFunction = (options: RunOptions) => any
 
 type CommandCategory = 'music' | 'info' | 'utility' | 'moderation' | 'devel'
 

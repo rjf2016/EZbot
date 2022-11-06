@@ -1,5 +1,4 @@
 import { ExtendedCommand } from '../../structures/Command'
-import { colors } from '../../config'
 
 export default new ExtendedCommand({
   name: 'queue',
@@ -33,7 +32,7 @@ export default new ExtendedCommand({
                 }`
               : ''
           }`,
-          color: colors.main,
+          color: 282828,
           fields: [
             {
               name: 'Now Playing',

@@ -14,8 +14,6 @@ export default new Event('ready', async () => {
     client.logger.info('Registered commands globally! 🌎')
   } else {
     await client.guilds.cache.get(serverId).commands.set(client.slashCommands)
-    client.logger.info(
-      `Registered ${[...client.slashCommands].length} commands to ${client.guilds.cache.get(serverId).name}`
-    )
+    client.logger.info(`Registered ${[...client.slashCommands].length} commands`)
   }
 })

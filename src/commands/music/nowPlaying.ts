@@ -1,4 +1,4 @@
-import { MessageEmbed } from 'discord.js'
+import { EmbedBuilder } from 'discord.js'
 import { colors } from '../../config'
 import { ExtendedCommand } from '../../structures/Command'
 
@@ -13,7 +13,7 @@ export default new ExtendedCommand({
 
     const progress = queue.createProgressBar({ timecodes: true, length: 8 })
 
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setDescription(`**[${queue.current.title}](${queue.current.url})**`)
       .setThumbnail(queue.current.thumbnail)
       .setFields([
@@ -25,6 +25,5 @@ export default new ExtendedCommand({
       .setColor(colors.main)
 
     await interaction.reply({ embeds: [embed] })
-    return
   },
 })

@@ -1,6 +1,4 @@
 import { ExtendedCommand } from '../../structures/Command'
-import { colors } from '../../config'
-import { ColorResolvable } from 'discord.js'
 
 export default new ExtendedCommand({
   name: 'queue',

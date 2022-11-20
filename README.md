@@ -17,7 +17,8 @@ EZbot is an open source Discord bot written in TypeScript. This bot requires Dis
 ## Features
 
 - **Music** 🎵
-  - `/play` - Search multiple sources for a song, then play it or put it in a queue
+  - `/play` - Play a song (using either a URL or keywords)
+  - `/search` - Sends back a dropdown with search results
   - `/queue` - View the upcoming songs in queue
   - `/skip` - Skip currently playing song
   - `/seek` - Seek timestamp current song to jump to
@@ -38,9 +39,6 @@ EZbot is an open source Discord bot written in TypeScript. This bot requires Dis
 - **Info** 💡
   - `/ping` - View the client's latency
   - `/help` - Get info about a command or view all of EZbot's commands
-  
-
-> More coming soon! I'm porting many commands from a previous bot I created. Stay tuned😄
 
 ## Installation
 

@@ -35,7 +35,7 @@ export default new ExtendedCommand({
       },
     })
 
-    await interaction.reply({ content: `**Searching** 🔎 \`${song}\`` })
+    await interaction.reply({ content: `**Searching** 🔎 \`${song}\``, ephemeral: true })
 
     const searchResult = await client.player
       .search(song, {

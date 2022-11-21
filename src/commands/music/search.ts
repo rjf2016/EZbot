@@ -1,7 +1,7 @@
 import { ExtendedCommand } from '../../structures/Command'
-import { ApplicationCommandOptionType, EmbedBuilder, ActionRowBuilder, Events, SelectMenuBuilder } from 'discord.js'
+import { ApplicationCommandOptionType, ActionRowBuilder, SelectMenuBuilder } from 'discord.js'
 import { QueryType } from 'discord-player'
-import { colors } from '../../config'
+import { trimText } from '../../util/helpers'
 
 export default new ExtendedCommand({
   name: 'search',
@@ -30,16 +30,19 @@ export default new ExtendedCommand({
 
     const maxTracks = res.tracks.slice(0, 5)
 
-    const mapped = maxTracks.map(({ title, author, url, source }) => ({
-      label: `${title} | ${author}`,
-      description: source,
-      value: url,
-    }))
+    const mapped = maxTracks.map(({ title, author, url, source }) => {
+      const trimmedTitle = title.length > 50 ? trimText(title, 50) : title
+      return {
+        label: `${trimmedTitle} | ${author}`,
+        description: source,
+        value: url,
+      }
+    })
 
     const row = new ActionRowBuilder<SelectMenuBuilder>().addComponents(
       new SelectMenuBuilder().setCustomId('select-search').setPlaceholder('Nothing selected').addOptions(mapped)
     )
 
-    interaction.reply({ content: `Search results for \`${song}\``, components: [row] })
+    interaction.reply({ content: `Search results for \`${song}\``, components: [row], ephemeral: true })
   },
 })

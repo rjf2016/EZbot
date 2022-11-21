@@ -1,5 +1,5 @@
 import { ExtendedClient } from './structures/Client'
 
-export const client = new ExtendedClient()
+export const client = ExtendedClient.getInstance()
 
 client.start()

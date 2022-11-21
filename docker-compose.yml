@@ -5,8 +5,8 @@ services:
     build:
       context: .
     container_name: EZcontainer
-    image: ricker95/ezbot:version-1.1.6
+    image: ricker95/ezbot:version-1.1.7
     env_file:
       - .env
     restart: always
-    command: node dist/index.js
+    command: node dist/src/index.js

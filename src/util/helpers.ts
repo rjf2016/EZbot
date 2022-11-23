@@ -12,8 +12,6 @@ export const prettyCategories = {
   utility: '🔨 Utility',
 }
 
-export const trimText = (text: string, maxLength = 20): string => {
-  if (text.length > maxLength) return `${text.substring(0, maxLength)}...`
-}
+export const trimText = (text: string, maxLength = 25): string => text.substring(0, maxLength)
 
 export const prettifyMS = (ms: number): string => prettyMilliseconds(ms)

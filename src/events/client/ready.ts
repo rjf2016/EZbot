@@ -1,8 +1,19 @@
+import { ActivityType } from 'discord.js'
 import { client } from '../..'
 import { Event } from '../../structures'
 import { isProd, serverId } from '../../util/validateEnv'
 
 export default new Event('ready', async () => {
+  client.user.setPresence({
+    status: 'online',
+    activities: [
+      {
+        name: 'Music',
+        type: ActivityType.Playing,
+      },
+    ],
+  })
+
   client.logger.info(`Started ${client.user.username}`)
   if (isProd) {
     try {

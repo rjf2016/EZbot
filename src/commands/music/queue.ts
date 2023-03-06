@@ -1,42 +1,42 @@
-import { ExtendedCommand } from '../../structures/Command'
+import { ExtendedCommand } from '../../structures'
+import { trimText } from '../../util/helpers'
+import { useQueue } from 'discord-player'
 
 export default new ExtendedCommand({
   name: 'queue',
   category: 'music',
   description: 'Display the current queue',
 
-  run: async ({ client, interaction }) => {
-    const queue = client.player.getQueue(interaction.guild)
-    if (!queue?.playing) {
-      await interaction.reply({
+  run: async ({ interaction }) => {
+    const channel = interaction.member.voice.channel
+    if (!channel) return interaction.reply({ content: 'You are not connected to a voice channel!' })
+
+    const queue = useQueue(interaction.guild.id)
+    if (!queue) {
+      return interaction.reply({
         content: 'No songs are currently playing',
       })
-      return
     }
 
-    const currentTrack = queue.current
-    const tracks = queue.tracks.slice(0, 10).map((m, i) => {
-      return `${i + 1}. [**${m.title}**](${m.url}) - ${m.requestedBy.tag}`
+    const currentTrack = queue.currentTrack
+    const queueTracks = queue.tracks
+
+    const tracks = queueTracks.map((track, i) => {
+      const safeTitle = trimText(track.title)
+      return `${i + 1}. [**${safeTitle}**](${track.url}) - ${track.requestedBy}`
     })
 
-    await interaction.reply({
+    return await interaction.reply({
       embeds: [
         {
-          title: 'Song Queue',
-          description: `${tracks.join('\n')}${
-            queue.tracks.length > tracks.length
-              ? `\n...${
-                  queue.tracks.length - tracks.length === 1
-                    ? `${queue.tracks.length - tracks.length} more track`
-                    : `${queue.tracks.length - tracks.length} more tracks`
-                }`
-              : ''
-          }`,
-          color: 282828,
           fields: [
             {
               name: 'Now Playing',
-              value: `🎵 | [**${currentTrack.title}**](${currentTrack.url}) - ${currentTrack.requestedBy.tag}`,
+              value: `🎵 | [**${currentTrack.title}**](${currentTrack.url}) - ${currentTrack.requestedBy}`,
+            },
+            {
+              name: 'Next Up',
+              value: tracks.join('\n'),
             },
           ],
         },

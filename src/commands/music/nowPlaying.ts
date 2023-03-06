@@ -1,21 +1,23 @@
 import { EmbedBuilder } from 'discord.js'
 import { colors } from '../../config'
-import { ExtendedCommand } from '../../structures/Command'
+import { ExtendedCommand } from '../../structures'
+import { useQueue } from 'discord-player'
 
 export default new ExtendedCommand({
   name: 'nowplaying',
   category: 'music',
   description: 'View the currently playing song',
 
-  run: async ({ client, interaction }) => {
-    const queue = client.player.getQueue(interaction.guild)
-    if (!queue || !queue.playing) return await interaction.reply(':cricket:')
+  run: async ({ interaction }) => {
+    const queue = useQueue(interaction.guild.id)
+    if (!queue || !queue.isPlaying) return interaction.reply(':cricket:')
 
-    const progress = queue.createProgressBar({ timecodes: true, length: 8 })
+    const progress = queue.node.createProgressBar({ timecodes: true, length: 8 })
+    const track = queue.currentTrack
 
     const embed = new EmbedBuilder()
-      .setDescription(`**[${queue.current.title}](${queue.current.url})**`)
-      .setThumbnail(queue.current.thumbnail)
+      .setDescription(`**[${track.title}](${track.url})**`)
+      .setThumbnail(track.thumbnail)
       .setFields([
         {
           name: '\u200b',
@@ -24,6 +26,6 @@ export default new ExtendedCommand({
       ])
       .setColor(colors.main)
 
-    await interaction.reply({ embeds: [embed] })
+    return interaction.reply({ embeds: [embed] })
   },
 })

@@ -1,54 +1,18 @@
-import { Player, Queue, Track } from 'discord-player'
-import { EmbedBuilder, TextChannel } from 'discord.js'
-import { colors } from '../config'
-import { client } from '..'
+import { PlayerEvent, Logger } from '../structures'
+import { promisify } from 'util'
+import glob from 'glob'
+import { GuildQueueEvents, Player } from 'discord-player'
+import { ExtendedInteraction } from '../types/Command'
 
-export const registerPlayerEvents = (player: Player) => {
-  player.on(
-    'trackStart',
-    (queue: Queue<{ channel: TextChannel }>, { title, url, thumbnail, requestedBy, duration }: Track) => {
-      const nowPlayingEmbed = new EmbedBuilder()
-        .setAuthor({ name: 'Now Playing' })
-        .setThumbnail(thumbnail)
-        .setDescription(
-          `**[${
-            title.length > 50 ? title.substring(0, 50) + '...' : title
-          }](${url})**\n\n \`\` ${duration} \`\`\t\u200b\t\u200b\t${requestedBy}`
-        )
-        .setColor(colors.ezRed)
-      queue.metadata.channel.send({ embeds: [nowPlayingEmbed] })
-    }
-  )
-  player.on('trackAdd', (queue: Queue<{ channel: TextChannel }>, track: Track) => {
-    const current = queue.nowPlaying()
-    if (current !== track) {
-      client.logger.info('Track added to queue ')
-      queue?.metadata.channel.send({
-        content: `**Added** ⏱️ \`${track.title}\` - to the **queue**!`,
-      })
-    }
+const globPromise = promisify(glob)
+
+export const registerPlayerEvents = async (player: Player, dir: string) => {
+  const eventFiles = await globPromise(`${dir}/../events/player/*{.ts,.js}`)
+
+  eventFiles.forEach(async (filePath: string) => {
+    const event: PlayerEvent<keyof GuildQueueEvents<ExtendedInteraction>> = (await import(filePath))?.default
+    player.events.on(event.event, event.run)
   })
 
-  player.on('error', (queue: Queue<{ channel: TextChannel }>, error) => {
-    client.logger.error(error, `PLAYER ERROR emitted from: ${queue.guild.name} `)
-    queue.metadata.channel.send({
-      content: `🤮 I ran into an error trying to play that song`,
-    })
-  })
-
-  player.on('connectionError', (queue, error) => {
-    client.logger.error(error, `PLAYER CONNECTION ERROR emitted from: ${queue.guild.name} `)
-  })
-
-  player.on('botDisconnect', async () => {
-    client.logger.info('❌ | I was manually disconnected from the voice channel, clearing queue! ')
-  })
-
-  player.on('channelEmpty', () => {
-    client.logger.info('❌ | Nobody is in the voice channel, leaving... ')
-  })
-
-  player.on('queueEnd', () => {
-    client.logger.info('✅ | Queue finished! ')
-  })
+  Logger.info('Registered player events')
 }

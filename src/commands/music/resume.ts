@@ -1,35 +1,31 @@
-import { ExtendedCommand } from '../../structures/Command'
+import { ExtendedCommand, Logger } from '../../structures'
+import { useQueue } from 'discord-player'
 
 export default new ExtendedCommand({
   name: 'resume',
   category: 'music',
   description: 'Resume the currently paused song',
 
-  run: async ({ client, interaction }) => {
-    const queue = client.player.getQueue(interaction.guild)
-
-    if (!interaction.member.voice.channelId) {
-      await interaction.reply({
-        content: 'You are not in my voice channel!',
+  run: async ({ interaction }) => {
+    const channel = interaction.member.voice.channel
+    if (!channel)
+      return interaction.reply({
+        content: 'You are not in a voice channel!',
         ephemeral: true,
       })
-      return
+
+    const queue = useQueue(interaction.guild.id)
+
+    if (!queue || !queue.isPlaying() || !queue.node.isPaused) {
+      return interaction.reply({ content: `:confused: You can't resume what isn't paused`, ephemeral: true })
     }
 
-    if (!queue || !queue.playing || !queue.setPaused) {
-      await interaction.reply({ content: `:confused: You can't resume what isn't paused`, ephemeral: true })
-      client.logger.error('Attempted to resume player that was not paused', queue)
+    try {
+      queue.node.resume()
+      return interaction.reply({ content: `**Resume** :arrow_forward: \`${queue.currentTrack}\`` })
+    } catch (error) {
+      Logger.error(error)
+      return interaction.reply({ content: `❌ Failed to resume song` })
     }
-
-    const paused = queue.setPaused(false)
-
-    function handleError() {
-      client.logger.error('Failed to resume song', queue)
-      return `❌ Failed to resume song`
-    }
-
-    await interaction.reply({
-      content: paused ? `**Resume** :arrow_forward: \`${queue.current.title}\`` : handleError(),
-    })
   },
 })

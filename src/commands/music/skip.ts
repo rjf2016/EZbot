@@ -1,35 +1,33 @@
-import { ExtendedCommand } from '../../structures/Command'
+import { Logger, ExtendedCommand } from '../../structures'
 
 export default new ExtendedCommand({
   name: 'skip',
   category: 'music',
-  description: 'skip current song',
+  description: 'Skip current song',
 
   run: async ({ client, interaction }) => {
-    if (!interaction.member.voice.channelId) {
-      await interaction.reply({
+    const queue = client.player.nodes.get(interaction.guildId)
+
+    if (!interaction.member.voice.channel) {
+      return interaction.reply({
         content: 'You are not in my voice channel!',
         ephemeral: true,
       })
-      return
     }
 
-    const queue = client.player.getQueue(interaction.guild)
-
-    if (!queue || !queue.playing) {
-      await interaction.reply({
+    if (!queue || !queue.isPlaying) {
+      return interaction.reply({
         content: 'No songs are currently playing',
         ephemeral: true,
       })
-      return
     }
 
-    const current = queue.current.title
+    const current = queue.currentTrack
 
     try {
-      queue.skip()
+      queue.node.skip()
     } catch (error) {
-      client.logger.error(error)
+      Logger.error(error)
     }
 
     await interaction.reply({ content: ` **Skipped** ⏩ ~~\`${current}\`~~` })

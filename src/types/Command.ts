@@ -3,15 +3,15 @@ import {
   ChatInputCommandInteraction,
   CommandInteractionOptionResolver,
   GuildMember,
-  GuildTextBasedChannel,
   PermissionResolvable,
+  TextChannel,
 } from 'discord.js'
 
 import { ExtendedClient } from '../structures/Client'
 
 export interface ExtendedInteraction extends ChatInputCommandInteraction {
   member: GuildMember
-  channel: GuildTextBasedChannel
+  channel: TextChannel
 }
 
 interface RunOptions {

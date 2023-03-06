@@ -1,4 +1,4 @@
-import { Event, ExtendedClient } from '../structures'
+import { Event, ExtendedClient, Logger } from '../structures'
 import { ClientEvents } from 'discord.js'
 import { promisify } from 'util'
 import glob from 'glob'
@@ -13,5 +13,5 @@ export const registerClientEvents = async (client: ExtendedClient, dir: string) 
     client.on(event.event, event.run)
   })
 
-  client.logger.info('Registered client events')
+  Logger.info('Registered client events')
 }

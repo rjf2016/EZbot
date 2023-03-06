@@ -5,7 +5,7 @@ services:
     build:
       context: .
     container_name: EZcontainer
-    image: ricker95/ezbot:version-1.1.9
+    image: ricker95/ezbot:version-1.1.10
     env_file:
       - .env
     restart: always

@@ -28,7 +28,7 @@ export default new ExtendedCommand({
     try {
       await interaction.channel.bulkDelete(amount)
     } catch (err) {
-      client.logger.error(err)
+      Logger.error(err)
     }
   },
 })

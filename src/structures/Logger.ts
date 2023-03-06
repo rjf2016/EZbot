@@ -15,5 +15,4 @@ const prodTransport: LoggerOptions = pino.transport({
   options: { destination: '../logs.json' },
 })
 
-const logger = pino(isProd ? prodTransport : devTransport)
-export { logger }
+export const Logger = pino(isProd ? prodTransport : devTransport)

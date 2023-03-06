@@ -25,7 +25,7 @@ export default new ExtendedCommand({
 
     if (GLOBAL) {
       await client.application.commands.set([]).catch((error) => {
-        client.logger.fatal(error, 'Failed to wipe application commands')
+        Logger.fatal(error, 'Failed to wipe application commands')
       })
       return await interaction.reply({
         content: `💣 \`Commands have been wiped from the application\` 💣`,
@@ -33,7 +33,7 @@ export default new ExtendedCommand({
     } else {
       const targetGuild = await client.guilds.fetch(TARGET)
       await targetGuild.commands.set([]).catch((error) => {
-        client.logger.fatal(error, 'Failed to wipe commands from guild')
+        Logger.fatal(error, 'Failed to wipe commands from guild')
       })
       return await interaction.reply({
         content: `💣 \`Commands have been wiped from guild\` 💣`,

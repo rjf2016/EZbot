@@ -1,6 +1,5 @@
-import { ExtendedCommand } from '../../structures/Command'
-import { QueryType } from 'discord-player'
-import { TextChannel } from 'discord.js'
+import { ExtendedCommand, Logger } from '../../structures'
+import { useMasterPlayer } from 'discord-player'
 
 export default new ExtendedCommand({
   name: 'play',
@@ -9,76 +8,41 @@ export default new ExtendedCommand({
   options: [
     {
       name: 'song',
-      description: 'Title of the song',
+      description: 'Title or URL of a song',
       type: 3,
       required: true,
     },
   ],
 
-  run: async ({ client, interaction }) => {
-    const song = interaction.options.getString('song')
-    const channel = interaction.channel as TextChannel
+  run: async ({ interaction }) => {
+    const query = interaction.options.getString('song')
+    const channel = interaction.member.voice.channel
+    const player = useMasterPlayer()
 
-    if (!interaction.member.voice.channelId) {
-      await interaction.reply({
-        content: 'You are not in my voice channel!',
+    if (!channel) {
+      return interaction.reply({
+        content: 'You are not in a voice channel!',
         ephemeral: true,
       })
-      return
     }
 
-    const queue = client.player.createQueue(interaction.guild, {
-      disableVolume: true,
-      leaveOnEnd: true,
-      metadata: {
-        channel: channel,
-      },
-    })
+    await interaction.reply({ content: 'Loading your song 🎵', ephemeral: true })
 
-    await interaction.reply({ content: `**Searching** 🔎 \`${song}\``, ephemeral: true })
-
-    const searchResult = await client.player
-      .search(song, {
+    try {
+      return await player.play(channel, query, {
+        nodeOptions: {
+          metadata: interaction,
+          leaveOnEmptyCooldown: 300000,
+          leaveOnEmpty: true,
+          leaveOnEnd: false,
+          bufferingTimeout: 0,
+          selfDeaf: true,
+        },
         requestedBy: interaction.user,
-        searchEngine: QueryType.AUTO,
       })
-      .catch((err) => {
-        client.logger.error('Failed to get song(s)', err)
-      })
-
-    if (!searchResult || !searchResult.tracks.length) {
-      await interaction.followUp({
-        content: `🤮 No results were found, try changing the search`,
-        ephemeral: true,
-      })
-      return
-    }
-
-    if (!queue.connection) {
-      try {
-        await queue.connect(interaction.member.voice.channel)
-      } catch (error) {
-        client.logger.error('Failed to join voice chat', error)
-        await interaction.followUp({
-          content: 'Could not join your voice channel!',
-          ephemeral: true,
-        })
-        queue.destroy(true)
-        return
-      }
-    }
-
-    searchResult.playlist ? queue.addTracks(searchResult.tracks) : queue.addTrack(searchResult.tracks[0])
-    if (!queue.playing) {
-      try {
-        await queue.play()
-      } catch (error) {
-        client.logger.error(`Encountered an error trying to play song`, error)
-        await interaction.followUp({
-          content: '🤮 Uh oh, I ran into an error trying to play that song.',
-        })
-        return
-      }
+    } catch (e) {
+      Logger.error(e)
+      return interaction.followUp({ content: `Uh oh, something went wrong🥲`, ephemeral: true })
     }
   },
 })

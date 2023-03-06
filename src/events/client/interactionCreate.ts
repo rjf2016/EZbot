@@ -1,6 +1,6 @@
 import { CommandInteractionOptionResolver } from 'discord.js'
 import { client } from '../..'
-import { Event } from '../../structures'
+import { Event, Logger } from '../../structures'
 import { ExtendedInteraction } from '../../types/Command'
 
 export default new Event('interactionCreate', async (interaction) => {
@@ -16,9 +16,9 @@ export default new Event('interactionCreate', async (interaction) => {
     return
   }
 
-  client.logger.info(`${interaction.user.username} ran /${command.name}`)
+  Logger.info(`${interaction.user.username} ran /${command.name}`)
 
-  command.run({
+  await command.run({
     args: interaction.options as CommandInteractionOptionResolver,
     client,
     interaction: interaction as ExtendedInteraction,

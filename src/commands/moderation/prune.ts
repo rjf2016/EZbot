@@ -1,4 +1,5 @@
 import { ApplicationCommandOptionType, ApplicationCommandType } from 'discord.js'
+import { Logger } from '../../structures'
 import { ExtendedCommand } from '../../structures/Command'
 
 export default new ExtendedCommand({
@@ -15,7 +16,7 @@ export default new ExtendedCommand({
     },
   ],
 
-  run: async ({ client, interaction }) => {
+  run: async ({ interaction }) => {
     const amount = interaction.options.getNumber('amount')
     await interaction.deferReply()
     if (isNaN(amount)) return await interaction.reply('Thats not a number!')

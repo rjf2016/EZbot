@@ -5,7 +5,6 @@
 import prettyMilliseconds from 'pretty-ms'
 
 export const prettyCategories = {
-  devel: '👨‍💻 Developer',
   music: '🎵 Music',
   info: '😎 Info',
   moderation: '📛 Moderation',

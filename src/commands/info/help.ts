@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, EmbedBuilder } from 'discord.js'
+import { EmbedBuilder } from 'discord.js'
 import { ExtendedCommand } from '../../structures/Command'
 import { prettyCategories } from '../../util/helpers'
 

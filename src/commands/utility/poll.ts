@@ -1,4 +1,4 @@
-import { APIEmbed, ApplicationCommandOptionType, EmbedBuilder, JSONEncodable } from 'discord.js'
+import { ApplicationCommandOptionType } from 'discord.js'
 import { ExtendedCommand } from '../../structures/Command'
 import { emoji } from '../../util/emojiChar'
 
